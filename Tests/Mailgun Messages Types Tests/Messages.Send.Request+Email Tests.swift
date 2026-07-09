@@ -5,7 +5,7 @@
 //  Tests for Email to Mailgun.Messages.Send.Request conversion
 //
 
-import DependenciesTestSupport
+import Dependencies_Test_Support
 import Email_Type
 import Foundation
 import Mailgun_Messages_Types

@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 20/12/2024.
 //
 
-import DependenciesMacros
 import Mailgun_AccountManagement_Types
 import Mailgun_Credentials_Types
 import Mailgun_CustomMessageLimit_Types
@@ -26,7 +25,7 @@ import Mailgun_Users_Types
 import Mailgun_Webhooks_Types
 
 extension Mailgun {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         public let messages: Mailgun.Messages.Client
         public let mailingLists: Mailgun.Lists.Client

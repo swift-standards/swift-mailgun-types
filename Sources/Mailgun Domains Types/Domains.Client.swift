@@ -6,7 +6,6 @@
 //
 
 import Dependencies
-import DependenciesMacros
 import Mailgun_Types_Shared
 
 extension Mailgun.Domains {

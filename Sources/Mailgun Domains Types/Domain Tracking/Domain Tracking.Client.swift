@@ -6,32 +6,24 @@
 //
 
 import Dependencies
-import DependenciesMacros
 import Mailgun_Types_Shared
 
 extension Mailgun.Domains.Domains.Tracking {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
-        @DependencyEndpoint
         public var get:
             @Sendable (_ domain: Domain) async throws ->
                 Mailgun.Domains.Domains.Tracking.Get.Response
-
-        @DependencyEndpoint
         public var updateClick:
             @Sendable (
                 _ domain: Domain,
                 _ request: Mailgun.Domains.Domains.Tracking.UpdateClick.Request
             ) async throws -> Mailgun.Domains.Domains.Tracking.UpdateClick.Response
-
-        @DependencyEndpoint
         public var updateOpen:
             @Sendable (
                 _ domain: Domain,
                 _ request: Mailgun.Domains.Domains.Tracking.UpdateOpen.Request
             ) async throws -> Mailgun.Domains.Domains.Tracking.UpdateOpen.Response
-
-        @DependencyEndpoint
         public var updateUnsubscribe:
             @Sendable (
                 _ domain: Domain,

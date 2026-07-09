@@ -6,14 +6,12 @@
 //
 
 import Dependencies
-import DependenciesMacros
 import Foundation
 import Mailgun_Types_Shared
 
 extension Mailgun.Reporting.Logs {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
-        @DependencyEndpoint
         public var analytics:
             @Sendable (_ request: Analytics.Request) async throws -> Analytics.Response
     }

@@ -1,4 +1,4 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 6.3.1
 
 import PackageDescription
 
@@ -48,21 +48,31 @@ extension Target.Dependency {
 
 extension Target.Dependency {
     static var dependencies: Self { .product(name: "Dependencies", package: "swift-dependencies") }
-    static var dependenciesMacros: Self { .product(name: "DependenciesMacros", package: "swift-dependencies") }
-    static var dependenciesTestSupport: Self { .product(name: "DependenciesTestSupport", package: "swift-dependencies") }
+    static var dependenciesTestSupport: Self { .product(name: "Dependencies Test Support", package: "swift-dependencies") }
     static var dateParsing: Self { .product(name: "UnixEpochParsing", package: "swift-date-parsing") }
     static var emailType: Self { .product(name: "Email Type", package: "swift-email-standard") }
     static var domain: Self { .product(name: "Domain", package: "swift-domain-standard") }
     static var emailAddress: Self { .product(name: "EmailAddress", package: "swift-emailaddress-standard") }
-    static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
-    static var casePaths: Self { .product(name: "CasePaths", package: "swift-case-paths") }
+    static var urlRouting: Self {
+        // TRANSITIONAL: pointfreeco/swift-url-routing — no institute equivalent adopted this wave;
+        // kept temporarily per the manifest-swap directive (do not eliminate this wave).
+        .product(name: "URLRouting", package: "swift-url-routing")
+    }
+    static var casePaths: Self {
+        // TRANSITIONAL: pointfreeco/swift-case-paths — no institute equivalent adopted this wave;
+        // kept temporarily per the manifest-swap directive (do not eliminate this wave).
+        .product(name: "CasePaths", package: "swift-case-paths")
+    }
 }
 
 let package = Package(
     name: "swift-mailgun-types",
     platforms: [
-        .macOS(.v15),
-        .iOS(.v18)
+        .macOS(.v26),
+        .iOS(.v26),
+        .tvOS(.v26),
+        .watchOS(.v26),
+        .visionOS(.v26),
     ],
     products: [
         .library(name: .mailgun, targets: [.mailgun]),
@@ -86,19 +96,18 @@ let package = Package(
         .library(name: .shared, targets: [.shared])
     ],
     dependencies: [
-        .package(path: "../swift-date-parsing"),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.9.2"),
+        .package(url: "https://github.com/swift-foundations/swift-date-parsing.git", from: "0.5.2"),
+        .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
         .package(url: "https://github.com/swift-standards/swift-email-standard", from: "0.3.1"),
         .package(url: "https://github.com/swift-standards/swift-domain-standard", from: "0.2.0"),
         .package(url: "https://github.com/swift-standards/swift-emailaddress-standard", from: "0.3.0"),
         .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.7.2"),
-        .package(path: "../swift-url-routing")
+        .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.6.0"),
     ],
     targets: [
         .target(
             name: .shared,
             dependencies: [
-                .dependenciesMacros,
                 .domain,
                 .emailAddress,
                 .urlRouting,

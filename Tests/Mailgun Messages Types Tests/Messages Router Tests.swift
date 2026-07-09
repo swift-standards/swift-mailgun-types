@@ -5,7 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 20/12/2024.
 //
 
-import DependenciesTestSupport
+import Dependencies_Test_Support
 import Testing
 
 @testable import Mailgun_Messages_Types

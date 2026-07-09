@@ -6,13 +6,11 @@
 //
 
 import Dependencies
-import DependenciesMacros
 import Mailgun_Types_Shared
 
 extension Mailgun.Reporting.Events {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
-        @DependencyEndpoint
         public var list:
             @Sendable (_ query: Mailgun.Reporting.Events.List.Query?) async throws ->
                 Mailgun.Reporting.Events.List.Response

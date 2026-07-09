@@ -6,20 +6,16 @@
 //
 
 import Dependencies
-import DependenciesMacros
 import Mailgun_Types_Shared
 
 extension Mailgun.Domains.DKIM_Security {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
-        @DependencyEndpoint
         public var updateRotation:
             @Sendable (
                 _ domain: Domain,
                 _ request: Mailgun.Domains.DKIM_Security.Rotation.Update.Request
             ) async throws -> Mailgun.Domains.DKIM_Security.Rotation.Update.Response
-
-        @DependencyEndpoint
         public var rotateManually:
             @Sendable (_ domain: Domain) async throws ->
                 Mailgun.Domains.DKIM_Security.Rotation.Manual.Response

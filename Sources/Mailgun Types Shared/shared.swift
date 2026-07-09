@@ -7,7 +7,6 @@
 
 @_exported import CasePaths
 @_exported import Dependencies
-@_exported import DependenciesMacros
 @_exported import Domain
 @_exported import EmailAddress
 @_exported import Foundation
