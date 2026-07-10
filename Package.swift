@@ -105,7 +105,7 @@ let package = Package(
         .package(url: "https://github.com/swift-foundations/swift-emailaddress.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2822.git", branch: "main"),
-        .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.7.2"),
+        .package(url: "https://github.com/pointfreeco/swift-case-paths.git", from: "1.7.2"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", from: "0.6.0"),
     ],
     targets: [
