@@ -245,6 +245,6 @@ extension Mailgun.Templates.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    static let templates = Path { "templates" }
-    static let versions = Path { "versions" }
+    static var templates: Path<PathBuilder.Component<String>> { Path { "templates" } }
+    static var versions: Path<PathBuilder.Component<String>> { Path { "versions" } }
 }

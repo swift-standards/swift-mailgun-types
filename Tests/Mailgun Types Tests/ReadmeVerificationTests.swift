@@ -1,6 +1,6 @@
 import CasePaths
 import Dependencies
-import Domain
+import Domain_Standard
 import Foundation
 import Testing
 import URLFormCoding

@@ -74,11 +74,11 @@ extension Mailgun.IPAllowlist.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let v2: Path<PathBuilder.Component<String>> = Path {
+    public static var v2: Path<PathBuilder.Component<String>> { Path {
         "v2"
-    }
+    } }
 
-    public static let ipAllowlist: Path<PathBuilder.Component<String>> = Path {
+    public static var ipAllowlist: Path<PathBuilder.Component<String>> { Path {
         "ip_allowlist"
-    }
+    } }
 }

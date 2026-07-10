@@ -118,15 +118,15 @@ extension Mailgun.Credentials.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let credentials: Path<PathBuilder.Component<String>> = Path {
+    public static var credentials: Path<PathBuilder.Component<String>> { Path {
         "credentials"
-    }
+    } }
 
-    public static let mailboxes: Path<PathBuilder.Component<String>> = Path {
+    public static var mailboxes: Path<PathBuilder.Component<String>> { Path {
         "mailboxes"
-    }
+    } }
 
-    public static let domains: Path<PathBuilder.Component<String>> = Path {
+    public static var domains: Path<PathBuilder.Component<String>> { Path {
         "domains"
-    }
+    } }
 }

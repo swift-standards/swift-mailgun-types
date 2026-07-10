@@ -50,9 +50,11 @@ extension Target.Dependency {
     static var dependencies: Self { .product(name: "Dependencies", package: "swift-dependencies") }
     static var dependenciesTestSupport: Self { .product(name: "Dependencies Test Support", package: "swift-dependencies") }
     static var dateParsing: Self { .product(name: "UnixEpochParsing", package: "swift-date-parsing") }
-    static var emailType: Self { .product(name: "Email Type", package: "swift-email-standard") }
-    static var domain: Self { .product(name: "Domain", package: "swift-domain-standard") }
-    static var emailAddress: Self { .product(name: "EmailAddress", package: "swift-emailaddress-standard") }
+    static var emailType: Self { .product(name: "Email Standard", package: "swift-email-standard") }
+    static var domain: Self { .product(name: "Domain Standard", package: "swift-domain-standard") }
+    static var emailAddress: Self { .product(name: "EmailAddress", package: "swift-emailaddress") }
+    static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
+    static var rfc2822: Self { .product(name: "RFC 2822", package: "swift-rfc-2822") }
     static var urlRouting: Self {
         // TRANSITIONAL: pointfreeco/swift-url-routing — no institute equivalent adopted this wave;
         // kept temporarily per the manifest-swap directive (do not eliminate this wave).
@@ -96,13 +98,15 @@ let package = Package(
         .library(name: .shared, targets: [.shared])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-foundations/swift-date-parsing.git", from: "0.5.2"),
+        .package(url: "https://github.com/swift-foundations/swift-date-parsing.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
-        .package(url: "https://github.com/swift-standards/swift-email-standard", from: "0.3.1"),
-        .package(url: "https://github.com/swift-standards/swift-domain-standard", from: "0.2.0"),
-        .package(url: "https://github.com/swift-standards/swift-emailaddress-standard", from: "0.3.0"),
+        .package(url: "https://github.com/swift-standards/swift-email-standard.git", branch: "main"),
+        .package(url: "https://github.com/swift-standards/swift-domain-standard.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-emailaddress.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main"),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-2822.git", branch: "main"),
         .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.7.2"),
-        .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.6.0"),
+        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", from: "0.6.0"),
     ],
     targets: [
         .target(
@@ -111,6 +115,7 @@ let package = Package(
                 .domain,
                 .emailAddress,
                 .urlRouting,
+                .urlFormCoding,
                 .casePaths,
                 .dateParsing,
                 .dependencies
@@ -250,7 +255,8 @@ let package = Package(
         .target(
             name: .reporting,
             dependencies: [
-                .shared
+                .shared,
+                .rfc2822
             ]
         ),
         .testTarget(
@@ -280,7 +286,8 @@ let package = Package(
         .target(
             name: .suppressions,
             dependencies: [
-                .shared
+                .shared,
+                .urlFormCoding
             ]
         ),
         .testTarget(

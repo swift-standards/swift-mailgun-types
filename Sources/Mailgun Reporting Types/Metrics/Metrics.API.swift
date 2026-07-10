@@ -44,15 +44,15 @@ extension Mailgun.Reporting.Metrics.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let analytics = Path {
+    public static var analytics: Path<PathBuilder.Component<String>> { Path {
         "analytics"
-    }
+    } }
 
-    public static let metrics = Path {
+    public static var metrics: Path<PathBuilder.Component<String>> { Path {
         "metrics"
-    }
+    } }
 
-    public static let usage = Path {
+    public static var usage: Path<PathBuilder.Component<String>> { Path {
         "usage"
-    }
+    } }
 }

@@ -98,11 +98,11 @@ extension Mailgun.IPPools.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let ipPools = Path {
+    public static var ipPools: Path<PathBuilder.Component<String>> { Path {
         "ip_pools"
-    }
+    } }
 
-    public static let domains = Path {
+    public static var domains: Path<PathBuilder.Component<String>> { Path {
         "domains"
-    }
+    } }
 }

@@ -92,11 +92,11 @@ extension Mailgun.Webhooks.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let webhooks = Path {
+    public static var webhooks: Path<PathBuilder.Component<String>> { Path {
         "webhooks"
-    }
+    } }
 
-    public static let domains = Path {
+    public static var domains: Path<PathBuilder.Component<String>> { Path {
         "domains"
-    }
+    } }
 }

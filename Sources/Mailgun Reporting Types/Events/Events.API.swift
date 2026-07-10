@@ -138,7 +138,7 @@ extension Mailgun.Reporting.Events.List.Query {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let events: Path<PathBuilder.Component<String>> = Path {
+    public static var events: Path<PathBuilder.Component<String>> { Path {
         "events"
-    }
+    } }
 }

@@ -187,35 +187,35 @@ extension Mailgun.Subaccounts.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let accounts: Path<PathBuilder.Component<String>> = Path {
+    public static var accounts: Path<PathBuilder.Component<String>> { Path {
         "accounts"
-    }
+    } }
 
-    public static let subaccounts: Path<PathBuilder.Component<String>> = Path {
+    public static var subaccounts: Path<PathBuilder.Component<String>> { Path {
         "subaccounts"
-    }
+    } }
 
-    public static let disable: Path<PathBuilder.Component<String>> = Path {
+    public static var disable: Path<PathBuilder.Component<String>> { Path {
         "disable"
-    }
+    } }
 
-    public static let enable: Path<PathBuilder.Component<String>> = Path {
+    public static var enable: Path<PathBuilder.Component<String>> { Path {
         "enable"
-    }
+    } }
 
-    public static let limit: Path<PathBuilder.Component<String>> = Path {
+    public static var limit: Path<PathBuilder.Component<String>> { Path {
         "limit"
-    }
+    } }
 
-    public static let custom: Path<PathBuilder.Component<String>> = Path {
+    public static var custom: Path<PathBuilder.Component<String>> { Path {
         "custom"
-    }
+    } }
 
-    public static let monthly: Path<PathBuilder.Component<String>> = Path {
+    public static var monthly: Path<PathBuilder.Component<String>> { Path {
         "monthly"
-    }
+    } }
 
-    public static let features: Path<PathBuilder.Component<String>> = Path {
+    public static var features: Path<PathBuilder.Component<String>> { Path {
         "features"
-    }
+    } }
 }

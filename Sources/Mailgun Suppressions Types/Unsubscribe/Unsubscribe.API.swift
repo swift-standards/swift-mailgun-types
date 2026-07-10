@@ -110,7 +110,7 @@ extension Mailgun.Suppressions.Unsubscribe.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let unsubscribes = Path {
+    public static var unsubscribes: Path<PathBuilder.Component<String>> { Path {
         "unsubscribes"
-    }
+    } }
 }

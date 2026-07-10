@@ -107,7 +107,7 @@ extension Mailgun.Suppressions.Allowlist.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let whitelists = Path {
+    public static var whitelists: Path<PathBuilder.Component<String>> { Path {
         "whitelists"
-    }
+    } }
 }

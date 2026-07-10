@@ -99,7 +99,7 @@ extension Mailgun.Suppressions.Complaints.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let complaints = Path {
+    public static var complaints: Path<PathBuilder.Component<String>> { Path {
         "complaints"
-    }
+    } }
 }

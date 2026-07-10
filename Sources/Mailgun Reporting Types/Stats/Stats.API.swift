@@ -108,31 +108,31 @@ extension Mailgun.Reporting.Stats.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let stats = Path {
+    public static var stats: Path<PathBuilder.Component<String>> { Path {
         "stats"
-    }
+    } }
 
-    public static let total = Path {
+    public static var total: Path<PathBuilder.Component<String>> { Path {
         "total"
-    }
+    } }
 
-    public static let filter = Path {
+    public static var filter: Path<PathBuilder.Component<String>> { Path {
         "filter"
-    }
+    } }
 
-    public static let aggregates = Path {
+    public static var aggregates: Path<PathBuilder.Component<String>> { Path {
         "aggregates"
-    }
+    } }
 
-    public static let providers = Path {
+    public static var providers: Path<PathBuilder.Component<String>> { Path {
         "providers"
-    }
+    } }
 
-    public static let devices = Path {
+    public static var devices: Path<PathBuilder.Component<String>> { Path {
         "devices"
-    }
+    } }
 
-    public static let countries = Path {
+    public static var countries: Path<PathBuilder.Component<String>> { Path {
         "countries"
-    }
+    } }
 }

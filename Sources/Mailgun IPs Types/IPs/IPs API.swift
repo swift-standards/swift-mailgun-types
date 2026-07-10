@@ -132,11 +132,11 @@ extension Mailgun.IPs.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let ips = Path {
+    public static var ips: Path<PathBuilder.Component<String>> { Path {
         "ips"
-    }
+    } }
 
-    public static let ipBand = Path {
+    public static var ipBand: Path<PathBuilder.Component<String>> { Path {
         "ip_band"
-    }
+    } }
 }

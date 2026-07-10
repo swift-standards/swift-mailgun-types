@@ -90,15 +90,15 @@ extension Mailgun.Users.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let users: Path<PathBuilder.Component<String>> = Path {
+    public static var users: Path<PathBuilder.Component<String>> { Path {
         "users"
-    }
+    } }
 
-    public static let me: Path<PathBuilder.Component<String>> = Path {
+    public static var me: Path<PathBuilder.Component<String>> { Path {
         "me"
-    }
+    } }
 
-    public static let org: Path<PathBuilder.Component<String>> = Path {
+    public static var org: Path<PathBuilder.Component<String>> { Path {
         "org"
-    }
+    } }
 }

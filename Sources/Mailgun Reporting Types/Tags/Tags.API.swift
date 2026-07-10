@@ -164,19 +164,19 @@ extension Mailgun.Reporting.Tags.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let tags: Path<PathBuilder.Component<String>> = Path {
+    public static var tags: Path<PathBuilder.Component<String>> { Path {
         "tags"
-    }
+    } }
 
-    public static let tag: Path<PathBuilder.Component<String>> = Path {
+    public static var tag: Path<PathBuilder.Component<String>> { Path {
         "tag"
-    }
+    } }
 
-    public static let domains: Path<PathBuilder.Component<String>> = Path {
+    public static var domains: Path<PathBuilder.Component<String>> { Path {
         "domains"
-    }
+    } }
 
-    public static let limits: Path<PathBuilder.Component<String>> = Path {
+    public static var limits: Path<PathBuilder.Component<String>> { Path {
         "limits"
-    }
+    } }
 }

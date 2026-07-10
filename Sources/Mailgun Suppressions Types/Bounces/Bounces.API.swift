@@ -92,7 +92,7 @@ extension Mailgun.Suppressions.Bounces.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let bounces = Path {
+    public static var bounces: Path<PathBuilder.Component<String>> { Path {
         "bounces"
-    }
+    } }
 }

@@ -1,4 +1,4 @@
-import Email_Type
+import Email_Standard
 import Foundation
 
 extension Mailgun.Messages.Send.Request {

@@ -259,13 +259,13 @@ extension Mailgun.Lists.API {
 
 extension Path<PathBuilder.Component<String>> {
 
-    public static let lists = Path {
+    public static var lists: Path<PathBuilder.Component<String>> { Path {
         "lists"
-    }
+    } }
 
-    public static let members = Path {
+    public static var members: Path<PathBuilder.Component<String>> { Path {
         "members"
-    }
+    } }
 
-    package static let pages = Path { "pages" }
+    package static var pages: Path<PathBuilder.Component<String>> { Path { "pages" } }
 }

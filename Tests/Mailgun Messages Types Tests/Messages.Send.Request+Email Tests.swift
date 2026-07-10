@@ -6,7 +6,7 @@
 //
 
 import Dependencies_Test_Support
-import Email_Type
+import Email_Standard
 import Foundation
 import Mailgun_Messages_Types
 import Testing

@@ -63,7 +63,7 @@ extension Mailgun.IPAddressWarmup.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let ipWarmups = Path {
+    public static var ipWarmups: Path<PathBuilder.Component<String>> { Path {
         "ip_warmups"
-    }
+    } }
 }

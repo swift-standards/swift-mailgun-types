@@ -79,13 +79,13 @@ extension Mailgun.Messages.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let messages = Path {
+    public static var messages: Path<PathBuilder.Component<String>> { Path {
         "messages"
-    }
+    } }
 
-    public static let domains = Path {
+    public static var domains: Path<PathBuilder.Component<String>> { Path {
         "domains"
-    }
+    } }
 }
 
 extension Mailgun.Messages {

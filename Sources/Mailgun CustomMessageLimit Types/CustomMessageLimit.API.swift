@@ -70,23 +70,23 @@ extension Mailgun.CustomMessageLimit.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let accounts: Path<PathBuilder.Component<String>> = Path {
+    public static var accounts: Path<PathBuilder.Component<String>> { Path {
         "accounts"
-    }
+    } }
 
-    public static let limit: Path<PathBuilder.Component<String>> = Path {
+    public static var limit: Path<PathBuilder.Component<String>> { Path {
         "limit"
-    }
+    } }
 
-    public static let custom: Path<PathBuilder.Component<String>> = Path {
+    public static var custom: Path<PathBuilder.Component<String>> { Path {
         "custom"
-    }
+    } }
 
-    public static let monthly: Path<PathBuilder.Component<String>> = Path {
+    public static var monthly: Path<PathBuilder.Component<String>> { Path {
         "monthly"
-    }
+    } }
 
-    public static let enable: Path<PathBuilder.Component<String>> = Path {
+    public static var enable: Path<PathBuilder.Component<String>> { Path {
         "enable"
-    }
+    } }
 }

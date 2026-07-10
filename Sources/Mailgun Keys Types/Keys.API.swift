@@ -69,11 +69,11 @@ extension Mailgun.Keys.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let keys: Path<PathBuilder.Component<String>> = Path {
+    public static var keys: Path<PathBuilder.Component<String>> { Path {
         "keys"
-    }
+    } }
 
-    public static let `public`: Path<PathBuilder.Component<String>> = Path {
+    public static var `public`: Path<PathBuilder.Component<String>> { Path {
         "public"
-    }
+    } }
 }

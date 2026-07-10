@@ -37,7 +37,7 @@ extension Mailgun.Reporting.Logs.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let logs: Path<PathBuilder.Component<String>> = Path {
+    public static var logs: Path<PathBuilder.Component<String>> { Path {
         "logs"
-    }
+    } }
 }

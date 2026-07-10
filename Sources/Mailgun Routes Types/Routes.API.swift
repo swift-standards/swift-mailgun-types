@@ -90,11 +90,11 @@ extension Mailgun.Routes.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let routes: Path<PathBuilder.Component<String>> = Path {
+    public static var routes: Path<PathBuilder.Component<String>> { Path {
         "routes"
-    }
+    } }
 
-    public static let match: Path<PathBuilder.Component<String>> = Path {
+    public static var match: Path<PathBuilder.Component<String>> { Path {
         "match"
-    }
+    } }
 }

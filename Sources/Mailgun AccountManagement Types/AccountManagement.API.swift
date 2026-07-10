@@ -123,27 +123,27 @@ extension Mailgun.AccountManagement.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let accounts: Path<PathBuilder.Component<String>> = Path {
+    public static var accounts: Path<PathBuilder.Component<String>> { Path {
         "accounts"
-    }
+    } }
 
-    public static let httpSigningKey: Path<PathBuilder.Component<String>> = Path {
+    public static var httpSigningKey: Path<PathBuilder.Component<String>> { Path {
         "http_signing_key"
-    }
+    } }
 
-    public static let sandbox: Path<PathBuilder.Component<String>> = Path {
+    public static var sandbox: Path<PathBuilder.Component<String>> { Path {
         "sandbox"
-    }
+    } }
 
-    public static let authRecipients: Path<PathBuilder.Component<String>> = Path {
+    public static var authRecipients: Path<PathBuilder.Component<String>> { Path {
         "auth_recipients"
-    }
+    } }
 
-    public static let resendActivationEmail: Path<PathBuilder.Component<String>> = Path {
+    public static var resendActivationEmail: Path<PathBuilder.Component<String>> { Path {
         "resend_activation_email"
-    }
+    } }
 
-    public static let samlOrg: Path<PathBuilder.Component<String>> = Path {
+    public static var samlOrg: Path<PathBuilder.Component<String>> { Path {
         "saml_org"
-    }
+    } }
 }

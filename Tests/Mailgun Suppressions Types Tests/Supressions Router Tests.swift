@@ -6,7 +6,7 @@
 //
 
 import Dependencies_Test_Support
-import Domain
+import Domain_Standard
 import EmailAddress
 import Testing
 
