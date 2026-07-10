@@ -11,4 +11,3 @@
 @_exported import EmailAddress
 @_exported import Foundation
 @_exported import URLRouting
-@_exported import UnixEpochParsing

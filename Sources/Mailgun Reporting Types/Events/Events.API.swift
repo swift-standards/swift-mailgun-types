@@ -8,7 +8,6 @@
 import Foundation
 import Mailgun_Types_Shared
 import RFC_2822
-import UnixEpochParsing
 
 extension Mailgun.Reporting.Events {
     @CasePathable
