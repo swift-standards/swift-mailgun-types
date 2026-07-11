@@ -7,6 +7,7 @@
 
 import Foundation
 import Mailgun_Types_Shared
+import RFC_2183
 
 extension Mailgun.Messages {
     @CasePathable
@@ -399,7 +400,9 @@ extension Mailgun.Messages {
                 parts: parts,
                 boundary: boundary
             )
-            return Data(multipart.render().utf8)
+            var bytes: [Byte] = []
+            RFC_2046.Multipart.serialize(multipart, into: &bytes)
+            return Data(bytes.map(\.underlying))
         }
     }
 
@@ -623,7 +626,9 @@ extension Mailgun.Messages {
                 parts: parts,
                 boundary: boundary
             )
-            return Data(multipart.render().utf8)
+            var bytes: [Byte] = []
+            RFC_2046.Multipart.serialize(multipart, into: &bytes)
+            return Data(bytes.map(\.underlying))
         }
     }
 }
