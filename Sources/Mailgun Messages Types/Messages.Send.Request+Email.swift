@@ -90,7 +90,7 @@ extension Mailgun.Messages.Send.Request {
             headers.isEmpty
             ? nil
             : Dictionary(
-                uniqueKeysWithValues: headers.map { ($0.name.rawValue, $0.value) }
+                uniqueKeysWithValues: headers.map { ($0.name.rawValue, $0.value.rawValue) }
             )
 
         // Convert body to text/html
@@ -137,9 +137,9 @@ extension Mailgun.Messages.Send.Request {
     private static func convertBody(_ body: Email.Body) -> (text: String?, html: String?) {
         switch body {
         case .text(let data, _):
-            return (text: String(data: data, encoding: .utf8), html: nil)
+            return (text: String(decoding: data, as: UTF8.self), html: nil)
         case .html(let data, _):
-            return (text: nil, html: String(data: data, encoding: .utf8))
+            return (text: nil, html: String(decoding: data, as: UTF8.self))
         case .multipart(let multipart):
             // Extract text and HTML from multipart/alternative
             // For multipart/alternative, the parts are typically [text/plain, text/html]
@@ -149,9 +149,9 @@ extension Mailgun.Messages.Send.Request {
             for part in multipart.parts {
                 if let contentType = part.contentType {
                     if contentType.type == "text" && contentType.subtype == "plain" {
-                        textPart = part.textContent
+                        textPart = part.content.description
                     } else if contentType.type == "text" && contentType.subtype == "html" {
-                        htmlPart = part.textContent
+                        htmlPart = part.content.description
                     }
                 }
             }
