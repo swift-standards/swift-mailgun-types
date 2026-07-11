@@ -90,15 +90,16 @@ extension Path<PathBuilder.Component<String>> {
 
 extension Mailgun.Messages {
     struct SendMultipartConversion: URLRouting.Conversion {
-        public let boundary = RFC_2046.Boundary()
+        public let boundary = RFC_2046.Boundary(__unchecked: (), rawValue: "----=_Part_\(UUID().uuidString)")
 
         public init() {}
 
         public var contentType: String {
             RFC_2045.ContentType(
+                __unchecked: (),
                 type: "multipart",
                 subtype: "form-data",
-                parameters: ["boundary": boundary.value]
+                parameters: [.boundary: boundary.rawValue]
             ).headerValue
         }
 
@@ -113,8 +114,10 @@ extension Mailgun.Messages {
             func addField(name: String, value: String) {
                 parts.append(
                     RFC_2046.BodyPart(
-                        headers: .formDataTextField(name: name),
-                        text: value
+                        headers: RFC_2046.BodyPart.Headers(
+                            contentDisposition: .formData(name: name)
+                        ),
+                        content: RFC_2046.BodyPart.Content(value)
                     )
                 )
             }
@@ -126,15 +129,17 @@ extension Mailgun.Messages {
                 contentType: String,
                 data: Foundation.Data
             ) {
-                let parsedContentType = try? RFC_2045.ContentType(parsing: contentType)
+                let parsedContentType = try? RFC_2045.ContentType(contentType)
                 parts.append(
                     RFC_2046.BodyPart(
-                        headers: .formDataFile(
-                            name: name,
-                            filename: filename,
+                        headers: RFC_2046.BodyPart.Headers(
+                            contentDisposition: .formData(
+                                name: name,
+                                filename: try? RFC_2183.Filename(filename)
+                            ),
                             contentType: parsedContentType
                         ),
-                        content: data
+                        content: RFC_2046.BodyPart.Content(data.map(Byte.init))
                     )
                 )
             }
@@ -399,15 +404,16 @@ extension Mailgun.Messages {
     }
 
     struct MimeMultipartConversion: URLRouting.Conversion {
-        public let boundary = RFC_2046.Boundary()
+        public let boundary = RFC_2046.Boundary(__unchecked: (), rawValue: "----=_Part_\(UUID().uuidString)")
 
         public init() {}
 
         public var contentType: String {
             RFC_2045.ContentType(
+                __unchecked: (),
                 type: "multipart",
                 subtype: "form-data",
-                parameters: ["boundary": boundary.value]
+                parameters: [.boundary: boundary.rawValue]
             ).headerValue
         }
 
@@ -423,8 +429,10 @@ extension Mailgun.Messages {
             func addField(name: String, value: String) {
                 parts.append(
                     RFC_2046.BodyPart(
-                        headers: .formDataTextField(name: name),
-                        text: value
+                        headers: RFC_2046.BodyPart.Headers(
+                            contentDisposition: .formData(name: name)
+                        ),
+                        content: RFC_2046.BodyPart.Content(value)
                     )
                 )
             }
@@ -433,15 +441,14 @@ extension Mailgun.Messages {
             func addFileField(name: String, filename: String, data: Foundation.Data) {
                 parts.append(
                     RFC_2046.BodyPart(
-                        headers: .formDataFile(
-                            name: name,
-                            filename: filename,
-                            contentType: RFC_2045.ContentType(
-                                type: "application",
-                                subtype: "octet-stream"
-                            )
+                        headers: RFC_2046.BodyPart.Headers(
+                            contentDisposition: .formData(
+                                name: name,
+                                filename: try? RFC_2183.Filename(filename)
+                            ),
+                            contentType: .applicationOctetStream
                         ),
-                        content: data
+                        content: RFC_2046.BodyPart.Content(data.map(Byte.init))
                     )
                 )
             }
