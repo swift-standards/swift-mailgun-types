@@ -54,16 +54,8 @@ extension Target.Dependency {
     static var emailAddress: Self { .product(name: "EmailAddress", package: "swift-emailaddress") }
     static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
     static var rfc2822: Self { .product(name: "RFC 2822", package: "swift-rfc-2822") }
-    static var urlRouting: Self {
-        // TRANSITIONAL: pointfreeco/swift-url-routing — no institute equivalent adopted this wave;
-        // kept temporarily per the manifest-swap directive (do not eliminate this wave).
-        .product(name: "URLRouting", package: "swift-url-routing")
-    }
-    static var casePaths: Self {
-        // TRANSITIONAL: pointfreeco/swift-case-paths — no institute equivalent adopted this wave;
-        // kept temporarily per the manifest-swap directive (do not eliminate this wave).
-        .product(name: "CasePaths", package: "swift-case-paths")
-    }
+    static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
+    static var dual: Self { .product(name: "Dual", package: "swift-dual") }
 }
 
 let package = Package(
@@ -103,8 +95,8 @@ let package = Package(
         .package(url: "https://github.com/swift-foundations/swift-emailaddress.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2822.git", branch: "main"),
-        .package(url: "https://github.com/pointfreeco/swift-case-paths.git", from: "1.7.2"),
-        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", from: "0.6.0"),  // Institute fork URL (principal ruling 2026-07-09); pinned to upstream-identical tags (0.6.2 = pointfree release SHA); do NOT use branch:main until the RFC-first rewrite lands via the routing arc.
+        .package(url: "https://github.com/swift-foundations/swift-dual.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -114,7 +106,7 @@ let package = Package(
                 .emailAddress,
                 .urlRouting,
                 .urlFormCoding,
-                .casePaths,
+                .dual,
                 .dependencies
             ]
         ),
