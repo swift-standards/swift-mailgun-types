@@ -27,7 +27,7 @@ struct DomainRouterTests {
         )
         #expect(match.is(\.list))
         // The router creates an empty request object instead of nil
-        if let listRequest = match.list {
+        if let listRequest = Mailgun.Domains.Domains.API.cases.list.extract(match) {
             #expect(listRequest?.authority == nil)
             #expect(listRequest?.state == nil)
             #expect(listRequest?.limit == nil)
@@ -58,7 +58,7 @@ struct DomainRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.list))
-        if let listRequest2 = match.list {
+        if let listRequest2 = Mailgun.Domains.Domains.API.cases.list.extract(match) {
             #expect(listRequest2?.authority == "example.com")
             #expect(listRequest2?.state == .active)
             #expect(listRequest2?.limit == 10)

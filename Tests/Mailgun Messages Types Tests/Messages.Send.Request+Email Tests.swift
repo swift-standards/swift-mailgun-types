@@ -21,6 +21,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello, World!"
         )
@@ -40,6 +41,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: .html("<h1>Hello, World!</h1>")
         )
@@ -64,6 +66,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: .multipart(multipart)
         )
@@ -88,6 +91,7 @@ struct MessagesSendRequestEmailTests {
                 EmailAddress("recipient3@example.com"),
             ],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -109,6 +113,7 @@ struct MessagesSendRequestEmailTests {
                 EmailAddress("cc1@example.com"),
                 EmailAddress("cc2@example.com"),
             ],
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -129,6 +134,7 @@ struct MessagesSendRequestEmailTests {
                 EmailAddress("bcc1@example.com"),
                 EmailAddress("bcc2@example.com"),
             ],
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -148,6 +154,7 @@ struct MessagesSendRequestEmailTests {
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
             replyTo: EmailAddress("replyto@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -163,6 +170,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -179,11 +187,12 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!",
             additionalHeaders: [
-                .init(name: "X-Custom-Header", value: "CustomValue"),
-                .init(name: "X-Priority", value: "1"),
+                .init(name: try .init("X-Custom-Header"), value: try .init("CustomValue")),
+                .init(name: try .init("X-Priority"), value: try .init("1")),
             ]
         )
 
@@ -198,6 +207,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -213,10 +223,11 @@ struct MessagesSendRequestEmailTests {
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
             replyTo: EmailAddress("replyto@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!",
             additionalHeaders: [
-                .init(name: "X-Custom-Header", value: "CustomValue")
+                .init(name: try .init("X-Custom-Header"), value: try .init("CustomValue"))
             ]
         )
 
@@ -234,6 +245,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress(displayName: "Recipient Name", "recipient@example.com")],
             from: EmailAddress(displayName: "Sender Name", "sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -253,6 +265,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -278,6 +291,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -296,6 +310,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
@@ -316,6 +331,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("用户@example.com")],
             from: EmailAddress("发送者@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "国际化测试",
             body: "你好世界!"
         )
@@ -333,6 +349,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test with émojis 🎉 and spëcial çhars!",
             body: "Hello!"
         )
@@ -348,6 +365,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: longSubject,
             body: "Hello!"
         )
@@ -365,6 +383,7 @@ struct MessagesSendRequestEmailTests {
         let email = try Email(
             to: [EmailAddress("recipient@example.com")],
             from: EmailAddress("sender@example.com"),
+            date: RFC_5322.DateTime(secondsSinceEpoch: 1_609_459_200),
             subject: "Test Subject",
             body: "Hello!"
         )
