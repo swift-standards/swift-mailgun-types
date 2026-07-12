@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Keys {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list
         case create(request: Mailgun.Keys.Create.Request)
@@ -24,17 +23,17 @@ extension Mailgun.Keys.API {
 
         public var body: some URLRouting.Router<Mailgun.Keys.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Keys.API.list)) {
+                URLRouting.Route(.case(Mailgun.Keys.API.cases.list)) {
                     Method.get
                     Path { "v1" }
                     Path.keys
                 }
 
-                URLRouting.Route(.case(Mailgun.Keys.API.create)) {
+                URLRouting.Route(.case(Mailgun.Keys.API.cases.create)) {
                     Method.post
                     Path { "v1" }
                     Path.keys
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Keys.Create.Request.self,
                             decoder: .mailgun,
@@ -43,19 +42,19 @@ extension Mailgun.Keys.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Keys.API.delete)) {
+                URLRouting.Route(.case(Mailgun.Keys.API.cases.delete)) {
                     Method.delete
                     Path { "v1" }
                     Path.keys
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Keys.API.addPublicKey)) {
+                URLRouting.Route(.case(Mailgun.Keys.API.cases.addPublicKey)) {
                     Method.post
                     Path { "v1" }
                     Path.keys
                     Path.`public`
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Keys.PublicKey.Request.self,
                             decoder: .mailgun,

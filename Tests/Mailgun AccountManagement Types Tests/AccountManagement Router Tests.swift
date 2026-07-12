@@ -35,10 +35,10 @@ struct AccountManagementRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.updateAccount))
-        #expect(match.updateAccount?.name == "Test Account")
-        #expect(match.updateAccount?.inactiveSessionTimeout == 3600)
-        #expect(match.updateAccount?.absoluteSessionTimeout == 86400)
-        #expect(match.updateAccount?.logoutRedirectUrl == "https://example.com/logout")
+        #expect(Mailgun.AccountManagement.API.cases.updateAccount.extract(match)?.name == "Test Account")
+        #expect(Mailgun.AccountManagement.API.cases.updateAccount.extract(match)?.inactiveSessionTimeout == 3600)
+        #expect(Mailgun.AccountManagement.API.cases.updateAccount.extract(match)?.absoluteSessionTimeout == 86400)
+        #expect(Mailgun.AccountManagement.API.cases.updateAccount.extract(match)?.logoutRedirectUrl == "https://example.com/logout")
     }
 
     @Test("Creates correct URL for getting HTTP signing key")
@@ -109,7 +109,7 @@ struct AccountManagementRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.addSandboxAuthRecipient))
-        #expect(match.addSandboxAuthRecipient?.email.rawValue == "test@example.com")
+        #expect(Mailgun.AccountManagement.API.cases.addSandboxAuthRecipient.extract(match)?.email.rawValue == "test@example.com")
     }
 
     @Test("Creates correct URL for deleting sandbox auth recipient")
@@ -190,8 +190,8 @@ struct AccountManagementRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.addSAMLOrganization))
-        #expect(match.addSAMLOrganization?.userId == "test-user-123")
-        #expect(match.addSAMLOrganization?.domain == "example.com")
+        #expect(Mailgun.AccountManagement.API.cases.addSAMLOrganization.extract(match)?.userId == "test-user-123")
+        #expect(Mailgun.AccountManagement.API.cases.addSAMLOrganization.extract(match)?.domain == "example.com")
     }
 
     @Test("Verifies all endpoints use v5 API version")

@@ -51,9 +51,9 @@ struct BouncesRouterTests {
         )
         #expect(match.is(\.get))
         let expected1 = try Domain("test.domain.com")
-        #expect(match.get?.domain == expected1)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.get.extract(match)?.domain == expected1)
         let expected2 = try EmailAddress("test@example.com")
-        #expect(match.get?.address == expected2)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.get.extract(match)?.address == expected2)
     }
 
     @Test("Creates correct URL for deleting specific bounce")
@@ -73,9 +73,9 @@ struct BouncesRouterTests {
         )
         #expect(match.is(\.delete))
         let expected3 = try Domain("test.domain.com")
-        #expect(match.delete?.domain == expected3)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.delete.extract(match)?.domain == expected3)
         let expected4 = try EmailAddress("test@example.com")
-        #expect(match.delete?.address == expected4)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.delete.extract(match)?.address == expected4)
     }
 
     @Test("Creates correct URL for listing bounces with query parameters")
@@ -110,10 +110,10 @@ struct BouncesRouterTests {
         )
         #expect(match.is(\.list))
         let expected5 = try Domain("test.domain.com")
-        #expect(match.list?.domain == expected5)
-        #expect(match.list?.request?.limit == 25)
-        #expect(match.list?.request?.page == "next")
-        #expect(match.list?.request?.term == "test")
+        #expect(Mailgun.Suppressions.Bounces.API.cases.list.extract(match)?.domain == expected5)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.list.extract(match)?.request?.limit == 25)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.list.extract(match)?.request?.page == "next")
+        #expect(Mailgun.Suppressions.Bounces.API.cases.list.extract(match)?.request?.term == "test")
     }
 
     @Test("Creates correct URL for creating bounce")
@@ -140,12 +140,12 @@ struct BouncesRouterTests {
         )
         #expect(match.is(\.create))
         let expected6 = try Domain("test.domain.com")
-        #expect(match.create?.domain == expected6)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.create.extract(match)?.domain == expected6)
         let expected7 = try EmailAddress("test@example.com")
-        #expect(match.create?.request.address == expected7)
-        #expect(match.create?.request.code == "550")
-        #expect(match.create?.request.error == "Test error")
-        #expect(match.create?.request.createdAt == "2024-12-27")
+        #expect(Mailgun.Suppressions.Bounces.API.cases.create.extract(match)?.request.address == expected7)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.create.extract(match)?.request.code == "550")
+        #expect(Mailgun.Suppressions.Bounces.API.cases.create.extract(match)?.request.error == "Test error")
+        #expect(Mailgun.Suppressions.Bounces.API.cases.create.extract(match)?.request.createdAt == "2024-12-27")
     }
 
     @Test("Creates correct URL for deleting all bounces")
@@ -162,6 +162,6 @@ struct BouncesRouterTests {
         )
         #expect(match.is(\.deleteAll))
         let expected8 = try Domain("test.domain.com")
-        #expect(match.deleteAll == expected8)
+        #expect(Mailgun.Suppressions.Bounces.API.cases.deleteAll.extract(match) == expected8)
     }
 }

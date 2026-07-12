@@ -36,6 +36,6 @@ struct StatsRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.total))
-        #expect(match.total?.event == "delivered")
+        #expect(Mailgun.Reporting.Stats.API.cases.total.extract(match)?.event == "delivered")
     }
 }

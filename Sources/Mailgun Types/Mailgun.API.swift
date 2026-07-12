@@ -26,8 +26,7 @@ import Mailgun_Webhooks_Types
 import URLRouting
 
 extension Mailgun {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case messages(Mailgun.Messages.API)
         case lists(Mailgun.Lists.API)
@@ -57,75 +56,75 @@ extension Mailgun.API {
 
         public var body: some URLRouting.Router<Mailgun.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.API.messages)) {
+                URLRouting.Route(.case(Mailgun.API.cases.messages)) {
                     Mailgun.Messages.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.lists)) {
+                URLRouting.Route(.case(Mailgun.API.cases.lists)) {
                     Mailgun.Lists.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.events)) {
+                URLRouting.Route(.case(Mailgun.API.cases.events)) {
                     Mailgun.Reporting.Events.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.suppressions)) {
+                URLRouting.Route(.case(Mailgun.API.cases.suppressions)) {
                     Mailgun.Suppressions.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.webhooks)) {
+                URLRouting.Route(.case(Mailgun.API.cases.webhooks)) {
                     Mailgun.Webhooks.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.domains)) {
+                URLRouting.Route(.case(Mailgun.API.cases.domains)) {
                     Mailgun.Domains.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.templates)) {
+                URLRouting.Route(.case(Mailgun.API.cases.templates)) {
                     Mailgun.Templates.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.routes)) {
+                URLRouting.Route(.case(Mailgun.API.cases.routes)) {
                     Mailgun.Routes.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.ips)) {
+                URLRouting.Route(.case(Mailgun.API.cases.ips)) {
                     Mailgun.IPs.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.ipPools)) {
+                URLRouting.Route(.case(Mailgun.API.cases.ipPools)) {
                     Mailgun.IPPools.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.ipAllowlist)) {
+                URLRouting.Route(.case(Mailgun.API.cases.ipAllowlist)) {
                     Mailgun.IPAllowlist.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.keys)) {
+                URLRouting.Route(.case(Mailgun.API.cases.keys)) {
                     Mailgun.Keys.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.users)) {
+                URLRouting.Route(.case(Mailgun.API.cases.users)) {
                     Mailgun.Users.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.subaccounts)) {
+                URLRouting.Route(.case(Mailgun.API.cases.subaccounts)) {
                     Mailgun.Subaccounts.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.credentials)) {
+                URLRouting.Route(.case(Mailgun.API.cases.credentials)) {
                     Mailgun.Credentials.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.customMessageLimit)) {
+                URLRouting.Route(.case(Mailgun.API.cases.customMessageLimit)) {
                     Mailgun.CustomMessageLimit.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.accountManagement)) {
+                URLRouting.Route(.case(Mailgun.API.cases.accountManagement)) {
                     Mailgun.AccountManagement.API.Router()
                 }
 
-                URLRouting.Route(.case(Mailgun.API.reporting)) {
+                URLRouting.Route(.case(Mailgun.API.cases.reporting)) {
                     Mailgun.Reporting.API.Router()
                 }
             }

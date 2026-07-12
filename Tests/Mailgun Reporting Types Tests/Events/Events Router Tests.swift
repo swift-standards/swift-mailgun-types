@@ -33,11 +33,11 @@ struct EventsRouterTests {
         )
         #expect(match.is(\.list))
         let expected1 = try Domain("test.domain.com")
-        #expect(match.list?.domain == expected1)
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.domain == expected1)
         // The router parses an empty Query object instead of nil
-        #expect(match.list?.query?.begin == nil)
-        #expect(match.list?.query?.end == nil)
-        #expect(match.list?.query?.ascending == nil)
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.query?.begin == nil)
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.query?.end == nil)
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.query?.ascending == nil)
     }
 
     @Test("Creates correct URL for listing events with query parameters")
@@ -63,12 +63,12 @@ struct EventsRouterTests {
         )
         #expect(match.is(\.list))
         let expected2 = try Domain("test.domain.com")
-        #expect(match.list?.domain == expected2)
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.domain == expected2)
         #expect(
-            match.list?.query?.begin == Date(timeIntervalSince1970: .timeInterval1970to20220101)
+            Mailgun.Reporting.Events.API.cases.list.extract(match)?.query?.begin == Date(timeIntervalSince1970: .timeInterval1970to20220101)
         )
-        #expect(match.list?.query?.end == Date(timeIntervalSince1970: .timeInterval1970to20220102))
-        #expect(match.list?.query?.ascending == .yes)
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.query?.end == Date(timeIntervalSince1970: .timeInterval1970to20220102))
+        #expect(Mailgun.Reporting.Events.API.cases.list.extract(match)?.query?.ascending == .yes)
     }
 
     @Test("Verifies dates are encoded as Unix timestamps in query parameters")

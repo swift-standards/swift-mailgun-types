@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.CustomMessageLimit {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case getMonthly
         case setMonthly(request: Mailgun.CustomMessageLimit.Monthly.Set.Request)
@@ -24,7 +23,7 @@ extension Mailgun.CustomMessageLimit.API {
 
         public var body: some URLRouting.Router<Mailgun.CustomMessageLimit.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.getMonthly)) {
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.cases.getMonthly)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
@@ -33,21 +32,21 @@ extension Mailgun.CustomMessageLimit.API {
                     Path.monthly
                 }
 
-                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.setMonthly)) {
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.cases.setMonthly)) {
                     Method.put
                     Path { "v5" }
                     Path.accounts
                     Path.limit
                     Path.custom
                     Path.monthly
-                    Parse(.memberwise(Mailgun.CustomMessageLimit.Monthly.Set.Request.init)) {
+                    Parse(.memberwise(Mailgun.CustomMessageLimit.Monthly.Set.Request.init, { $0.limit })) {
                         URLRouting.Query {
-                            Field("limit") { Digits() }
+                            Field("limit") { Int.parser() }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.deleteMonthly)) {
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.cases.deleteMonthly)) {
                     Method.delete
                     Path { "v5" }
                     Path.accounts
@@ -56,7 +55,7 @@ extension Mailgun.CustomMessageLimit.API {
                     Path.monthly
                 }
 
-                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.enableAccount)) {
+                URLRouting.Route(.case(Mailgun.CustomMessageLimit.API.cases.enableAccount)) {
                     Method.put
                     Path { "v5" }
                     Path.accounts

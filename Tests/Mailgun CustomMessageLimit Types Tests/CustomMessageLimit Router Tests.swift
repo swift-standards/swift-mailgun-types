@@ -52,7 +52,7 @@ struct CustomMessageLimitRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.setMonthly))
-        #expect(match.setMonthly?.limit == 10000)
+        #expect(Mailgun.CustomMessageLimit.API.cases.setMonthly.extract(match)?.limit == 10000)
     }
 
     @Test("Creates correct URL for deleting monthly limit")

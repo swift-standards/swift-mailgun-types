@@ -27,6 +27,6 @@ struct DomainTrackingRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.get))
-        #expect(match.get == domain)
+        #expect(Mailgun.Domains.Domains.Tracking.API.cases.get.extract(match) == domain)
     }
 }

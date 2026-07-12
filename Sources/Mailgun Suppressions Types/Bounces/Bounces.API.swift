@@ -1,8 +1,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Suppressions.Bounces {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case importList(domain: Domain, request: Foundation.Data)
         case get(domain: Domain, address: EmailAddress)
@@ -19,16 +18,28 @@ extension Mailgun.Suppressions.Bounces.API {
 
         public var body: some URLRouting.Router<Mailgun.Suppressions.Bounces.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.importList)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Bounces.API.cases.importList))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.bounces
                     Path { "import" }
-                    try! FileUpload.csv()
+                    try! FileUpload(fieldName: "file", filename: "import.csv", fileType: .csv)
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.get)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, address: $0.1) },
+                        unapply: { ($0.domain, $0.address) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Bounces.API.cases.get))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -36,7 +47,13 @@ extension Mailgun.Suppressions.Bounces.API {
                     Path { Parse(.string.representing(EmailAddress.self)) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.delete)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, address: $0.1) },
+                        unapply: { ($0.domain, $0.address) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Bounces.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -44,16 +61,33 @@ extension Mailgun.Suppressions.Bounces.API {
                     Path { Parse(.string.representing(EmailAddress.self)) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.list)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Bounces.API.cases.list))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.bounces
                     Optionally {
-                        Parse(.memberwise(Mailgun.Suppressions.Bounces.List.Request.init)) {
+                        Parse(
+                            .convert(
+                                apply: { ($0.0.0, $0.0.1, $0.1) },
+                                unapply: { (($0.0, $0.1), $0.2) }
+                            )
+                            .map(
+                                .memberwise(
+                                    Mailgun.Suppressions.Bounces.List.Request.init,
+                                    { ($0.limit, $0.page, $0.term) }
+                                )
+                            )
+                        ) {
                             URLRouting.Query {
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                                 Optionally {
                                     Field("page") { Parse(.string) }
@@ -66,12 +100,18 @@ extension Mailgun.Suppressions.Bounces.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.create)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Bounces.API.cases.create))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.bounces
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Suppressions.Bounces.Create.Request.self,
                             decoder: .mailgun,
@@ -80,7 +120,7 @@ extension Mailgun.Suppressions.Bounces.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.deleteAll)) {
+                URLRouting.Route(.case(Mailgun.Suppressions.Bounces.API.cases.deleteAll)) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }

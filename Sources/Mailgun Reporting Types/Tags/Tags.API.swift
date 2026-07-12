@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Reporting.Tags {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list(domain: Domain, request: Mailgun.Reporting.Tags.List.Request?)
         case get(domain: Domain, tag: String)
@@ -32,19 +31,25 @@ extension Mailgun.Reporting.Tags.API {
         public var body: some URLRouting.Router<Mailgun.Reporting.Tags.API> {
             OneOf {
                 // List tags
-                Route(.case(Mailgun.Reporting.Tags.API.list)) {
+                Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Reporting.Tags.API.cases.list))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.tags
                     Optionally {
-                        Parse(.memberwise(Mailgun.Reporting.Tags.List.Request.init)) {
+                        Parse(.memberwise(Mailgun.Reporting.Tags.List.Request.init, { ($0.page, $0.limit) })) {
                             Query {
                                 Optionally {
                                     Field("page") { Parse(.string) }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                             }
                         }
@@ -52,7 +57,13 @@ extension Mailgun.Reporting.Tags.API {
                 }
 
                 // Get a tag
-                Route(.case(Mailgun.Reporting.Tags.API.get)) {
+                Route(
+                    .convert(
+                        apply: { (domain: $0.0, tag: $0.1) },
+                        unapply: { ($0.domain, $0.tag) }
+                    )
+                    .map(.case(Mailgun.Reporting.Tags.API.cases.get))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -63,7 +74,13 @@ extension Mailgun.Reporting.Tags.API {
                 }
 
                 // Update tag description
-                Route(.case(Mailgun.Reporting.Tags.API.update)) {
+                Route(
+                    .convert(
+                        apply: { (domain: $0.0.0, tag: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domain, $0.tag), $0.request) }
+                    )
+                    .map(.case(Mailgun.Reporting.Tags.API.cases.update))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -71,7 +88,7 @@ extension Mailgun.Reporting.Tags.API {
                     Query {
                         Field("tag") { Parse(.string) }
                     }
-                    Parse(.memberwise(Mailgun.Reporting.Tags.Update.Request.init)) {
+                    Parse(.memberwise(Mailgun.Reporting.Tags.Update.Request.init, { $0.description })) {
                         Query {
                             Field("description") { Parse(.string) }
                         }
@@ -79,7 +96,13 @@ extension Mailgun.Reporting.Tags.API {
                 }
 
                 // Delete tag
-                Route(.case(Mailgun.Reporting.Tags.API.delete)) {
+                Route(
+                    .convert(
+                        apply: { (domain: $0.0, tag: $0.1) },
+                        unapply: { ($0.domain, $0.tag) }
+                    )
+                    .map(.case(Mailgun.Reporting.Tags.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -90,7 +113,13 @@ extension Mailgun.Reporting.Tags.API {
                 }
 
                 // Get tag stats
-                Route(.case(Mailgun.Reporting.Tags.API.stats)) {
+                Route(
+                    .convert(
+                        apply: { (domain: $0.0.0, tag: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domain, $0.tag), $0.request) }
+                    )
+                    .map(.case(Mailgun.Reporting.Tags.API.cases.stats))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -99,12 +128,44 @@ extension Mailgun.Reporting.Tags.API {
                     Query {
                         Field("tag") { Parse(.string) }
                     }
-                    Parse(.memberwise(Mailgun.Reporting.Tags.Stats.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { (
+                                $0.0.0.0.0.0.0.0,
+                                $0.0.0.0.0.0.0.1,
+                                $0.0.0.0.0.0.1,
+                                $0.0.0.0.0.1,
+                                $0.0.0.0.1,
+                                $0.0.0.1,
+                                $0.0.1,
+                                $0.1
+                            ) },
+                            unapply: { ((((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6), $0.7) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.Reporting.Tags.Stats.Request.init,
+                                { ($0.event, $0.start, $0.end, $0.resolution, $0.duration, $0.provider, $0.device, $0.country) }
+                            )
+                        )
+                    ) {
                         Query {
                             Field("event") {
-                                Many {
-                                    Parse(.string)
-                                }
+                                // Comma-separated list ⇆ [String]; replaces the retired
+                                // `Many { Parse(.string) }` engine spelling (not vended
+                                // on the institute routing surface).
+                                Parse(
+                                    .string.map(
+                                        Parser.Conversion.Witness<String, [String], Never>(
+                                            apply: { (raw: String) -> [String] in
+                                                raw.split(separator: ",").map(String.init)
+                                            },
+                                            unapply: { (events: [String]) -> String in
+                                                events.joined(separator: ",")
+                                            }
+                                        )
+                                    )
+                                )
                             }
                             Optionally {
                                 Field("start") { Parse(.string) }
@@ -132,7 +193,13 @@ extension Mailgun.Reporting.Tags.API {
                 }
 
                 // Get tag aggregates
-                Route(.case(Mailgun.Reporting.Tags.API.aggregates)) {
+                Route(
+                    .convert(
+                        apply: { (domain: $0.0.0, tag: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domain, $0.tag), $0.request) }
+                    )
+                    .map(.case(Mailgun.Reporting.Tags.API.cases.aggregates))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -142,7 +209,7 @@ extension Mailgun.Reporting.Tags.API {
                     Query {
                         Field("tag") { Parse(.string) }
                     }
-                    Parse(.memberwise(Mailgun.Reporting.Tags.Aggregates.Request.init)) {
+                    Parse(.memberwise(Mailgun.Reporting.Tags.Aggregates.Request.init, { $0.type })) {
                         Query {
                             Field("type") { Parse(.string) }
                         }
@@ -150,7 +217,7 @@ extension Mailgun.Reporting.Tags.API {
                 }
 
                 // Get tag limits
-                Route(.case(Mailgun.Reporting.Tags.API.limits)) {
+                Route(.case(Mailgun.Reporting.Tags.API.cases.limits)) {
                     Method.get
                     Path { "v3" }
                     Path.domains

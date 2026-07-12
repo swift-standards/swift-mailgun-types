@@ -70,8 +70,8 @@ struct UsersRouterTests {
 
         let match: Mailgun.Users.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.addToOrganization))
-        #expect(match.addToOrganization?.userId == userId)
-        #expect(match.addToOrganization?.orgId == orgId)
+        #expect(Mailgun.Users.API.cases.addToOrganization.extract(match)?.userId == userId)
+        #expect(Mailgun.Users.API.cases.addToOrganization.extract(match)?.orgId == orgId)
     }
 
     @Test("Creates correct URL for removing user from organization")
@@ -87,8 +87,8 @@ struct UsersRouterTests {
 
         let match: Mailgun.Users.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.removeFromOrganization))
-        #expect(match.removeFromOrganization?.userId == userId)
-        #expect(match.removeFromOrganization?.orgId == orgId)
+        #expect(Mailgun.Users.API.cases.removeFromOrganization.extract(match)?.userId == userId)
+        #expect(Mailgun.Users.API.cases.removeFromOrganization.extract(match)?.orgId == orgId)
     }
 
     @Test("Verifies all endpoints use v5 API version")

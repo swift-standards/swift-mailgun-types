@@ -10,8 +10,7 @@ import Mailgun_Types_Shared
 import RFC_2183
 
 extension Mailgun.Messages {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case send(domain: Domain, request: Mailgun.Messages.Send.Request)
         case sendMime(domain: Domain, request: Mailgun.Messages.Send.Mime.Request)
@@ -27,7 +26,13 @@ extension Mailgun.Messages.API {
 
         public var body: some URLRouting.Router<Mailgun.Messages.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Messages.API.send)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Messages.API.cases.send))
+                ) {
                     let sendMultipartConversion = Mailgun.Messages.SendMultipartConversion()
                     Headers {
                         Field("Content-Type") { sendMultipartConversion.contentType }
@@ -36,10 +41,16 @@ extension Mailgun.Messages.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.messages
-                    Body(sendMultipartConversion)
+                    URLRouting.Body(sendMultipartConversion)
                 }
 
-                URLRouting.Route(.case(Mailgun.Messages.API.sendMime)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Messages.API.cases.sendMime))
+                ) {
                     let mimeMultipartConversion = Mailgun.Messages.MimeMultipartConversion()
                     Headers {
                         Field("Content-Type") { mimeMultipartConversion.contentType }
@@ -48,10 +59,16 @@ extension Mailgun.Messages.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "messages.mime" }
-                    Body(mimeMultipartConversion)
+                    URLRouting.Body(mimeMultipartConversion)
                 }
 
-                URLRouting.Route(.case(Mailgun.Messages.API.retrieve)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, storageKey: $0.1) },
+                        unapply: { ($0.domain, $0.storageKey) }
+                    )
+                    .map(.case(Mailgun.Messages.API.cases.retrieve))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.domains
@@ -60,7 +77,7 @@ extension Mailgun.Messages.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Messages.API.queueStatus)) {
+                URLRouting.Route(.case(Mailgun.Messages.API.cases.queueStatus)) {
                     Method.get
                     Path { "v3" }
                     Path.domains
@@ -68,7 +85,7 @@ extension Mailgun.Messages.API {
                     Path { "sending_queues" }
                 }
 
-                URLRouting.Route(.case(Mailgun.Messages.API.deleteScheduled)) {
+                URLRouting.Route(.case(Mailgun.Messages.API.cases.deleteScheduled)) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }

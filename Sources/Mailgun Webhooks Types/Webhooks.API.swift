@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Webhooks {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list(domain: Domain)
         case get(domain: Domain, webhookName: WebhookType)
@@ -26,14 +25,20 @@ extension Mailgun.Webhooks.API {
         public var body: some URLRouting.Router<Mailgun.Webhooks.API> {
             OneOf {
                 // PUT /v3/domains/{domain}/webhooks/{webhook_name}
-                URLRouting.Route(.case(Mailgun.Webhooks.API.update)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0.0, webhookName: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domain, $0.webhookName), $0.request) }
+                    )
+                    .map(.case(Mailgun.Webhooks.API.cases.update))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.webhooks
                     Path { Parse(.string.representing(Mailgun.Webhooks.WebhookType.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Webhooks.Update.Request.self,
                             decoder: .mailgun,
@@ -43,7 +48,13 @@ extension Mailgun.Webhooks.API {
                 }
 
                 // DELETE /v3/domains/{domain}/webhooks/{webhook_name}
-                URLRouting.Route(.case(Mailgun.Webhooks.API.delete)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, webhookName: $0.1) },
+                        unapply: { ($0.domain, $0.webhookName) }
+                    )
+                    .map(.case(Mailgun.Webhooks.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path.domains
@@ -53,7 +64,13 @@ extension Mailgun.Webhooks.API {
                 }
 
                 // GET /v3/domains/{domain}/webhooks/{webhook_name}
-                URLRouting.Route(.case(Mailgun.Webhooks.API.get)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, webhookName: $0.1) },
+                        unapply: { ($0.domain, $0.webhookName) }
+                    )
+                    .map(.case(Mailgun.Webhooks.API.cases.get))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.domains
@@ -63,13 +80,19 @@ extension Mailgun.Webhooks.API {
                 }
 
                 // POST /v3/domains/{domain}/webhooks
-                URLRouting.Route(.case(Mailgun.Webhooks.API.create)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Webhooks.API.cases.create))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.webhooks
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Webhooks.Create.Request.self,
                             decoder: .mailgun,
@@ -79,7 +102,7 @@ extension Mailgun.Webhooks.API {
                 }
 
                 // GET /v3/domains/{domain}/webhooks
-                URLRouting.Route(.case(Mailgun.Webhooks.API.list)) {
+                URLRouting.Route(.case(Mailgun.Webhooks.API.cases.list)) {
                     Method.get
                     Path { "v3" }
                     Path.domains

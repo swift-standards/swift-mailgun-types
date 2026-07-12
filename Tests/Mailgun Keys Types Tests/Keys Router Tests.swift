@@ -40,7 +40,7 @@ struct KeysRouterTests {
 
         let match: Mailgun.Keys.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
-        #expect(match.create?.description == "Test API Key")
+        #expect(Mailgun.Keys.API.cases.create.extract(match)?.description == "Test API Key")
     }
 
     @Test("Creates correct URL for deleting a key")
@@ -55,7 +55,7 @@ struct KeysRouterTests {
 
         let match: Mailgun.Keys.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
-        #expect(match.delete?.description == "test-key-123")
+        #expect(Mailgun.Keys.API.cases.delete.extract(match)?.description == "test-key-123")
     }
 
     @Test("Creates correct URL for adding public key")
@@ -72,7 +72,7 @@ struct KeysRouterTests {
 
         let match: Mailgun.Keys.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.addPublicKey))
-        #expect(match.addPublicKey?.publicKey == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ...")
+        #expect(Mailgun.Keys.API.cases.addPublicKey.extract(match)?.publicKey == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ...")
     }
 
     @Test("Verifies all endpoints use v1 API version")

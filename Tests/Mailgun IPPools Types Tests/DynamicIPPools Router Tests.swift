@@ -42,7 +42,7 @@ struct DynamicIPPoolsRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.listHistory))
-        #expect(match.listHistory?.domain == "test.com")
+        #expect(Mailgun.DynamicIPPools.API.cases.listHistory.extract(match)?.domain == "test.com")
     }
 
     @Test("Client test implementation")

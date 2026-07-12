@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.DynamicIPPools {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case listHistory(request: Mailgun.DynamicIPPools.HistoryList.Request)
         case removeOverride(domain: String)
@@ -22,15 +21,26 @@ extension Mailgun.DynamicIPPools.API {
 
         public var body: some URLRouting.Router<Mailgun.DynamicIPPools.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.DynamicIPPools.API.listHistory)) {
+                URLRouting.Route(.case(Mailgun.DynamicIPPools.API.cases.listHistory)) {
                     Method.get
                     Path { "v1" }
                     Path.dynamicPools
                     Path.history
-                    Parse(.memberwise(Mailgun.DynamicIPPools.HistoryList.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.DynamicIPPools.HistoryList.Request.init,
+                                { ($0.limit, $0.includeSubaccounts, $0.domain, $0.before, $0.after, $0.movedTo, $0.movedFrom) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
-                                Field("Limit") { Digits() }
+                                Field("Limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("include_subaccounts") { Bool.parser() }
@@ -54,7 +64,7 @@ extension Mailgun.DynamicIPPools.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.DynamicIPPools.API.removeOverride)) {
+                URLRouting.Route(.case(Mailgun.DynamicIPPools.API.cases.removeOverride)) {
                     Method.delete
                     Path { "v1" }
                     Path.dynamicPools

@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Suppressions {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case bounces(Bounces.API)
         case complaints(Complaints.API)
@@ -24,16 +23,16 @@ extension Mailgun.Suppressions.API {
 
         public var body: some URLRouting.Router<Mailgun.Suppressions.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Suppressions.API.bounces)) {
+                URLRouting.Route(.case(Mailgun.Suppressions.API.cases.bounces)) {
                     Mailgun.Suppressions.Bounces.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Suppressions.API.complaints)) {
+                URLRouting.Route(.case(Mailgun.Suppressions.API.cases.complaints)) {
                     Mailgun.Suppressions.Complaints.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Suppressions.API.unsubscribe)) {
+                URLRouting.Route(.case(Mailgun.Suppressions.API.cases.unsubscribe)) {
                     Mailgun.Suppressions.Unsubscribe.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Suppressions.API.Allowlist)) {
+                URLRouting.Route(.case(Mailgun.Suppressions.API.cases.Allowlist)) {
                     Mailgun.Suppressions.Allowlist.API.Router()
                 }
             }

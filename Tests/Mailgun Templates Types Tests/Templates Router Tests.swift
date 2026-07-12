@@ -41,10 +41,10 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         let expected1 = try Domain("test.domain.com")
-        #expect(match.list?.domainId == expected1)
-        #expect(match.list?.request?.page == .first)
-        #expect(match.list?.request?.limit == 100)
-        #expect(match.list?.request?.p == nil)
+        #expect(Mailgun.Templates.API.cases.list.extract(match)?.domainId == expected1)
+        #expect(Mailgun.Templates.API.cases.list.extract(match)?.request?.page == .first)
+        #expect(Mailgun.Templates.API.cases.list.extract(match)?.request?.limit == 100)
+        #expect(Mailgun.Templates.API.cases.list.extract(match)?.request?.p == nil)
     }
 
     @Test("Creates correct URL for creating template")
@@ -87,9 +87,9 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
         let expected2 = try Domain("test.domain.com")
-        #expect(match.get?.domainId == expected2)
-        #expect(match.get?.templateName == "template123")
-        #expect(match.get?.request?.active == "active")
+        #expect(Mailgun.Templates.API.cases.get.extract(match)?.domainId == expected2)
+        #expect(Mailgun.Templates.API.cases.get.extract(match)?.templateName == "template123")
+        #expect(Mailgun.Templates.API.cases.get.extract(match)?.request?.active == "active")
     }
 
     @Test("Creates correct URL for updating template")
@@ -128,8 +128,8 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
         let expected3 = try Domain("test.domain.com")
-        #expect(match.delete?.domainId == expected3)
-        #expect(match.delete?.templateName == "template123")
+        #expect(Mailgun.Templates.API.cases.delete.extract(match)?.domainId == expected3)
+        #expect(Mailgun.Templates.API.cases.delete.extract(match)?.templateName == "template123")
     }
 
     @Test("Creates correct URL for listing template versions")
@@ -159,11 +159,11 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.versions))
         let expected4 = try Domain("test.domain.com")
-        #expect(match.versions?.domainId == expected4)
-        #expect(match.versions?.templateName == "template123")
-        #expect(match.versions?.request?.page == .next)
-        #expect(match.versions?.request?.limit == 50)
-        #expect(match.versions?.request?.p == nil)
+        #expect(Mailgun.Templates.API.cases.versions.extract(match)?.domainId == expected4)
+        #expect(Mailgun.Templates.API.cases.versions.extract(match)?.templateName == "template123")
+        #expect(Mailgun.Templates.API.cases.versions.extract(match)?.request?.page == .next)
+        #expect(Mailgun.Templates.API.cases.versions.extract(match)?.request?.limit == 50)
+        #expect(Mailgun.Templates.API.cases.versions.extract(match)?.request?.p == nil)
     }
 
     @Test("Creates correct URL for creating template version")
@@ -209,9 +209,9 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.getVersion))
         let expected5 = try Domain("test.domain.com")
-        #expect(match.getVersion?.domainId == expected5)
-        #expect(match.getVersion?.templateName == "template123")
-        #expect(match.getVersion?.versionName == "version456")
+        #expect(Mailgun.Templates.API.cases.getVersion.extract(match)?.domainId == expected5)
+        #expect(Mailgun.Templates.API.cases.getVersion.extract(match)?.templateName == "template123")
+        #expect(Mailgun.Templates.API.cases.getVersion.extract(match)?.versionName == "version456")
     }
 
     @Test("Creates correct URL for updating template version")
@@ -259,9 +259,9 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteVersion))
         let expected6 = try Domain("test.domain.com")
-        #expect(match.deleteVersion?.domainId == expected6)
-        #expect(match.deleteVersion?.templateName == "template123")
-        #expect(match.deleteVersion?.versionName == "version456")
+        #expect(Mailgun.Templates.API.cases.deleteVersion.extract(match)?.domainId == expected6)
+        #expect(Mailgun.Templates.API.cases.deleteVersion.extract(match)?.templateName == "template123")
+        #expect(Mailgun.Templates.API.cases.deleteVersion.extract(match)?.versionName == "version456")
     }
 
     @Test("Creates correct URL for copying template version")
@@ -295,10 +295,10 @@ struct TemplatesRouterTests {
         let match: Mailgun.Templates.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.copyVersion))
         let expected7 = try Domain("test.domain.com")
-        #expect(match.copyVersion?.domainId == expected7)
-        #expect(match.copyVersion?.templateName == "template123")
-        #expect(match.copyVersion?.versionName == "version456")
-        #expect(match.copyVersion?.newVersionName == "v3")
-        #expect(match.copyVersion?.request?.comment == "Copied version")
+        #expect(Mailgun.Templates.API.cases.copyVersion.extract(match)?.domainId == expected7)
+        #expect(Mailgun.Templates.API.cases.copyVersion.extract(match)?.templateName == "template123")
+        #expect(Mailgun.Templates.API.cases.copyVersion.extract(match)?.versionName == "version456")
+        #expect(Mailgun.Templates.API.cases.copyVersion.extract(match)?.newVersionName == "v3")
+        #expect(Mailgun.Templates.API.cases.copyVersion.extract(match)?.request?.comment == "Copied version")
     }
 }

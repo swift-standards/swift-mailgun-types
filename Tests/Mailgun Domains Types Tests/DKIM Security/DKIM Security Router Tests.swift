@@ -32,6 +32,6 @@ struct DKIMSecurityRouterTests {
         )
 
         #expect(match.is(\.updateRotation))
-        #expect(match.updateRotation?.domain == domain)
+        #expect(Mailgun.Domains.DKIM_Security.API.cases.updateRotation.extract(match)?.domain == domain)
     }
 }

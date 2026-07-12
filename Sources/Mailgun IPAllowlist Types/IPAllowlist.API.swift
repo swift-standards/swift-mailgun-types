@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.IPAllowlist {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list
         case update(request: Mailgun.IPAllowlist.UpdateRequest)
@@ -24,17 +23,17 @@ extension Mailgun.IPAllowlist.API {
 
         public var body: some URLRouting.Router<Mailgun.IPAllowlist.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.IPAllowlist.API.list)) {
+                URLRouting.Route(.case(Mailgun.IPAllowlist.API.cases.list)) {
                     Method.get
                     Path.v2
                     Path.ipAllowlist
                 }
 
-                URLRouting.Route(.case(Mailgun.IPAllowlist.API.update)) {
+                URLRouting.Route(.case(Mailgun.IPAllowlist.API.cases.update)) {
                     Method.put
                     Path.v2
                     Path.ipAllowlist
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPAllowlist.UpdateRequest.self,
                             decoder: .mailgun,
@@ -43,11 +42,11 @@ extension Mailgun.IPAllowlist.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPAllowlist.API.add)) {
+                URLRouting.Route(.case(Mailgun.IPAllowlist.API.cases.add)) {
                     Method.post
                     Path.v2
                     Path.ipAllowlist
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPAllowlist.AddRequest.self,
                             decoder: .mailgun,
@@ -56,11 +55,11 @@ extension Mailgun.IPAllowlist.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPAllowlist.API.delete)) {
+                URLRouting.Route(.case(Mailgun.IPAllowlist.API.cases.delete)) {
                     Method.delete
                     Path.v2
                     Path.ipAllowlist
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPAllowlist.DeleteRequest.self,
                             decoder: .mailgun,

@@ -80,7 +80,7 @@ struct DomainRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.create))
-        #expect(match.create?.name == "example.com")
+        #expect(Mailgun.Domains.Domains.API.cases.create.extract(match)?.name == "example.com")
     }
 
     @Test("Creates correct URL for getting domain")
@@ -97,7 +97,7 @@ struct DomainRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.get))
-        #expect(match.get == domain)
+        #expect(Mailgun.Domains.Domains.API.cases.get.extract(match) == domain)
     }
 
     @Test("Creates correct URL for updating domain")
@@ -115,8 +115,8 @@ struct DomainRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.update))
-        #expect(match.update?.domain == domain)
-        #expect(match.update?.request.spamAction == .tag)
+        #expect(Mailgun.Domains.Domains.API.cases.update.extract(match)?.domain == domain)
+        #expect(Mailgun.Domains.Domains.API.cases.update.extract(match)?.request.spamAction == .tag)
     }
 
     @Test("Creates correct URL for deleting domain")
@@ -133,7 +133,7 @@ struct DomainRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.delete))
-        #expect(match.delete == domain)
+        #expect(Mailgun.Domains.Domains.API.cases.delete.extract(match) == domain)
     }
 
     @Test("Creates correct URL for verifying domain")
@@ -150,6 +150,6 @@ struct DomainRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.verify))
-        #expect(match.verify == domain)
+        #expect(Mailgun.Domains.Domains.API.cases.verify.extract(match) == domain)
     }
 }

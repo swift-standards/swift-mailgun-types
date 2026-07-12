@@ -10,8 +10,7 @@ import Mailgun_Types_Shared
 import URLRouting
 
 extension Mailgun.Reporting.Logs {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case analytics(request: Analytics.Request)
     }
@@ -24,12 +23,12 @@ extension Mailgun.Reporting.Logs.API {
 
         public var body: some URLRouting.Router<Mailgun.Reporting.Logs.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Reporting.Logs.API.analytics)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Logs.API.cases.analytics)) {
                     Method.post
                     Path { "v1" }
                     Path.analytics
                     Path.logs
-                    Body(.json(Mailgun.Reporting.Logs.Analytics.Request.self))
+                    URLRouting.Body(.json(Mailgun.Reporting.Logs.Analytics.Request.self))
                 }
             }
         }

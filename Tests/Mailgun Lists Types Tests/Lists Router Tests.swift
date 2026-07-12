@@ -35,11 +35,11 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
-        #expect(match.create?.address.rawValue == "developers@test.com")
-        #expect(match.create?.name == "Developers")
-        #expect(match.create?.description == "Test list")
-        #expect(match.create?.accessLevel == .readonly)
-        #expect(match.create?.replyPreference == .list)
+        #expect(Mailgun.Lists.API.cases.create.extract(match)?.address.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.create.extract(match)?.name == "Developers")
+        #expect(Mailgun.Lists.API.cases.create.extract(match)?.description == "Test list")
+        #expect(Mailgun.Lists.API.cases.create.extract(match)?.accessLevel == .readonly)
+        #expect(Mailgun.Lists.API.cases.create.extract(match)?.replyPreference == .list)
     }
 
     @Test("Creates correct URL for listing all mailing lists")
@@ -69,9 +69,9 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
-        #expect(match.list?.limit == 100)
-        #expect(match.list?.skip == 0)
-        #expect(match.list?.address?.rawValue == "test@example.com")
+        #expect(Mailgun.Lists.API.cases.list.extract(match)?.limit == 100)
+        #expect(Mailgun.Lists.API.cases.list.extract(match)?.skip == 0)
+        #expect(Mailgun.Lists.API.cases.list.extract(match)?.address?.rawValue == "test@example.com")
     }
 
     @Test("Creates correct URL for getting list members")
@@ -98,11 +98,11 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.members))
-        #expect(match.members?.listAddress.rawValue == "developers@test.com")
-        #expect(match.members?.request.address?.rawValue == "test@example.com")
-        #expect(match.members?.request.subscribed == true)
-        #expect(match.members?.request.limit == 50)
-        #expect(match.members?.request.skip == 10)
+        #expect(Mailgun.Lists.API.cases.members.extract(match)?.listAddress.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.members.extract(match)?.request.address?.rawValue == "test@example.com")
+        #expect(Mailgun.Lists.API.cases.members.extract(match)?.request.subscribed == true)
+        #expect(Mailgun.Lists.API.cases.members.extract(match)?.request.limit == 50)
+        #expect(Mailgun.Lists.API.cases.members.extract(match)?.request.skip == 10)
     }
 
     @Test("Creates correct URL for adding a member")
@@ -127,12 +127,12 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.addMember))
-        #expect(match.addMember?.listAddress.rawValue == "developers@test.com")
-        #expect(match.addMember?.request.address.rawValue == "new@example.com")
-        #expect(match.addMember?.request.name == "New Member")
-        #expect(match.addMember?.request.vars == ["role": "developer"])
-        #expect(match.addMember?.request.subscribed == true)
-        #expect(match.addMember?.request.upsert == true)
+        #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.listAddress.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.request.address.rawValue == "new@example.com")
+        #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.request.name == "New Member")
+        #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.request.vars == ["role": "developer"])
+        #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.request.subscribed == true)
+        #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.request.upsert == true)
     }
 
     @Test("Creates correct URL for bulk member addition")
@@ -176,8 +176,8 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.getMember))
-        #expect(match.getMember?.listAddress.rawValue == "developers@test.com")
-        #expect(match.getMember?.memberAddress.rawValue == "member@example.com")
+        #expect(Mailgun.Lists.API.cases.getMember.extract(match)?.listAddress.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.getMember.extract(match)?.memberAddress.rawValue == "member@example.com")
     }
 
     @Test("Creates correct URL for updating member")
@@ -219,8 +219,8 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteMember))
-        #expect(match.deleteMember?.listAddress.rawValue == "developers@test.com")
-        #expect(match.deleteMember?.memberAddress.rawValue == "member@example.com")
+        #expect(Mailgun.Lists.API.cases.deleteMember.extract(match)?.listAddress.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.deleteMember.extract(match)?.memberAddress.rawValue == "member@example.com")
     }
 
     @Test("Creates correct URL for updating list")
@@ -259,7 +259,7 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
-        #expect(match.delete?.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.delete.extract(match)?.rawValue == "developers@test.com")
     }
 
     @Test("Creates correct URL for getting list details")
@@ -273,7 +273,7 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
-        #expect(match.get?.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.get.extract(match)?.rawValue == "developers@test.com")
     }
 
     @Test("Creates correct URL for paginated lists")
@@ -288,7 +288,7 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.pages))
-        #expect(match.pages == 50)
+        #expect(Mailgun.Lists.API.cases.pages.extract(match) == 50)
     }
 
     @Test("Creates correct URL for paginated members")
@@ -316,10 +316,10 @@ struct ListsRouterTests {
 
         let match: Mailgun.Lists.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.memberPages))
-        #expect(match.memberPages?.listAddress.rawValue == "developers@test.com")
-        #expect(match.memberPages?.request.subscribed == true)
-        #expect(match.memberPages?.request.limit == 30)
-        #expect(match.memberPages?.request.address?.rawValue == "test@example.com")
-        #expect(match.memberPages?.request.page == .next)
+        #expect(Mailgun.Lists.API.cases.memberPages.extract(match)?.listAddress.rawValue == "developers@test.com")
+        #expect(Mailgun.Lists.API.cases.memberPages.extract(match)?.request.subscribed == true)
+        #expect(Mailgun.Lists.API.cases.memberPages.extract(match)?.request.limit == 30)
+        #expect(Mailgun.Lists.API.cases.memberPages.extract(match)?.request.address?.rawValue == "test@example.com")
+        #expect(Mailgun.Lists.API.cases.memberPages.extract(match)?.request.page == .next)
     }
 }

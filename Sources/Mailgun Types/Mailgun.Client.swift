@@ -25,7 +25,9 @@ import Mailgun_Users_Types
 import Mailgun_Webhooks_Types
 
 extension Mailgun {
-    @Witness
+    // No `@Witness`: this is a pure aggregator of sub-clients (no closure endpoints),
+    // and the macro requires at least one closure property. The explicit memberwise
+    // init below is the full surface.
     public struct Client: Sendable {
         public let messages: Mailgun.Messages.Client
         public let mailingLists: Mailgun.Lists.Client

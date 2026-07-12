@@ -42,6 +42,10 @@ struct SuppressionsRouterTests {
         )
         #expect(match.is(\.bounces))
         let expected1 = try Domain("test.domain.com")
-        #expect(match.bounces?.list?.domain == expected1)
+        #expect(
+            Mailgun.Suppressions.API.cases.bounces.extract(match)
+                .flatMap { Mailgun.Suppressions.Bounces.API.cases.list.extract($0) }?
+                .domain == expected1
+        )
     }
 }

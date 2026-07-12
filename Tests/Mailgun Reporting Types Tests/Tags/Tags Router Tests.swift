@@ -34,6 +34,6 @@ struct TagsRouterTests {
         )
         #expect(match.is(\.list))
         let expected1 = try Domain("test.com")
-        #expect(match.list?.domain == expected1)
+        #expect(Mailgun.Reporting.Tags.API.cases.list.extract(match)?.domain == expected1)
     }
 }

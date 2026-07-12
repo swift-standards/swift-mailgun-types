@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Templates {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list(domainId: Domain, request: Mailgun.Templates.List.Request?)
         case create(domainId: Domain, request: Mailgun.Templates.Create.Request)
@@ -56,7 +55,23 @@ extension Mailgun.Templates.API {
         public var body: some URLRouting.Router<Mailgun.Templates.API> {
             OneOf {
                 // PUT /v3/{domain_name}/templates/{template_name}/versions/{version_name}/copy/{new_version_name}
-                Route(.case(Mailgun.Templates.API.copyVersion)) {
+                Route(
+                    .convert(
+                        apply: {
+                            (
+                                domainId: $0.0.0.0.0,
+                                templateName: $0.0.0.0.1,
+                                versionName: $0.0.0.1,
+                                newVersionName: $0.0.1,
+                                request: $0.1
+                            )
+                        },
+                        unapply: {
+                            (((($0.domainId, $0.templateName), $0.versionName), $0.newVersionName), $0.request)
+                        }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.copyVersion))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -67,7 +82,12 @@ extension Mailgun.Templates.API {
                     Path { "copy" }
                     Path { Parse(.string) }
                     Optionally {
-                        Parse(.memberwise(Mailgun.Templates.Version.Copy.Request.init)) {
+                        Parse(
+                            .memberwise(
+                                Mailgun.Templates.Version.Copy.Request.init,
+                                { $0.comment }
+                            )
+                        ) {
                             Query {
                                 Optionally {
                                     Field("comment") { Parse(.string) }
@@ -78,7 +98,22 @@ extension Mailgun.Templates.API {
                 }
 
                 // PUT /v3/{domain_name}/templates/{template_name}/versions/{version_name}
-                Route(.case(Mailgun.Templates.API.updateVersion)) {
+                Route(
+                    .convert(
+                        apply: {
+                            (
+                                domainId: $0.0.0.0,
+                                templateName: $0.0.0.1,
+                                versionName: $0.0.1,
+                                request: $0.1
+                            )
+                        },
+                        unapply: {
+                            ((($0.domainId, $0.templateName), $0.versionName), $0.request)
+                        }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.updateVersion))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -86,14 +121,23 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string) }
                     Path.versions
                     Path { Parse(.string) }
-                    Multipart(
-                        Mailgun.Templates.Version.Update.Request.self,
-                        arrayEncodingStrategy: .brackets
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Templates.Version.Update.Request.self,
+                            arrayEncodingStrategy: .brackets,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
                     )
                 }
 
                 // DELETE /v3/{domain_name}/templates/{template_name}/versions/{version_name}
-                Route(.case(Mailgun.Templates.API.deleteVersion)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0.0, templateName: $0.0.1, versionName: $0.1) },
+                        unapply: { (($0.domainId, $0.templateName), $0.versionName) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.deleteVersion))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -104,7 +148,13 @@ extension Mailgun.Templates.API {
                 }
 
                 // GET /v3/{domain_name}/templates/{template_name}/versions/{version_name}
-                Route(.case(Mailgun.Templates.API.getVersion)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0.0, templateName: $0.0.1, versionName: $0.1) },
+                        unapply: { (($0.domainId, $0.templateName), $0.versionName) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.getVersion))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -115,21 +165,36 @@ extension Mailgun.Templates.API {
                 }
 
                 // POST /v3/{domain_name}/templates/{template_name}/versions
-                Route(.case(Mailgun.Templates.API.createVersion)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0.0, templateName: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domainId, $0.templateName), $0.request) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.createVersion))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Path { Parse(.string) }
                     Path.versions
-                    Multipart(
-                        Mailgun.Templates.Version.Create.Request.self,
-                        arrayEncodingStrategy: .brackets
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Templates.Version.Create.Request.self,
+                            arrayEncodingStrategy: .brackets,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
                     )
                 }
 
                 // GET /v3/{domain_name}/templates/{template_name}/versions
-                Route(.case(Mailgun.Templates.API.versions)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0.0, templateName: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domainId, $0.templateName), $0.request) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.versions))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -137,7 +202,18 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string) }
                     Path.versions
                     Optionally {
-                        Parse(.memberwise(Mailgun.Templates.Versions.Request.init)) {
+                        Parse(
+                            .convert(
+                                apply: { ($0.0.0, $0.0.1, $0.1) },
+                                unapply: { (($0.0, $0.1), $0.2) }
+                            )
+                            .map(
+                                .memberwise(
+                                    Mailgun.Templates.Versions.Request.init,
+                                    { ($0.page, $0.limit, $0.p) }
+                                )
+                            )
+                        ) {
                             Query {
                                 Optionally {
                                     Field("page") {
@@ -145,7 +221,7 @@ extension Mailgun.Templates.API {
                                     }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                                 Optionally {
                                     Field("p") { Parse(.string) }
@@ -156,20 +232,35 @@ extension Mailgun.Templates.API {
                 }
 
                 // PUT /v3/{domain_name}/templates/{template_name}
-                Route(.case(Mailgun.Templates.API.update)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0.0, templateName: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domainId, $0.templateName), $0.request) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.update))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Path { Parse(.string) }
-                    Multipart(
-                        Mailgun.Templates.Update.Request.self,
-                        arrayEncodingStrategy: .brackets
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Templates.Update.Request.self,
+                            arrayEncodingStrategy: .brackets,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
                     )
                 }
 
                 // DELETE /v3/{domain_name}/templates/{template_name}
-                Route(.case(Mailgun.Templates.API.delete)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0, templateName: $0.1) },
+                        unapply: { ($0.domainId, $0.templateName) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -178,14 +269,25 @@ extension Mailgun.Templates.API {
                 }
 
                 // GET /v3/{domain_name}/templates/{template_name}
-                Route(.case(Mailgun.Templates.API.get)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0.0, templateName: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domainId, $0.templateName), $0.request) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.get))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Path { Parse(.string) }
                     Optionally {
-                        Parse(.memberwise(Mailgun.Templates.Get.Request.init)) {
+                        Parse(
+                            .memberwise(
+                                Mailgun.Templates.Get.Request.init,
+                                { $0.active }
+                            )
+                        ) {
                             Query {
                                 Optionally {
                                     Field("active") { Parse(.string) }
@@ -196,19 +298,28 @@ extension Mailgun.Templates.API {
                 }
 
                 // POST /v3/{domain_name}/templates
-                Route(.case(Mailgun.Templates.API.create)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0, request: $0.1) },
+                        unapply: { ($0.domainId, $0.request) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.create))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
-                    Multipart(
-                        Mailgun.Templates.Create.Request.self,
-                        arrayEncodingStrategy: .brackets
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Templates.Create.Request.self,
+                            arrayEncodingStrategy: .brackets,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
                     )
                 }
 
                 // DELETE /v3/{domain_name}/templates
-                Route(.case(Mailgun.Templates.API.deleteAll)) {
+                Route(.case(Mailgun.Templates.API.cases.deleteAll)) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -216,13 +327,30 @@ extension Mailgun.Templates.API {
                 }
 
                 // GET /v3/{domain_name}/templates
-                Route(.case(Mailgun.Templates.API.list)) {
+                Route(
+                    .convert(
+                        apply: { (domainId: $0.0, request: $0.1) },
+                        unapply: { ($0.domainId, $0.request) }
+                    )
+                    .map(.case(Mailgun.Templates.API.cases.list))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Optionally {
-                        Parse(.memberwise(Mailgun.Templates.List.Request.init)) {
+                        Parse(
+                            .convert(
+                                apply: { ($0.0.0, $0.0.1, $0.1) },
+                                unapply: { (($0.0, $0.1), $0.2) }
+                            )
+                            .map(
+                                .memberwise(
+                                    Mailgun.Templates.List.Request.init,
+                                    { ($0.page, $0.limit, $0.p) }
+                                )
+                            )
+                        ) {
                             Query {
                                 Optionally {
                                     Field("page") {
@@ -230,7 +358,7 @@ extension Mailgun.Templates.API {
                                     }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                                 Optionally {
                                     Field("p") { Parse(.string) }

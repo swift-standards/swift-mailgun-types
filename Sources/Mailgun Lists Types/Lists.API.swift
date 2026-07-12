@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Lists {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case create(request: Mailgun.Lists.List.Create.Request)
         case list(request: Mailgun.Lists.List.Request)
@@ -46,11 +45,11 @@ extension Mailgun.Lists.API {
 
         public var body: some URLRouting.Router<Mailgun.Lists.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Lists.API.create)) {
+                URLRouting.Route(.case(Mailgun.Lists.API.cases.create)) {
                     Method.post
                     Path { "v3" }
                     Path.lists
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Lists.List.Create.Request.self,
                             decoder: .mailgun,
@@ -59,17 +58,28 @@ extension Mailgun.Lists.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.list)) {
+                URLRouting.Route(.case(Mailgun.Lists.API.cases.list)) {
                     Method.get
                     Path { "v3" }
                     Path.lists
-                    Parse(.memberwise(Mailgun.Lists.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.Lists.List.Request.init,
+                                { ($0.limit, $0.skip, $0.address) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
-                                Field("skip") { Digits() }
+                                Field("skip") { Int.parser() }
                             }
                             Optionally {
                                 Field("address") { Parse(.string.representing(EmailAddress.self)) }
@@ -78,13 +88,30 @@ extension Mailgun.Lists.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.members)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0, request: $0.1) },
+                        unapply: { ($0.listAddress, $0.request) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.members))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path.members
-                    Parse(.memberwise(Mailgun.Lists.List.Members.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((($0.0, $0.1), $0.2), $0.3) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.Lists.List.Members.Request.init,
+                                { ($0.address, $0.subscribed, $0.limit, $0.skip) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("address") { Parse(.string.representing(EmailAddress.self)) }
@@ -93,22 +120,28 @@ extension Mailgun.Lists.API {
                                 Field("subscribed") { Bool.parser() }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
-                                Field("skip") { Digits() }
+                                Field("skip") { Int.parser() }
                             }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.addMember)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0, request: $0.1) },
+                        unapply: { ($0.listAddress, $0.request) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.addMember))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path.members
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Lists.Member.Add.Request.self,
                             decoder: .mailgun,
@@ -117,13 +150,19 @@ extension Mailgun.Lists.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.bulkAdd)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0.0, members: $0.0.1, upsert: $0.1) },
+                        unapply: { (($0.listAddress, $0.members), $0.upsert) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.bulkAdd))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path { "members.json" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             [Mailgun.Lists.Member.Bulk].self,
                             decoder: .mailgun,
@@ -137,13 +176,42 @@ extension Mailgun.Lists.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.bulkAddCSV)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: {
+                            (
+                                listAddress: $0.0.0.0,
+                                request: $0.0.0.1,
+                                subscribed: $0.0.1,
+                                upsert: $0.1
+                            )
+                        },
+                        unapply: { ((($0.listAddress, $0.request), $0.subscribed), $0.upsert) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.bulkAddCSV))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path { "members.csv" }
-                    Path { Parse(.data) }
+                    Path {
+                        // The vended `.data` conversion is `[UInt8] ⇆ Data`; a path
+                        // component is `Substring`, so bridge via `.string` + a UTF-8
+                        // witness (equivalent to the retired pointfree `.data`).
+                        Parse(
+                            .string.map(
+                                Parser.Conversion.Witness<Swift.String, Foundation.Data, Never>(
+                                    apply: { (raw: Swift.String) -> Foundation.Data in
+                                        Foundation.Data(raw.utf8)
+                                    },
+                                    unapply: { (data: Foundation.Data) -> Swift.String in
+                                        Swift.String(decoding: data, as: UTF8.self)
+                                    }
+                                )
+                            )
+                        )
+                    }
                     URLRouting.Query {
                         Optionally {
                             Field("subscribed") { Bool.parser() }
@@ -156,20 +224,35 @@ extension Mailgun.Lists.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.updateMember)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0.0, memberAddress: $0.0.1, request: $0.1) },
+                        unapply: { (($0.listAddress, $0.memberAddress), $0.request) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.updateMember))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path.members
                     Path { Parse(.string.representing(EmailAddress.self)) }
-                    Multipart(
-                        Mailgun.Lists.Member.Update.Request.self,
-                        arrayEncodingStrategy: .brackets
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Lists.Member.Update.Request.self,
+                            arrayEncodingStrategy: .brackets,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.deleteMember)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0, memberAddress: $0.1) },
+                        unapply: { ($0.listAddress, $0.memberAddress) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.deleteMember))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path.lists
@@ -178,7 +261,13 @@ extension Mailgun.Lists.API {
                     Path { Parse(.string.representing(EmailAddress.self)) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.getMember)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0, memberAddress: $0.1) },
+                        unapply: { ($0.listAddress, $0.memberAddress) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.getMember))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.lists
@@ -187,57 +276,83 @@ extension Mailgun.Lists.API {
                     Path { Parse(.string.representing(EmailAddress.self)) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.update)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0, request: $0.1) },
+                        unapply: { ($0.listAddress, $0.request) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.update))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
-                    Multipart(
-                        Mailgun.Lists.List.Update.Request.self,
-                        arrayEncodingStrategy: .brackets
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Lists.List.Update.Request.self,
+                            arrayEncodingStrategy: .brackets,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.delete)) {
+                URLRouting.Route(.case(Mailgun.Lists.API.cases.delete)) {
                     Method.delete
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.get)) {
+                URLRouting.Route(.case(Mailgun.Lists.API.cases.get)) {
                     Method.get
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.pages)) {
+                URLRouting.Route(.case(Mailgun.Lists.API.cases.pages)) {
                     Method.get
                     Path { "v3" }
                     Path.lists
                     Path.pages
                     URLRouting.Query {
                         Optionally {
-                            Field("limit") { Digits() }
+                            Field("limit") { Int.parser() }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Lists.API.memberPages)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (listAddress: $0.0, request: $0.1) },
+                        unapply: { ($0.listAddress, $0.request) }
+                    )
+                    .map(.case(Mailgun.Lists.API.cases.memberPages))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path.members
                     Path.pages
-                    Parse(.memberwise(Mailgun.Lists.List.Members.Pages.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((($0.0, $0.1), $0.2), $0.3) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.Lists.List.Members.Pages.Request.init,
+                                { ($0.subscribed, $0.limit, $0.address, $0.page) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("subscribed") { Bool.parser() }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("address") { Parse(.string.representing(EmailAddress.self)) }

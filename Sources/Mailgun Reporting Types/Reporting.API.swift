@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Reporting {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case metrics(Metrics.API)
         case stats(Stats.API)
@@ -25,19 +24,19 @@ extension Mailgun.Reporting.API {
 
         public var body: some URLRouting.Router<Mailgun.Reporting.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Reporting.API.metrics)) {
+                URLRouting.Route(.case(Mailgun.Reporting.API.cases.metrics)) {
                     Mailgun.Reporting.Metrics.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Reporting.API.stats)) {
+                URLRouting.Route(.case(Mailgun.Reporting.API.cases.stats)) {
                     Mailgun.Reporting.Stats.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Reporting.API.events)) {
+                URLRouting.Route(.case(Mailgun.Reporting.API.cases.events)) {
                     Mailgun.Reporting.Events.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Reporting.API.tags)) {
+                URLRouting.Route(.case(Mailgun.Reporting.API.cases.tags)) {
                     Mailgun.Reporting.Tags.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Reporting.API.logs)) {
+                URLRouting.Route(.case(Mailgun.Reporting.API.cases.logs)) {
                     Mailgun.Reporting.Logs.API.Router()
                 }
             }

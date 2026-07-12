@@ -51,6 +51,6 @@ struct UnsubscribeRouterTests {
         )
         #expect(match.is(\.get))
         let expected1 = try Domain("test.domain.com")
-        #expect(match.get?.domain == expected1)
+        #expect(Mailgun.Suppressions.Unsubscribe.API.cases.get.extract(match)?.domain == expected1)
     }
 }

@@ -43,12 +43,12 @@ struct LogsRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.analytics))
-        #expect(match.analytics?.action == "delivered")
-        #expect(match.analytics?.filter?.and?.count == 2)
-        #expect(match.analytics?.filter?.or?.count == nil)
-        #expect(match.analytics?.filter?.and?.first?.field == "domain")
-        #expect(match.analytics?.filter?.and?.first?.operator == .equals)
-        if case .string(let value) = match.analytics?.filter?.and?.first?.value {
+        #expect(Mailgun.Reporting.Logs.API.cases.analytics.extract(match)?.action == "delivered")
+        #expect(Mailgun.Reporting.Logs.API.cases.analytics.extract(match)?.filter?.and?.count == 2)
+        #expect(Mailgun.Reporting.Logs.API.cases.analytics.extract(match)?.filter?.or?.count == nil)
+        #expect(Mailgun.Reporting.Logs.API.cases.analytics.extract(match)?.filter?.and?.first?.field == "domain")
+        #expect(Mailgun.Reporting.Logs.API.cases.analytics.extract(match)?.filter?.and?.first?.operator == .equals)
+        if case .string(let value) = Mailgun.Reporting.Logs.API.cases.analytics.extract(match)?.filter?.and?.first?.value {
             #expect(value == "example.com")
         }
     }

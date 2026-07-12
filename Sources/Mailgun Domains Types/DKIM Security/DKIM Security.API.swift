@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Domains.DKIM_Security {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case updateRotation(
             domain: Domain,
@@ -25,14 +24,20 @@ extension Mailgun.Domains.DKIM_Security.API {
 
         public var body: some URLRouting.Router<Mailgun.Domains.DKIM_Security.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Domains.DKIM_Security.API.updateRotation)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Domains.DKIM_Security.API.cases.updateRotation))
+                ) {
                     Method.put
                     Path { "v1" }
                     Path { "dkim_management" }
                     Path { "domains" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "rotation" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Domains.DKIM_Security.Rotation.Update.Request.self,
                             decoder: .mailgun,
@@ -41,7 +46,7 @@ extension Mailgun.Domains.DKIM_Security.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Domains.DKIM_Security.API.rotateManually)) {
+                URLRouting.Route(.case(Mailgun.Domains.DKIM_Security.API.cases.rotateManually)) {
                     Method.post
                     Path { "v1" }
                     Path { "dkim_management" }

@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Users {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list(request: Mailgun.Users.List.Request?)
         case get(userId: String)
@@ -26,7 +25,13 @@ extension Mailgun.Users.API {
         public var body: some URLRouting.Router<Mailgun.Users.API> {
             OneOf {
                 // PUT /v5/users/{user_id}/org/{org_id}
-                URLRouting.Route(.case(Mailgun.Users.API.addToOrganization)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (userId: $0.0, orgId: $0.1) },
+                        unapply: { ($0.userId, $0.orgId) }
+                    )
+                    .map(.case(Mailgun.Users.API.cases.addToOrganization))
+                ) {
                     Method.put
                     Path { "v5" }
                     Path.users
@@ -36,7 +41,13 @@ extension Mailgun.Users.API {
                 }
 
                 // DELETE /v5/users/{user_id}/org/{org_id}
-                URLRouting.Route(.case(Mailgun.Users.API.removeFromOrganization)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (userId: $0.0, orgId: $0.1) },
+                        unapply: { ($0.userId, $0.orgId) }
+                    )
+                    .map(.case(Mailgun.Users.API.cases.removeFromOrganization))
+                ) {
                     Method.delete
                     Path { "v5" }
                     Path.users
@@ -46,7 +57,7 @@ extension Mailgun.Users.API {
                 }
 
                 // GET /v5/users/me
-                URLRouting.Route(.case(Mailgun.Users.API.me)) {
+                URLRouting.Route(.case(Mailgun.Users.API.cases.me)) {
                     Method.get
                     Path { "v5" }
                     Path.users
@@ -54,7 +65,7 @@ extension Mailgun.Users.API {
                 }
 
                 // GET /v5/users/{user_id}
-                URLRouting.Route(.case(Mailgun.Users.API.get)) {
+                URLRouting.Route(.case(Mailgun.Users.API.cases.get)) {
                     Method.get
                     Path { "v5" }
                     Path.users
@@ -62,12 +73,23 @@ extension Mailgun.Users.API {
                 }
 
                 // GET /v5/users
-                URLRouting.Route(.case(Mailgun.Users.API.list)) {
+                URLRouting.Route(.case(Mailgun.Users.API.cases.list)) {
                     Method.get
                     Path { "v5" }
                     Path.users
                     Optionally {
-                        Parse(.memberwise(Mailgun.Users.List.Request.init)) {
+                        Parse(
+                            .convert(
+                                apply: { ($0.0.0, $0.0.1, $0.1) },
+                                unapply: { (($0.0, $0.1), $0.2) }
+                            )
+                            .map(
+                                .memberwise(
+                                    Mailgun.Users.List.Request.init,
+                                    { ($0.role, $0.limit, $0.skip) }
+                                )
+                            )
+                        ) {
                             URLRouting.Query {
                                 Optionally {
                                     Field("role") {
@@ -75,10 +97,10 @@ extension Mailgun.Users.API {
                                     }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                                 Optionally {
-                                    Field("skip") { Digits() }
+                                    Field("skip") { Int.parser() }
                                 }
                             }
                         }

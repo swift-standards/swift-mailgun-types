@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Routes {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case create(request: Mailgun.Routes.Create.Request)
         case list(limit: Int? = nil, skip: Int? = nil)
@@ -26,11 +25,11 @@ extension Mailgun.Routes.API {
 
         public var body: some URLRouting.Router<Mailgun.Routes.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Routes.API.create)) {
+                URLRouting.Route(.case(Mailgun.Routes.API.cases.create)) {
                     Method.post
                     Path { "v3" }
                     Path.routes
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Routes.Create.Request.self,
                             decoder: .mailgunRoutes,
@@ -39,43 +38,60 @@ extension Mailgun.Routes.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Routes.API.update)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Mailgun.Routes.API.cases.update))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path.routes
                     Path { Parse(.string) }
-                    Body(.multipart(Mailgun.Routes.Update.Request.self))
+                    URLRouting.Body(
+                        RFC_2046.Multipart.Conversion(
+                            Mailgun.Routes.Update.Request.self,
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                        )
+                    )
                 }
 
-                URLRouting.Route(.case(Mailgun.Routes.API.delete)) {
+                URLRouting.Route(.case(Mailgun.Routes.API.cases.delete)) {
                     Method.delete
                     Path { "v3" }
                     Path.routes
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Routes.API.get)) {
+                URLRouting.Route(.case(Mailgun.Routes.API.cases.get)) {
                     Method.get
                     Path { "v3" }
                     Path.routes
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Routes.API.list)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (limit: $0.0, skip: $0.1) },
+                        unapply: { ($0.limit, $0.skip) }
+                    )
+                    .map(.case(Mailgun.Routes.API.cases.list))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.routes
                     Query {
                         Optionally {
-                            Field("limit") { Digits() }
+                            Field("limit") { Int.parser() }
                         }
                         Optionally {
-                            Field("skip") { Digits() }
+                            Field("skip") { Int.parser() }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Routes.API.match)) {
+                URLRouting.Route(.case(Mailgun.Routes.API.cases.match)) {
                     Method.get
                     Path { "v3" }
                     Path.routes

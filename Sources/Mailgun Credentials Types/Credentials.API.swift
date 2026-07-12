@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Credentials {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list(domain: Domain, request: Mailgun.Credentials.List.Request?)
         case create(domain: Domain, request: Mailgun.Credentials.Create.Request)
@@ -30,33 +29,45 @@ extension Mailgun.Credentials.API {
 
         public var body: some URLRouting.Router<Mailgun.Credentials.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Credentials.API.list)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Credentials.API.cases.list))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
                     Optionally {
-                        Parse(.memberwise(Mailgun.Credentials.List.Request.init)) {
+                        Parse(.memberwise(Mailgun.Credentials.List.Request.init, { ($0.skip, $0.limit) })) {
                             URLRouting.Query {
                                 Optionally {
-                                    Field("skip") { Digits() }
+                                    Field("skip") { Int.parser() }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                             }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Credentials.API.create)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Credentials.API.cases.create))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Credentials.Create.Request.self,
                             decoder: .mailgun,
@@ -65,7 +76,7 @@ extension Mailgun.Credentials.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Credentials.API.deleteAll)) {
+                URLRouting.Route(.case(Mailgun.Credentials.API.cases.deleteAll)) {
                     Method.delete
                     Path { "v3" }
                     Path.domains
@@ -73,14 +84,20 @@ extension Mailgun.Credentials.API {
                     Path.credentials
                 }
 
-                URLRouting.Route(.case(Mailgun.Credentials.API.update)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0.0, login: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domain, $0.login), $0.request) }
+                    )
+                    .map(.case(Mailgun.Credentials.API.cases.update))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
                     Path { Parse(.string) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Credentials.Update.Request.self,
                             decoder: .mailgun,
@@ -89,7 +106,13 @@ extension Mailgun.Credentials.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Credentials.API.delete)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, login: $0.1) },
+                        unapply: { ($0.domain, $0.login) }
+                    )
+                    .map(.case(Mailgun.Credentials.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path.domains
@@ -98,13 +121,19 @@ extension Mailgun.Credentials.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Credentials.API.updateMailbox)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0.0, login: $0.0.1, request: $0.1) },
+                        unapply: { (($0.domain, $0.login), $0.request) }
+                    )
+                    .map(.case(Mailgun.Credentials.API.cases.updateMailbox))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.mailboxes
                     Path { Parse(.string) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Credentials.Mailbox.Update.Request.self,
                             decoder: .mailgun,

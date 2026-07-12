@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.IPs {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list
         case get(ip: String)
@@ -30,20 +29,20 @@ extension Mailgun.IPs.API {
 
         public var body: some URLRouting.Router<Mailgun.IPs.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.IPs.API.list)) {
+                URLRouting.Route(.case(Mailgun.IPs.API.cases.list)) {
                     Method.get
                     Path { "v3" }
                     Path.ips
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.get)) {
+                URLRouting.Route(.case(Mailgun.IPs.API.cases.get)) {
                     Method.get
                     Path { "v3" }
                     Path.ips
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.listDomains)) {
+                URLRouting.Route(.case(Mailgun.IPs.API.cases.listDomains)) {
                     Method.get
                     Path { "v3" }
                     Path.ips
@@ -51,13 +50,19 @@ extension Mailgun.IPs.API {
                     Path { "domains" }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.assignDomain)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (ip: $0.0, request: $0.1) },
+                        unapply: { ($0.ip, $0.request) }
+                    )
+                    .map(.case(Mailgun.IPs.API.cases.assignDomain))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.ips
                     Path { Parse(.string) }
                     Path { "domains" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPs.AssignDomain.Request.self,
                             decoder: .mailgun,
@@ -66,7 +71,13 @@ extension Mailgun.IPs.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.unassignDomain)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (ip: $0.0, domain: $0.1) },
+                        unapply: { ($0.ip, $0.domain) }
+                    )
+                    .map(.case(Mailgun.IPs.API.cases.unassignDomain))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path.ips
@@ -75,24 +86,30 @@ extension Mailgun.IPs.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.assignIPBand)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (ip: $0.0, request: $0.1) },
+                        unapply: { ($0.ip, $0.request) }
+                    )
+                    .map(.case(Mailgun.IPs.API.cases.assignIPBand))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path.ips
                     Path { Parse(.string) }
                     Path.ipBand
-                    Body(
+                    URLRouting.Body(
                         .form(Mailgun.IPs.IPBand.Request.self, decoder: .mailgun, encoder: .mailgun)
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.requestNew)) {
+                URLRouting.Route(.case(Mailgun.IPs.API.cases.requestNew)) {
                     Method.post
                     Path { "v3" }
                     Path.ips
                     Path { "request" }
                     Path { "new" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPs.RequestNew.Request.self,
                             decoder: .mailgun,
@@ -101,7 +118,7 @@ extension Mailgun.IPs.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.getRequestedIPs)) {
+                URLRouting.Route(.case(Mailgun.IPs.API.cases.getRequestedIPs)) {
                     Method.get
                     Path { "v3" }
                     Path.ips
@@ -109,7 +126,13 @@ extension Mailgun.IPs.API {
                     Path { "new" }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.deleteDomainIP)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, ip: $0.1) },
+                        unapply: { ($0.domain, $0.ip) }
+                    )
+                    .map(.case(Mailgun.IPs.API.cases.deleteDomainIP))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { "domains" }
@@ -118,7 +141,13 @@ extension Mailgun.IPs.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPs.API.deleteDomainPool)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, ip: $0.1) },
+                        unapply: { ($0.domain, $0.ip) }
+                    )
+                    .map(.case(Mailgun.IPs.API.cases.deleteDomainPool))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { "domains" }

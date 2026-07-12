@@ -1,4 +1,3 @@
-import CasePaths
 import Dependencies
 import Domain_Standard
 import Foundation
@@ -296,7 +295,11 @@ struct ReadmeVerificationTests {
         let trackingAPI = Mailgun.Domains.Domains.Tracking.API.get(domain: domain)
 
         #expect(trackingAPI.is(\.get))
-        #expect(trackingAPI.get == domain)
+        if case .get(let trackedDomain) = trackingAPI {
+            #expect(trackedDomain == domain)
+        } else {
+            Issue.record("Expected .get case")
+        }
     }
 
     // MARK: - Mock Client Testing (README lines 646-712)

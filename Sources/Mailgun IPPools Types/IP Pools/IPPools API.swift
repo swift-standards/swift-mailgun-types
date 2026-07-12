@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.IPPools {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case list
         case create(request: Mailgun.IPPools.Create.Request)
@@ -26,17 +25,17 @@ extension Mailgun.IPPools.API {
 
         public var body: some URLRouting.Router<Mailgun.IPPools.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.IPPools.API.list)) {
+                URLRouting.Route(.case(Mailgun.IPPools.API.cases.list)) {
                     Method.get
                     Path { "v1" }
                     Path.ipPools
                 }
 
-                URLRouting.Route(.case(Mailgun.IPPools.API.create)) {
+                URLRouting.Route(.case(Mailgun.IPPools.API.cases.create)) {
                     Method.post
                     Path { "v1" }
                     Path.ipPools
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPPools.Create.Request.self,
                             decoder: .mailgun,
@@ -45,19 +44,25 @@ extension Mailgun.IPPools.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPPools.API.get)) {
+                URLRouting.Route(.case(Mailgun.IPPools.API.cases.get)) {
                     Method.get
                     Path { "v1" }
                     Path.ipPools
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPPools.API.update)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (poolId: $0.0, request: $0.1) },
+                        unapply: { ($0.poolId, $0.request) }
+                    )
+                    .map(.case(Mailgun.IPPools.API.cases.update))
+                ) {
                     Method.patch
                     Path { "v1" }
                     Path.ipPools
                     Path { Parse(.string) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.IPPools.Update.Request.self,
                             decoder: .mailgun,
@@ -66,13 +71,24 @@ extension Mailgun.IPPools.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.IPPools.API.delete)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (poolId: $0.0, request: $0.1) },
+                        unapply: { ($0.poolId, $0.request) }
+                    )
+                    .map(.case(Mailgun.IPPools.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v1" }
                     Path.ipPools
                     Path { Parse(.string) }
                     Optionally {
-                        Parse(.memberwise(Mailgun.IPPools.Delete.Request.init)) {
+                        Parse(
+                            .memberwise(
+                                Mailgun.IPPools.Delete.Request.init,
+                                { ($0.ip, $0.poolId) }
+                            )
+                        ) {
                             URLRouting.Query {
                                 Optionally {
                                     Field("ip") { Parse(.string) }
@@ -85,7 +101,7 @@ extension Mailgun.IPPools.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.IPPools.API.listDomains)) {
+                URLRouting.Route(.case(Mailgun.IPPools.API.cases.listDomains)) {
                     Method.get
                     Path { "v1" }
                     Path.ipPools

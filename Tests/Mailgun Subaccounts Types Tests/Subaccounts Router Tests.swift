@@ -27,7 +27,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.get))
-        #expect(match.get?.description == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.get.extract(match)?.description == "test-subaccount-123")
     }
 
     @Test("Creates correct URL for listing subaccounts")
@@ -55,7 +55,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
-        #expect(match.create?.name == "Test Subaccount")
+        #expect(Mailgun.Subaccounts.API.cases.create.extract(match)?.name == "Test Subaccount")
     }
 
     @Test("Creates correct URL for deleting subaccounts")
@@ -76,7 +76,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: request)
         #expect(match.is(\.delete))
-        #expect(match.delete?.description == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.delete.extract(match)?.description == "test-subaccount-123")
     }
 
     @Test("Creates correct URL for disabling a subaccount")
@@ -91,7 +91,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.disable))
-        #expect(match.disable?.subaccountId == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.disable.extract(match)?.subaccountId == "test-subaccount-123")
     }
 
     @Test("Creates correct URL for enabling a subaccount")
@@ -106,7 +106,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.enable))
-        #expect(match.enable?.description == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.enable.extract(match)?.description == "test-subaccount-123")
     }
 
     @Test("Creates correct URL for getting custom limit")
@@ -121,7 +121,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.getCustomLimit))
-        #expect(match.getCustomLimit?.description == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.getCustomLimit.extract(match)?.description == "test-subaccount-123")
     }
 
     @Test("Creates correct URL for updating custom limit")
@@ -139,8 +139,8 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.updateCustomLimit))
-        #expect(match.updateCustomLimit?.subaccountId == "test-subaccount-123")
-        #expect(match.updateCustomLimit?.limit == 10000)
+        #expect(Mailgun.Subaccounts.API.cases.updateCustomLimit.extract(match)?.subaccountId == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.updateCustomLimit.extract(match)?.limit == 10000)
     }
 
     @Test("Creates correct URL for deleting custom limit")
@@ -155,7 +155,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteCustomLimit))
-        #expect(match.deleteCustomLimit?.description == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.deleteCustomLimit.extract(match)?.description == "test-subaccount-123")
     }
 
     @Test("Creates correct URL for updating features")
@@ -174,7 +174,7 @@ struct SubaccountsRouterTests {
 
         let match: Mailgun.Subaccounts.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.updateFeatures))
-        #expect(match.updateFeatures?.subaccountId == "test-subaccount-123")
+        #expect(Mailgun.Subaccounts.API.cases.updateFeatures.extract(match)?.subaccountId == "test-subaccount-123")
         // Request structure verified
     }
 

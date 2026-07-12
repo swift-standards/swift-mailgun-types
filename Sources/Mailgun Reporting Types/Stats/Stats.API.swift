@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Reporting.Stats {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case total(request: Mailgun.Reporting.Stats.Total.Request)
         case filter(request: Mailgun.Reporting.Stats.Filter.Request)
@@ -25,12 +24,23 @@ extension Mailgun.Reporting.Stats.API {
 
         public var body: some URLRouting.Router<Mailgun.Reporting.Stats.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.total)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.cases.total)) {
                     Method.get
                     Path { "v3" }
                     Path.stats
                     Path.total
-                    Parse(.memberwise(Mailgun.Reporting.Stats.Total.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.Reporting.Stats.Total.Request.init,
+                                { ($0.event, $0.start, $0.end, $0.resolution, $0.duration) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Field("event") { Parse(.string) }
                             Optionally {
@@ -49,12 +59,31 @@ extension Mailgun.Reporting.Stats.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.filter)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.cases.filter)) {
                     Method.get
                     Path { "v3" }
                     Path.stats
                     Path { "filter" }
-                    Parse(.memberwise(Mailgun.Reporting.Stats.Filter.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { (
+                                $0.0.0.0.0.0.0,
+                                $0.0.0.0.0.0.1,
+                                $0.0.0.0.0.1,
+                                $0.0.0.0.1,
+                                $0.0.0.1,
+                                $0.0.1,
+                                $0.1
+                            ) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Mailgun.Reporting.Stats.Filter.Request.init,
+                                { ($0.event, $0.start, $0.end, $0.resolution, $0.duration, $0.filter, $0.group) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Field("event") { Parse(.string) }
                             Optionally {
@@ -79,7 +108,7 @@ extension Mailgun.Reporting.Stats.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.aggregateProviders)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.cases.aggregateProviders)) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -87,7 +116,7 @@ extension Mailgun.Reporting.Stats.API {
                     Path.providers
                 }
 
-                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.aggregateDevices)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.cases.aggregateDevices)) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -95,7 +124,7 @@ extension Mailgun.Reporting.Stats.API {
                     Path.devices
                 }
 
-                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.aggregateCountries)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Stats.API.cases.aggregateCountries)) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }

@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Reporting.Metrics {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case getAccountMetrics(request: GetAccountMetrics.Request)
         case getAccountUsageMetrics(request: GetAccountUsageMetrics.Request)
@@ -22,21 +21,21 @@ extension Mailgun.Reporting.Metrics.API {
 
         public var body: some URLRouting.Router<Mailgun.Reporting.Metrics.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Reporting.Metrics.API.getAccountMetrics)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Metrics.API.cases.getAccountMetrics)) {
                     Method.post
                     Path { "v1" }
                     Path.analytics
                     Path.metrics
-                    Body(.json(Mailgun.Reporting.Metrics.GetAccountMetrics.Request.self))
+                    URLRouting.Body(.json(Mailgun.Reporting.Metrics.GetAccountMetrics.Request.self))
                 }
 
-                URLRouting.Route(.case(Mailgun.Reporting.Metrics.API.getAccountUsageMetrics)) {
+                URLRouting.Route(.case(Mailgun.Reporting.Metrics.API.cases.getAccountUsageMetrics)) {
                     Method.post
                     Path { "v1" }
                     Path.analytics
                     Path.usage
                     Path.metrics
-                    Body(.json(Mailgun.Reporting.Metrics.GetAccountUsageMetrics.Request.self))
+                    URLRouting.Body(.json(Mailgun.Reporting.Metrics.GetAccountUsageMetrics.Request.self))
                 }
             }
         }

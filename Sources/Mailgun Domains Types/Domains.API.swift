@@ -9,8 +9,7 @@ import Mailgun_Types_Shared
 import URLRouting
 
 extension Mailgun.Domains {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case domain(Domains.API)
         case dkimSecurity(DKIM_Security.API)
@@ -25,16 +24,16 @@ extension Mailgun.Domains.API {
 
         public var body: some URLRouting.Router<Mailgun.Domains.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Domains.API.domain)) {
+                URLRouting.Route(.case(Mailgun.Domains.API.cases.domain)) {
                     Mailgun.Domains.Domains.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Domains.API.dkimSecurity)) {
+                URLRouting.Route(.case(Mailgun.Domains.API.cases.dkimSecurity)) {
                     Mailgun.Domains.DKIM_Security.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Domains.API.dkimKeys)) {
+                URLRouting.Route(.case(Mailgun.Domains.API.cases.dkimKeys)) {
                     Mailgun.Domains.DomainKeys.API.Router()
                 }
-                URLRouting.Route(.case(Mailgun.Domains.API.dkimTracking)) {
+                URLRouting.Route(.case(Mailgun.Domains.API.cases.dkimTracking)) {
                     Mailgun.Domains.Domains.Tracking.API.Router()
                 }
             }

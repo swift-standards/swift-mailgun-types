@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Suppressions.Allowlist {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case get(domain: Domain, value: String)
         case delete(domain: Domain, value: String)
@@ -26,7 +25,13 @@ extension Mailgun.Suppressions.Allowlist.API {
 
         public var body: some URLRouting.Router<Mailgun.Suppressions.Allowlist.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.get)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, value: $0.1) },
+                        unapply: { ($0.domain, $0.value) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Allowlist.API.cases.get))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -34,7 +39,13 @@ extension Mailgun.Suppressions.Allowlist.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.delete)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, value: $0.1) },
+                        unapply: { ($0.domain, $0.value) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Allowlist.API.cases.delete))
+                ) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
@@ -42,13 +53,30 @@ extension Mailgun.Suppressions.Allowlist.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.list)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Allowlist.API.cases.list))
+                ) {
                     Method.get
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.whitelists
                     Optionally {
-                        Parse(.memberwise(Mailgun.Suppressions.Allowlist.List.Request.init)) {
+                        Parse(
+                            .convert(
+                                apply: { ($0.0.0.0, $0.0.0.1, $0.0.1, $0.1) },
+                                unapply: { ((($0.0, $0.1), $0.2), $0.3) }
+                            )
+                            .map(
+                                .memberwise(
+                                    Mailgun.Suppressions.Allowlist.List.Request.init,
+                                    { ($0.address, $0.term, $0.limit, $0.page) }
+                                )
+                            )
+                        ) {
                             URLRouting.Query {
                                 Optionally {
                                     Field("address") {
@@ -59,7 +87,7 @@ extension Mailgun.Suppressions.Allowlist.API {
                                     Field("term") { Parse(.string) }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                                 Optionally {
                                     Field("page") { Parse(.string) }
@@ -69,7 +97,13 @@ extension Mailgun.Suppressions.Allowlist.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.create)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Allowlist.API.cases.create))
+                ) {
                     Method.post
                     Headers {
                         Field("Content-Type") { "application/x-www-form-urlencoded" }
@@ -77,7 +111,7 @@ extension Mailgun.Suppressions.Allowlist.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.whitelists
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Suppressions.Allowlist.Create.Request.self,
                             decoder: .mailgun,
@@ -86,20 +120,26 @@ extension Mailgun.Suppressions.Allowlist.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.deleteAll)) {
+                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.cases.deleteAll)) {
                     Method.delete
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.whitelists
                 }
 
-                URLRouting.Route(.case(Mailgun.Suppressions.Allowlist.API.importList)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Suppressions.Allowlist.API.cases.importList))
+                ) {
                     Method.post
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.whitelists
                     Path { "import" }
-                    try! FileUpload.csv()
+                    try! FileUpload(fieldName: "file", filename: "import.csv", fileType: .csv)
                 }
             }
         }

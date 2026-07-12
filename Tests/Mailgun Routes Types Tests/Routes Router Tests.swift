@@ -32,7 +32,7 @@ struct RoutesRouterTests {
 
         let match: Mailgun.Routes.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
-        #expect(match.create?.priority == 0)
+        #expect(Mailgun.Routes.API.cases.create.extract(match)?.priority == 0)
     }
 
     @Test("Verifies all endpoints use v3 API version")

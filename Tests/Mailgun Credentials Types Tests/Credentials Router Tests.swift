@@ -31,10 +31,10 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         let expected1 = try Domain("test.domain.com")
-        #expect(match.list?.domain == expected1)
+        #expect(Mailgun.Credentials.API.cases.list.extract(match)?.domain == expected1)
         // Request without parameters creates an empty request object
-        #expect(match.list?.request?.skip == nil)
-        #expect(match.list?.request?.limit == nil)
+        #expect(Mailgun.Credentials.API.cases.list.extract(match)?.request?.skip == nil)
+        #expect(Mailgun.Credentials.API.cases.list.extract(match)?.request?.limit == nil)
     }
 
     @Test("Creates correct URL for listing credentials with pagination")
@@ -55,9 +55,9 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.list))
         let expected2 = try Domain("test.domain.com")
-        #expect(match.list?.domain == expected2)
-        #expect(match.list?.request?.skip == 10)
-        #expect(match.list?.request?.limit == 50)
+        #expect(Mailgun.Credentials.API.cases.list.extract(match)?.domain == expected2)
+        #expect(Mailgun.Credentials.API.cases.list.extract(match)?.request?.skip == 10)
+        #expect(Mailgun.Credentials.API.cases.list.extract(match)?.request?.limit == 50)
     }
 
     @Test("Creates correct URL for creating credentials")
@@ -80,9 +80,9 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.create))
         let expected3 = try Domain("test.domain.com")
-        #expect(match.create?.domain == expected3)
-        #expect(match.create?.request.login == "user@test.domain.com")
-        #expect(match.create?.request.password == "securePassword123")
+        #expect(Mailgun.Credentials.API.cases.create.extract(match)?.domain == expected3)
+        #expect(Mailgun.Credentials.API.cases.create.extract(match)?.request.login == "user@test.domain.com")
+        #expect(Mailgun.Credentials.API.cases.create.extract(match)?.request.password == "securePassword123")
     }
 
     @Test("Creates correct URL for deleting all credentials")
@@ -99,7 +99,7 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.deleteAll))
         let expected4 = try Domain("test.domain.com")
-        #expect(match.deleteAll == expected4)
+        #expect(Mailgun.Credentials.API.cases.deleteAll.extract(match) == expected4)
     }
 
     @Test("Creates correct URL for updating credentials")
@@ -122,9 +122,9 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.update))
         let expected5 = try Domain("test.domain.com")
-        #expect(match.update?.domain == expected5)
-        #expect(match.update?.login == "user@test.domain.com")
-        #expect(match.update?.request.password == "newSecurePassword456")
+        #expect(Mailgun.Credentials.API.cases.update.extract(match)?.domain == expected5)
+        #expect(Mailgun.Credentials.API.cases.update.extract(match)?.login == "user@test.domain.com")
+        #expect(Mailgun.Credentials.API.cases.update.extract(match)?.request.password == "newSecurePassword456")
     }
 
     @Test("Creates correct URL for deleting specific credentials")
@@ -142,8 +142,8 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
         let expected6 = try Domain("test.domain.com")
-        #expect(match.delete?.domain == expected6)
-        #expect(match.delete?.login == "user@test.domain.com")
+        #expect(Mailgun.Credentials.API.cases.delete.extract(match)?.domain == expected6)
+        #expect(Mailgun.Credentials.API.cases.delete.extract(match)?.login == "user@test.domain.com")
     }
 
     @Test("Creates correct URL for updating mailbox")
@@ -166,9 +166,9 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.updateMailbox))
         let expected7 = try Domain("test.domain.com")
-        #expect(match.updateMailbox?.domain == expected7)
-        #expect(match.updateMailbox?.login == "user@test.domain.com")
-        #expect(match.updateMailbox?.request.password == "newMailboxPassword789")
+        #expect(Mailgun.Credentials.API.cases.updateMailbox.extract(match)?.domain == expected7)
+        #expect(Mailgun.Credentials.API.cases.updateMailbox.extract(match)?.login == "user@test.domain.com")
+        #expect(Mailgun.Credentials.API.cases.updateMailbox.extract(match)?.request.password == "newMailboxPassword789")
     }
 
     @Test("Handles special characters in login parameter")
@@ -188,7 +188,7 @@ struct CredentialsRouterTests {
         let match: Mailgun.Credentials.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
         let expected8 = try Domain("test.domain.com")
-        #expect(match.delete?.domain == expected8)
-        #expect(match.delete?.login == "user+test@test.domain.com")
+        #expect(Mailgun.Credentials.API.cases.delete.extract(match)?.domain == expected8)
+        #expect(Mailgun.Credentials.API.cases.delete.extract(match)?.login == "user+test@test.domain.com")
     }
 }

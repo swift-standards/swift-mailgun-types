@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Domains.Domains.Tracking {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case get(domain: Domain)
         case updateClick(
@@ -33,7 +32,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
 
         public var body: some URLRouting.Router<Mailgun.Domains.Domains.Tracking.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.get)) {
+                URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.cases.get)) {
                     Method.get
                     Path { "v3" }
                     Path { "domains" }
@@ -41,14 +40,20 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { "tracking" }
                 }
 
-                URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.updateClick)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Domains.Domains.Tracking.API.cases.updateClick))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { "domains" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "tracking" }
                     Path { "click" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Domains.Domains.Tracking.UpdateClick.Request.self,
                             decoder: .mailgun,
@@ -57,14 +62,20 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.updateOpen)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Domains.Domains.Tracking.API.cases.updateOpen))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { "domains" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "tracking" }
                     Path { "open" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Domains.Domains.Tracking.UpdateOpen.Request.self,
                             decoder: .mailgun,
@@ -73,14 +84,20 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     )
                 }
 
-                URLRouting.Route(.case(Mailgun.Domains.Domains.Tracking.API.updateUnsubscribe)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (domain: $0.0, request: $0.1) },
+                        unapply: { ($0.domain, $0.request) }
+                    )
+                    .map(.case(Mailgun.Domains.Domains.Tracking.API.cases.updateUnsubscribe))
+                ) {
                     Method.put
                     Path { "v3" }
                     Path { "domains" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "tracking" }
                     Path { "unsubscribe" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Domains.Domains.Tracking.UpdateUnsubscribe.Request.self,
                             decoder: .mailgun,

@@ -8,8 +8,7 @@
 import Mailgun_Types_Shared
 
 extension Mailgun.Subaccounts {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case get(subaccountId: String)
         case list(request: Mailgun.Subaccounts.List.Request?)
@@ -33,7 +32,7 @@ extension Mailgun.Subaccounts.API {
 
         public var body: some URLRouting.Router<Mailgun.Subaccounts.API> {
             OneOf {
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.get)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.get)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
@@ -41,13 +40,30 @@ extension Mailgun.Subaccounts.API {
                     Path { Parse(.string) }
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.list)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.list)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
                     Path.subaccounts
                     Optionally {
-                        Parse(.memberwise(Mailgun.Subaccounts.List.Request.init)) {
+                        Parse(
+                            .convert(
+                                apply: {
+                                    (
+                                        $0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1
+                                    )
+                                },
+                                unapply: {
+                                    ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5)
+                                }
+                            )
+                            .map(
+                                .memberwise(
+                                    Mailgun.Subaccounts.List.Request.init,
+                                    { ($0.sort, $0.filter, $0.limit, $0.skip, $0.enabled, $0.closed) }
+                                )
+                            )
+                        ) {
                             URLRouting.Query {
                                 Optionally {
                                     Field("sort") {
@@ -62,10 +78,10 @@ extension Mailgun.Subaccounts.API {
                                     Field("filter") { Parse(.string) }
                                 }
                                 Optionally {
-                                    Field("limit") { Digits() }
+                                    Field("limit") { Int.parser() }
                                 }
                                 Optionally {
-                                    Field("skip") { Digits() }
+                                    Field("skip") { Int.parser() }
                                 }
                                 Optionally {
                                     Field("enabled") { Bool.parser() }
@@ -78,19 +94,19 @@ extension Mailgun.Subaccounts.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.create)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.create)) {
                     Method.post
                     Path { "v5" }
                     Path.accounts
                     Path.subaccounts
-                    Parse(.memberwise(Mailgun.Subaccounts.Create.Request.init)) {
+                    Parse(.memberwise(Mailgun.Subaccounts.Create.Request.init, { $0.name })) {
                         URLRouting.Query {
                             Field("name") { Parse(.string) }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.delete)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.delete)) {
                     Method.delete
                     Path { "v5" }
                     Path.accounts
@@ -100,7 +116,13 @@ extension Mailgun.Subaccounts.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.disable)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (subaccountId: $0.0, request: $0.1) },
+                        unapply: { ($0.subaccountId, $0.request) }
+                    )
+                    .map(.case(Mailgun.Subaccounts.API.cases.disable))
+                ) {
                     Method.post
                     Path { "v5" }
                     Path.accounts
@@ -108,7 +130,7 @@ extension Mailgun.Subaccounts.API {
                     Path { Parse(.string) }
                     Path.disable
                     Optionally {
-                        Parse(.memberwise(Mailgun.Subaccounts.Disable.Request.init)) {
+                        Parse(.memberwise(Mailgun.Subaccounts.Disable.Request.init, { ($0.reason, $0.note) })) {
                             URLRouting.Query {
                                 Optionally {
                                     Field("reason") { Parse(.string) }
@@ -121,7 +143,7 @@ extension Mailgun.Subaccounts.API {
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.enable)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.enable)) {
                     Method.post
                     Path { "v5" }
                     Path.accounts
@@ -130,7 +152,7 @@ extension Mailgun.Subaccounts.API {
                     Path.enable
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.getCustomLimit)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.getCustomLimit)) {
                     Method.get
                     Path { "v5" }
                     Path.accounts
@@ -141,7 +163,13 @@ extension Mailgun.Subaccounts.API {
                     Path.monthly
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.updateCustomLimit)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (subaccountId: $0.0, limit: $0.1) },
+                        unapply: { ($0.subaccountId, $0.limit) }
+                    )
+                    .map(.case(Mailgun.Subaccounts.API.cases.updateCustomLimit))
+                ) {
                     Method.put
                     Path { "v5" }
                     Path.accounts
@@ -151,11 +179,30 @@ extension Mailgun.Subaccounts.API {
                     Path.custom
                     Path.monthly
                     URLRouting.Query {
-                        Field("limit") { Double.parser() }
+                        Field("limit") {
+                            // No `Double.parser()` on the institute routing surface
+                            // (and `URLRouting.Value.init` is internal); bridge via the
+                            // same typed-throws witness pattern as the date conversions.
+                            Parse(
+                                .string.map(
+                                    Parser.Conversion.Witness<Swift.String, Double, Parser.Conversion.Error>(
+                                        apply: { (raw: Swift.String) throws(Parser.Conversion.Error) -> Double in
+                                            guard let value = Double(raw) else {
+                                                throw Parser.Conversion.Error.unrepresentable
+                                            }
+                                            return value
+                                        },
+                                        unapply: { (value: Double) -> Swift.String in
+                                            Swift.String(value)
+                                        }
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.deleteCustomLimit)) {
+                URLRouting.Route(.case(Mailgun.Subaccounts.API.cases.deleteCustomLimit)) {
                     Method.delete
                     Path { "v5" }
                     Path.accounts
@@ -166,14 +213,20 @@ extension Mailgun.Subaccounts.API {
                     Path.monthly
                 }
 
-                URLRouting.Route(.case(Mailgun.Subaccounts.API.updateFeatures)) {
+                URLRouting.Route(
+                    .convert(
+                        apply: { (subaccountId: $0.0, request: $0.1) },
+                        unapply: { ($0.subaccountId, $0.request) }
+                    )
+                    .map(.case(Mailgun.Subaccounts.API.cases.updateFeatures))
+                ) {
                     Method.put
                     Path { "v5" }
                     Path.accounts
                     Path.subaccounts
                     Path { Parse(.string) }
                     Path.features
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Mailgun.Subaccounts.Features.Update.Request.self,
                             decoder: .mailgun,
