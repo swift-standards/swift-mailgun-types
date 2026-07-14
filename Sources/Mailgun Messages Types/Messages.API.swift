@@ -108,7 +108,11 @@ extension Path<PathBuilder.Component<String>> {
 
 extension Mailgun.Messages {
     struct SendMultipartConversion: URLRouting.Conversion {
-        public let boundary = RFC_2046.Boundary(__unchecked: (), rawValue: "----=_Part_\(UUID().uuidString)")
+        // Token-safe boundary (alphanumerics + '-', ≤70 chars): the JavaMail-style
+        // "----=_Part_…" form is legal per RFC 2046 but contains '=', forcing
+        // quoted-string emission in the Content-Type parameter — wire conservatism
+        // keeps the hot path independent of quoting interop (Ruling F, fix B).
+        public let boundary = RFC_2046.Boundary(__unchecked: (), rawValue: "Part-\(UUID().uuidString)")
 
         public init() {}
 
@@ -424,7 +428,11 @@ extension Mailgun.Messages {
     }
 
     struct MimeMultipartConversion: URLRouting.Conversion {
-        public let boundary = RFC_2046.Boundary(__unchecked: (), rawValue: "----=_Part_\(UUID().uuidString)")
+        // Token-safe boundary (alphanumerics + '-', ≤70 chars): the JavaMail-style
+        // "----=_Part_…" form is legal per RFC 2046 but contains '=', forcing
+        // quoted-string emission in the Content-Type parameter — wire conservatism
+        // keeps the hot path independent of quoting interop (Ruling F, fix B).
+        public let boundary = RFC_2046.Boundary(__unchecked: (), rawValue: "Part-\(UUID().uuidString)")
 
         public init() {}
 
