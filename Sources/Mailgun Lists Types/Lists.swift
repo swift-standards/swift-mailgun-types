@@ -366,54 +366,11 @@ extension Mailgun.Lists.Member {
                 self.upsert = upsert
             }
 
-            enum CodingKeys: String, CodingKey {
-                case address
-                case name
-                case vars
-                case subscribed
-                case upsert
-            }
-
-            // KNOWN ISSUE (RT-030): Mailgun's list-members API expects `subscribed`/`upsert`
-            // as the literal strings "yes"/"no", not Swift's default Bool encoding
-            // ("true"/"false"). This route is encoded as application/x-www-form-urlencoded
-            // (see `.addMember` in Lists.API.swift), whose `Form.Encoder`/`Form.Decoder`
-            // (swift-url-form-coding) have no configurable bool-encoding strategy, so the
-            // yes/no mapping is done by hand here rather than via a shared encoder preset.
-            public init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                self.address = try container.decode(EmailAddress.self, forKey: .address)
-                self.name = try container.decodeIfPresent(String.self, forKey: .name)
-                self.vars = try container.decodeIfPresent([String: String].self, forKey: .vars)
-                self.subscribed = try container.decodeIfPresent(String.self, forKey: .subscribed)
-                    .map(Mailgun.Lists.Member.Add.Request.isYes)
-                self.upsert = try container.decodeIfPresent(String.self, forKey: .upsert)
-                    .map(Mailgun.Lists.Member.Add.Request.isYes)
-            }
-
-            public func encode(to encoder: Encoder) throws {
-                var container = encoder.container(keyedBy: CodingKeys.self)
-                try container.encode(address, forKey: .address)
-                try container.encodeIfPresent(name, forKey: .name)
-                try container.encodeIfPresent(vars, forKey: .vars)
-                try container.encodeIfPresent(
-                    subscribed.map { $0 ? "yes" : "no" },
-                    forKey: .subscribed
-                )
-                try container.encodeIfPresent(
-                    upsert.map { $0 ? "yes" : "no" },
-                    forKey: .upsert
-                )
-            }
-
-            // Lenient: accepts Mailgun's "yes"/"no" as well as "true"/"1" (defensive,
-            // in case of legacy-encoded round-trip data); anything else is `false`.
-            private static func isYes(_ string: String) -> Bool {
-                switch string.lowercased() {
-                case "yes", "true", "1": return true
-                default: return false
-                }
-            }
+            // RT-030b: Mailgun's list-members API expects `subscribed`/`upsert` as the
+            // literal strings "yes"/"no", not Swift's default Bool encoding. This is a
+            // wire-format concern, handled by the route's `Form.Encoder`/`Form.Decoder`
+            // (`boolEncodingStrategy`/`boolDecodingStrategy = .yesNo`; see `.addMember`
+            // in Lists.API.swift), so Codable is synthesized here.
         }
 
         public struct Response: Sendable, Codable, Equatable {

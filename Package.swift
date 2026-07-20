@@ -223,7 +223,8 @@ let package = Package(
         .target(
             name: .lists,
             dependencies: [
-                .shared
+                .shared,
+                .urlFormCoding
             ]
         ),
         .testTarget(

@@ -6,6 +6,7 @@
 //
 
 import Mailgun_Types_Shared
+import URLFormCoding
 
 extension Mailgun.Lists {
     @Cases
@@ -144,8 +145,8 @@ extension Mailgun.Lists.API {
                     URLRouting.Body(
                         .form(
                             Mailgun.Lists.Member.Add.Request.self,
-                            decoder: .mailgun,
-                            encoder: .mailgun
+                            decoder: .mailgunListMembers,
+                            encoder: .mailgunListMembers
                         )
                     )
                 }
@@ -238,20 +239,15 @@ extension Mailgun.Lists.API {
                     Path.members
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     URLRouting.Body(
-                        RFC_2046.Multipart.Conversion(
+                        // RT-030b: this route previously sent multipart/form-data, which
+                        // Mailgun's PUT list-member endpoint silently ignores (it echoes
+                        // the member unchanged); the same call as
+                        // application/x-www-form-urlencoded is honored. Encode as a URL
+                        // form like `.addMember`, with the same yes/no Bool wire format.
+                        .form(
                             Mailgun.Lists.Member.Update.Request.self,
-                            encoder: {
-                                // Mailgun's list-members API expects `subscribed` as the
-                                // literal strings "yes"/"no", not Swift's default Bool
-                                // encoding ("true"/"false"). RT-030: this route was silently
-                                // sending "true"/"false", which Mailgun ignores in favor of
-                                // its own default.
-                                let encoder = RFC_2046.Multipart.Encoder()
-                                encoder.boolEncoder = .yesNo
-                                encoder.arrayEncodingStrategy = .brackets
-                                return encoder
-                            }(),
-                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                            decoder: .mailgunListMembers,
+                            encoder: .mailgunListMembers
                         )
                     )
                 }
@@ -379,6 +375,36 @@ extension Mailgun.Lists.API {
                 }
             }
         }
+    }
+}
+
+// MARK: - List-members form coders (RT-030b)
+
+extension Form.Encoder {
+    /// `.mailgun` plus `boolEncodingStrategy = .yesNo`.
+    ///
+    /// Mailgun's list-members API (`.addMember`, `.updateMember`) expects
+    /// `subscribed`/`upsert` as the literal strings "yes"/"no", not Swift's
+    /// default Bool encoding ("true"/"false"). RT-030: the default encoding was
+    /// silently ignored by Mailgun in favor of its own default. Route-local on
+    /// purpose: the shared `.mailgun` preset serves many routes whose Bool wire
+    /// format has not been verified against yes/no.
+    fileprivate static var mailgunListMembers: Form.Encoder {
+        let encoder = Form.Encoder.mailgun
+        encoder.boolEncodingStrategy = .yesNo
+        return encoder
+    }
+}
+
+extension Form.Decoder {
+    /// `.mailgun` plus `boolDecodingStrategy = .yesNo`.
+    ///
+    /// Round-trip counterpart of `Form.Encoder.mailgunListMembers`: additionally
+    /// accepts "yes" as true (Mailgun itself accepts both "yes" and "true").
+    fileprivate static var mailgunListMembers: Form.Decoder {
+        let decoder = Form.Decoder.mailgun
+        decoder.boolDecodingStrategy = .yesNo
+        return decoder
     }
 }
 

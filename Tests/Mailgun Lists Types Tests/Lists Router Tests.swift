@@ -255,15 +255,15 @@ struct ListsRouterTests {
         let url = router.url(for: api)
         #expect(url.path == "/v3/lists/developers@test.com/members/member@example.com")
 
-        // Note: Round-trip testing for multipart form routes is complex due to dynamic boundary generation
-        // The router generates a unique boundary for each multipart request which makes exact matching difficult
-        // We verify URL generation works correctly above
+        // Note: this route is application/x-www-form-urlencoded (RT-030b); the body
+        // wire format is asserted directly by the yes/no tests below.
     }
 
-    // RT-030: Mailgun's list-members API expects `subscribed` as the literal strings
-    // "yes"/"no", not Swift's default Bool encoding ("true"/"false"). This route is
-    // encoded via `RFC_2046.Multipart.Conversion`; these tests render the actual
-    // multipart body bytes to assert the wire value directly.
+    // RT-030/RT-030b: Mailgun's list-members API expects `subscribed` as the literal
+    // strings "yes"/"no", not Swift's default Bool encoding ("true"/"false"). This
+    // route is encoded as application/x-www-form-urlencoded (Mailgun's PUT
+    // list-member endpoint silently ignores multipart bodies); these tests render
+    // the actual body bytes to assert the wire value directly.
     @Test("Encodes update-member subscribed as yes/no on the wire (true)")
     func testUpdateMemberBodyEncodesTrueAsYesNo() throws {
         let router: Mailgun.Lists.API.Router = .init()
@@ -278,13 +278,9 @@ struct ListsRouterTests {
         let body = try #require(request.httpBody)
         let bodyString = try #require(String(data: body, encoding: .utf8))
 
-        #expect(
-            bodyString.contains(
-                "Content-Disposition: form-data; name=\"subscribed\"\r\n\r\nyes\r\n"
-            )
-        )
-        #expect(!bodyString.contains("\r\n\r\ntrue\r\n"))
-        #expect(!bodyString.contains("\r\n\r\nfalse\r\n"))
+        #expect(bodyString.contains("subscribed=yes"))
+        #expect(!bodyString.contains("subscribed=true"))
+        #expect(!bodyString.contains("subscribed=false"))
     }
 
     @Test("Encodes update-member subscribed as yes/no on the wire (false)")
@@ -301,13 +297,9 @@ struct ListsRouterTests {
         let body = try #require(request.httpBody)
         let bodyString = try #require(String(data: body, encoding: .utf8))
 
-        #expect(
-            bodyString.contains(
-                "Content-Disposition: form-data; name=\"subscribed\"\r\n\r\nno\r\n"
-            )
-        )
-        #expect(!bodyString.contains("\r\n\r\ntrue\r\n"))
-        #expect(!bodyString.contains("\r\n\r\nfalse\r\n"))
+        #expect(bodyString.contains("subscribed=no"))
+        #expect(!bodyString.contains("subscribed=true"))
+        #expect(!bodyString.contains("subscribed=false"))
     }
 
     @Test("Creates correct URL for deleting member")
