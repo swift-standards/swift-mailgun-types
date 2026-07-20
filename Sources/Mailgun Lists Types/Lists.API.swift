@@ -137,6 +137,13 @@ extension Mailgun.Lists.API {
                     )
                     .map(.case(Mailgun.Lists.API.cases.addMember))
                 ) {
+                    // RT-030c: member routes shipped bodies with NO Content-Type
+                    // header (the Messages routes emit theirs; Lists never did).
+                    // Mailgun happens to parse unlabeled POST bodies but silently
+                    // ignores unlabeled PUT bodies — label both explicitly.
+                    Headers {
+                        Field("Content-Type") { "application/x-www-form-urlencoded" }
+                    }
                     Method.post
                     Path { "v3" }
                     Path.lists
@@ -232,6 +239,11 @@ extension Mailgun.Lists.API {
                     )
                     .map(.case(Mailgun.Lists.API.cases.updateMember))
                 ) {
+                    // RT-030c: see .addMember — Mailgun silently ignores
+                    // unlabeled PUT bodies; the Content-Type header is required.
+                    Headers {
+                        Field("Content-Type") { "application/x-www-form-urlencoded" }
+                    }
                     Method.put
                     Path { "v3" }
                     Path.lists

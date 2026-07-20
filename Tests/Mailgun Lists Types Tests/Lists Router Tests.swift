@@ -156,6 +156,10 @@ struct ListsRouterTests {
         )
 
         let request = try router.request(for: api)
+        #expect(
+            request.value(forHTTPHeaderField: "Content-Type")
+                == "application/x-www-form-urlencoded"
+        )
         let body = try #require(request.httpBody)
         let bodyString = try #require(String(data: body, encoding: .utf8))
 
@@ -181,6 +185,10 @@ struct ListsRouterTests {
         )
 
         let request = try router.request(for: api)
+        #expect(
+            request.value(forHTTPHeaderField: "Content-Type")
+                == "application/x-www-form-urlencoded"
+        )
         let body = try #require(request.httpBody)
         let bodyString = try #require(String(data: body, encoding: .utf8))
 
@@ -275,6 +283,10 @@ struct ListsRouterTests {
         )
 
         let request = try router.request(for: api)
+        #expect(
+            request.value(forHTTPHeaderField: "Content-Type")
+                == "application/x-www-form-urlencoded"
+        )
         let body = try #require(request.httpBody)
         let bodyString = try #require(String(data: body, encoding: .utf8))
 
@@ -294,6 +306,10 @@ struct ListsRouterTests {
         )
 
         let request = try router.request(for: api)
+        #expect(
+            request.value(forHTTPHeaderField: "Content-Type")
+                == "application/x-www-form-urlencoded"
+        )
         let body = try #require(request.httpBody)
         let bodyString = try #require(String(data: body, encoding: .utf8))
 
