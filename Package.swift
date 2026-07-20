@@ -313,6 +313,33 @@ let package = Package(
         .testTarget(
             name: .webhooks.tests,
             dependencies: [.webhooks, .shared, .dependenciesTestSupport]
+        ),
+        .testTarget(
+            name: "Router Parity Tests",
+            dependencies: [
+                .mailgun,
+                .shared,
+                .accountManagement,
+                .credentials,
+                .customMessageLimit,
+                .domains,
+                .ipAllowlist,
+                .ipPools,
+                .ips,
+                .keys,
+                .lists,
+                .messages,
+                .reporting,
+                .routes,
+                .subaccounts,
+                .suppressions,
+                .templates,
+                .users,
+                .webhooks,
+                .product(name: "URL Routing Test Support", package: "swift-url-routing")
+            ],
+            path: "Tests/Router Parity Tests",
+            exclude: ["__Corpus__"]
         )
     ]
 )

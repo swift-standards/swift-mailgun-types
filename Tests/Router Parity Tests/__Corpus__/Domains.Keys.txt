@@ -1,0 +1,48 @@
+== list-nil ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v1/dkim/keys
+body: <nil>
+
+== list-full ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v1/dkim/keys
+query: page=next-page-token
+query: limit=10
+query: signing_domain=parity.example.com
+query: selector=parity-selector
+body: <nil>
+
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v1/dkim/keys
+body(utf8): bits=2048&pem=-----BEGIN+PRIVATE+KEY-----PARITYFIXTURE-----END+PRIVATE+KEY-----&selector=parity-selector&signing_domain=parity.example.com
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v1/dkim/keys
+body(utf8): selector=parity-selector&signing_domain=parity.example.com
+
+== activate ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v4/domains/parity.example.com/keys/parity-selector/activate
+body: <nil>
+
+== listDomainKeys ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v4/domains/parity.example.com/keys
+body: <nil>
+
+== deactivate ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v4/domains/parity.example.com/keys/parity-selector/deactivate
+body: <nil>
+
+== setDkimAuthority ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/domains/parity.example.com/dkim_authority
+body(utf8): dkim_authority=authority.example.com
+
+== setDkimSelector ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/domains/parity.example.com/dkim_selector
+body(utf8): dkim_selector=parity-selector

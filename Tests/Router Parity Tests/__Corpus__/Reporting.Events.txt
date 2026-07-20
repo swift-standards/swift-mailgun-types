@@ -1,0 +1,25 @@
+== list.full ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/events
+query: begin=1700000000
+query: end=1700086400
+query: ascending=yes
+query: limit=100
+query: event=delivered
+query: list=subscribers@parity.example.com
+query: attachment=report.pdf
+query: from=sender@parity.example.com
+query: message-id=20231113000000.1.PARITYFIXTURE@parity.example.com
+query: subject=Parity fixture subject
+query: to=to@parity.example.com
+query: size=2048
+query: recipient=recipient@parity.example.com
+query: recipients=first@parity.example.com,second@parity.example.com
+query: tags=newsletter,onboarding
+query: severity=permanent
+body: <nil>
+
+== list.bare ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/events
+body: <nil>

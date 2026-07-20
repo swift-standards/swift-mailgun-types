@@ -1,0 +1,47 @@
+== importList ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/unsubscribes/import
+header: content-type: multipart/form-data; boundary=----FormBoundary<NORMALIZED>
+body(utf8): ------FormBoundary<NORMALIZED>
+Content-Disposition: form-data; filename="import.csv"; name="file"
+Content-Type: text/csv
+
+address
+unsubscribed@parity.example.com
+
+------FormBoundary<NORMALIZED>--
+
+
+== get ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/unsubscribes/user@parity.example.com
+body: <nil>
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/unsubscribes/user@parity.example.com
+body: <nil>
+
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/unsubscribes
+query: address=user@parity.example.com
+query: term=parity-term
+query: limit=25
+query: page=next-page-token
+body: <nil>
+
+== list-empty ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/unsubscribes
+body: <nil>
+
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/unsubscribes
+body(utf8): address=user%40parity.example.com&created_at=Thu%2C+01+Jan+2026+00%3A00%3A00+UTC&tags[]=newsletter&tags[]=promotions
+
+== deleteAll ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/unsubscribes
+body: <nil>

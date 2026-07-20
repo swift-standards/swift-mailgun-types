@@ -1,0 +1,36 @@
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v1/ip_pools
+body: <nil>
+
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v1/ip_pools
+body(utf8): description=Parity+fixture+pool&ips[]=192.161.0.1&ips[]=192.161.0.2&name=parity-pool
+
+== get ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v1/ip_pools/parity-pool-id
+body: <nil>
+
+== update ==
+method: Method(rawValue: "PATCH", isSafe: false, isIdempotent: false, isCacheable: false)
+path: /v1/ip_pools/parity-pool-id
+body(utf8): add_ips[]=192.161.0.3&description=Updated+parity+fixture+pool&name=parity-pool-renamed&remove_ips[]=192.161.0.1
+
+== delete.query ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v1/ip_pools/parity-pool-id
+query: ip=192.161.0.1
+query: pool_id=replacement-pool-id
+body: <nil>
+
+== delete.bare ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v1/ip_pools/parity-pool-id
+body: <nil>
+
+== listDomains ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v1/ip_pools/parity-pool-id/domains
+body: <nil>

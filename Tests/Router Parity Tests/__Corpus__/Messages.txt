@@ -1,0 +1,274 @@
+== send ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/messages
+header: content-type: multipart/form-data; boundary=Part-<NORMALIZED>
+body(utf8): --Part-<NORMALIZED>
+Content-Disposition: form-data; name="from"
+
+sender@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="to"
+
+first@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="to"
+
+second@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="subject"
+
+Parity corpus subject
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="html"
+
+<h1>Parity</h1><p>Hello</p>
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="text"
+
+Parity plain text
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="cc"
+
+cc@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="bcc"
+
+bcc@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="amp-html"
+
+<html amp4email>Parity AMP</html>
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="template"
+
+parity-template
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="t:version"
+
+v2
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="t:text"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="t:variables"
+
+{"key":"value"}
+--Part-<NORMALIZED>
+Content-Disposition: form-data; filename="report.txt"; name="attachment"
+Content-Type: text/plain
+
+attachment-bytes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; filename="logo.png"; name="inline"
+Content-Type: image/png
+
+inline-bytes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tag"
+
+parity
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tag"
+
+corpus
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:dkim"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:secondary-dkim"
+
+secondary.parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:secondary-dkim-public"
+
+public.parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:deliverytime-optimize-period"
+
+24h
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:time-zone-localize"
+
+17:00
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:testmode"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking-clicks"
+
+htmlonly
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking-opens"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:require-tls"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:skip-verification"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:sending-ip"
+
+203.0.113.10
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:sending-ip-pool"
+
+pool-1
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking-pixel-location-top"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="h:X-Parity"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="v:campaign"
+
+parity
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="recipient-variables"
+
+{"first@parity.example.com":{"id":1}}
+--Part-<NORMALIZED>--
+
+
+== sendMime ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/messages.mime
+header: content-type: multipart/form-data; boundary=Part-<NORMALIZED>
+body(utf8): --Part-<NORMALIZED>
+Content-Disposition: form-data; name="to"
+
+first@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="to"
+
+second@parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; filename="message"; name="message"
+Content-Type: application/octet-stream
+
+From: sender@parity.example.com
+Subject: Parity MIME
+
+Body
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="template"
+
+parity-template
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="t:version"
+
+v2
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="t:text"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="t:variables"
+
+{"key":"value"}
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tag"
+
+parity
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tag"
+
+mime
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:dkim"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:secondary-dkim"
+
+secondary.parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:secondary-dkim-public"
+
+public.parity.example.com
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:deliverytime-optimize-period"
+
+48h
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:time-zone-localize"
+
+09:30
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:testmode"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking-clicks"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking-opens"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:require-tls"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:skip-verification"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:sending-ip"
+
+203.0.113.11
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:sending-ip-pool"
+
+pool-2
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="o:tracking-pixel-location-top"
+
+no
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="h:X-Parity-Mime"
+
+yes
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="v:campaign"
+
+parity-mime
+--Part-<NORMALIZED>
+Content-Disposition: form-data; name="recipient-variables"
+
+{"second@parity.example.com":{"id":2}}
+--Part-<NORMALIZED>--
+
+
+== retrieve ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/domains/parity.example.com/messages/storage-key-123
+body: <nil>
+
+== queueStatus ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/domains/parity.example.com/sending_queues
+body: <nil>
+
+== deleteScheduled ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/envelopes
+body: <nil>

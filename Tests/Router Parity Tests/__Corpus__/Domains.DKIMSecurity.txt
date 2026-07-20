@@ -1,0 +1,9 @@
+== updateRotation ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v1/dkim_management/domains/parity.example.com/rotation
+body(utf8): rotation_enabled=true&rotation_interval=5d
+
+== rotateManually ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v1/dkim_management/domains/parity.example.com/rotate
+body: <nil>

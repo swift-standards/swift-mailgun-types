@@ -1,0 +1,32 @@
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/users
+query: role=admin
+query: limit=25
+query: skip=5
+body: <nil>
+
+== list-nil ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/users
+body: <nil>
+
+== get ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/users/parity-user-id
+body: <nil>
+
+== me ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/users/me
+body: <nil>
+
+== addToOrganization ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v5/users/parity-user-id/org/parity-org-id
+body: <nil>
+
+== removeFromOrganization ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v5/users/parity-user-id/org/parity-org-id
+body: <nil>

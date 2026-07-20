@@ -1,0 +1,159 @@
+== list-nil ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates
+body: <nil>
+
+== list-full ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates
+query: page=next
+query: limit=25
+query: p=cursor-token
+body: <nil>
+
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/templates
+body(utf8): ------MailgunFormBoundary
+Content-Disposition: form-data; name="name"
+
+welcome-template
+------MailgunFormBoundary
+Content-Disposition: form-data; name="description"
+
+Welcome email template
+------MailgunFormBoundary
+Content-Disposition: form-data; name="createdBy"
+
+parity@example.com
+------MailgunFormBoundary
+Content-Disposition: form-data; name="template"
+
+<html>Hello {{name}}</html>
+------MailgunFormBoundary
+Content-Disposition: form-data; name="tag"
+
+v1
+------MailgunFormBoundary
+Content-Disposition: form-data; name="comment"
+
+initial version
+------MailgunFormBoundary
+Content-Disposition: form-data; name="headers"
+
+{"X-Test": "parity"}
+------MailgunFormBoundary--
+
+
+== deleteAll ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates
+body: <nil>
+
+== versions-nil ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates/welcome-template/versions
+body: <nil>
+
+== versions-full ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates/welcome-template/versions
+query: page=first
+query: limit=10
+query: p=version-cursor
+body: <nil>
+
+== createVersion ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/templates/welcome-template/versions
+body(utf8): ------MailgunFormBoundary
+Content-Disposition: form-data; name="template"
+
+<html>Hello v2 {{name}}</html>
+------MailgunFormBoundary
+Content-Disposition: form-data; name="tag"
+
+v2
+------MailgunFormBoundary
+Content-Disposition: form-data; name="comment"
+
+second version
+------MailgunFormBoundary
+Content-Disposition: form-data; name="active"
+
+yes
+------MailgunFormBoundary
+Content-Disposition: form-data; name="headers"
+
+{"X-Test": "parity"}
+------MailgunFormBoundary--
+
+
+== get-nil ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates/welcome-template
+body: <nil>
+
+== get-active ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates/welcome-template
+query: active=yes
+body: <nil>
+
+== update ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates/welcome-template
+body(utf8): ------MailgunFormBoundary
+Content-Disposition: form-data; name="description"
+
+Updated description
+------MailgunFormBoundary--
+
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates/welcome-template
+body: <nil>
+
+== getVersion ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/templates/welcome-template/versions/v2
+body: <nil>
+
+== updateVersion ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates/welcome-template/versions/v2
+body(utf8): ------MailgunFormBoundary
+Content-Disposition: form-data; name="template"
+
+<html>Hello v2.1 {{name}}</html>
+------MailgunFormBoundary
+Content-Disposition: form-data; name="comment"
+
+tweak copy
+------MailgunFormBoundary
+Content-Disposition: form-data; name="active"
+
+yes
+------MailgunFormBoundary
+Content-Disposition: form-data; name="headers"
+
+{"X-Test": "parity"}
+------MailgunFormBoundary--
+
+
+== deleteVersion ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates/welcome-template/versions/v2
+body: <nil>
+
+== copyVersion-nil ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates/welcome-template/versions/v2/copy/v3
+body: <nil>
+
+== copyVersion-comment ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/templates/welcome-template/versions/v2/copy/v3
+query: comment=copied from v2
+body: <nil>

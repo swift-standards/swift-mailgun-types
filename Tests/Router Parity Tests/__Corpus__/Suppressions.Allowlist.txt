@@ -1,0 +1,54 @@
+== get ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/whitelists/user@parity.example.com
+body: <nil>
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/whitelists/user@parity.example.com
+body: <nil>
+
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/whitelists
+query: address=user@parity.example.com
+query: term=parity-term
+query: limit=25
+query: page=next-page-token
+body: <nil>
+
+== list-empty ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/parity.example.com/whitelists
+body: <nil>
+
+== create-address ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/whitelists
+header: content-type: application/x-www-form-urlencoded
+body(utf8): address=user%40parity.example.com
+
+== create-domain ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/whitelists
+header: content-type: application/x-www-form-urlencoded
+body(utf8): domain=allowed.parity.example.com
+
+== deleteAll ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/parity.example.com/whitelists
+body: <nil>
+
+== importList ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/parity.example.com/whitelists/import
+header: content-type: multipart/form-data; boundary=----FormBoundary<NORMALIZED>
+body(utf8): ------FormBoundary<NORMALIZED>
+Content-Disposition: form-data; filename="import.csv"; name="file"
+Content-Type: text/csv
+
+address
+allowed@parity.example.com
+
+------FormBoundary<NORMALIZED>--
+

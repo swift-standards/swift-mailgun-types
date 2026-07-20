@@ -1,0 +1,51 @@
+== updateAccount ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v5/accounts
+query: name=Parity Account
+query: inactive_session_timeout=900
+query: absolute_session_timeout=86400
+query: logout_redirect_url=https://parity.example.com/logout
+body: <nil>
+
+== getHttpSigningKey ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/accounts/http_signing_key
+body: <nil>
+
+== regenerateHttpSigningKey ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v5/accounts/http_signing_key
+body: <nil>
+
+== getSandboxAuthRecipients ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/sandbox/auth_recipients
+body: <nil>
+
+== addSandboxAuthRecipient ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v5/sandbox/auth_recipients
+query: email=recipient@parity.example.com
+body: <nil>
+
+== deleteSandboxAuthRecipient ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v5/sandbox/auth_recipients/recipient@parity.example.com
+body: <nil>
+
+== resendActivationEmail ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v5/accounts/resend_activation_email
+body: <nil>
+
+== getSAMLOrganization ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v5/accounts/saml_org
+body: <nil>
+
+== addSAMLOrganization ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v5/accounts/saml_org
+query: user_id=user-1234
+query: domain=parity.example.com
+body: <nil>

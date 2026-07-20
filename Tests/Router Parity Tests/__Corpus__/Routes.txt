@@ -1,0 +1,62 @@
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/routes
+body(utf8): action=forward%28%22https%3A%2F%2Fparity.example.com%2Finbound%22%29&action=stop%28%29&description=Parity+corpus+route&expression=match_recipient%28%22.*%40parity.example.com%22%29&priority=1
+
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/routes
+query: limit=25
+query: skip=5
+body: <nil>
+
+== list-empty ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/routes
+body: <nil>
+
+== get ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/routes/route-id-123
+body: <nil>
+
+== update ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/routes/route-id-123
+body(utf8): ------MailgunFormBoundary
+Content-Disposition: form-data; name="id"
+
+route-id-123
+------MailgunFormBoundary
+Content-Disposition: form-data; name="priority"
+
+2
+------MailgunFormBoundary
+Content-Disposition: form-data; name="description"
+
+Updated parity route
+------MailgunFormBoundary
+Content-Disposition: form-data; name="expression"
+
+match_header("subject", ".*parity.*")
+------MailgunFormBoundary
+Content-Disposition: form-data; name="action"
+
+store()
+------MailgunFormBoundary
+Content-Disposition: form-data; name="action"
+
+stop()
+------MailgunFormBoundary--
+
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/routes/route-id-123
+body: <nil>
+
+== match ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/routes/match
+query: address=someone@parity.example.com
+body: <nil>

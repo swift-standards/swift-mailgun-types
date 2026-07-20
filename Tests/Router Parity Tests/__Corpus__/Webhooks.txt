@@ -1,0 +1,24 @@
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/domains/parity.example.com/webhooks
+body: <nil>
+
+== get ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v3/domains/parity.example.com/webhooks/delivered
+body: <nil>
+
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v3/domains/parity.example.com/webhooks
+body(utf8): id=opened&url[]=https%3A%2F%2Fparity.example.com%2Fhooks%2Fopened&url[]=https%3A%2F%2Fparity.example.com%2Fhooks%2Fopened-2
+
+== update ==
+method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/domains/parity.example.com/webhooks/clicked
+body(utf8): url[]=https%3A%2F%2Fparity.example.com%2Fhooks%2Fclicked
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v3/domains/parity.example.com/webhooks/permanent_fail
+body: <nil>

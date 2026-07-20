@@ -1,0 +1,19 @@
+== list ==
+method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+path: /v1/keys
+body: <nil>
+
+== create ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v1/keys
+body(utf8): description=Parity+fixture+key&kind=user&role=admin
+
+== delete ==
+method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+path: /v1/keys/parity-key-id
+body: <nil>
+
+== addPublicKey ==
+method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+path: /v1/keys/public
+body(utf8): public_key=pubkey-parity-fixture-0123456789

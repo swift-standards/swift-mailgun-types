@@ -1,0 +1,32 @@
+Batch-0 known non-round-tripping routes on the CURRENT stack (captured, not fixed).
+Format: <Area>.<route name> — reason observed on 2026-07-21, toolchain swift-6.3.3-RELEASE.
+
+Messages.send — SendMultipartConversion.apply is fatalError (print-only conversion)
+Messages.sendMime — MimeMultipartConversion.apply is fatalError (print-only conversion)
+
+Optional-request asymmetry (nil request prints an empty query, which parses back
+as a populated all-nil Request value, so parse(print(.x(nil))) != .x(nil)):
+Credentials.list-nil
+Domains.list-nil
+Domains.Keys.list-nil
+IPPools.delete.bare
+Reporting.Events.list.bare
+Reporting.Tags.list.bare
+Subaccounts.disable-nil
+Subaccounts.list-nil
+Templates.copyVersion-nil
+Templates.get-nil
+Templates.list-nil
+Templates.versions-nil
+Users.list-nil
+
+Parse-side failures (printed request re-parses into an earlier OneOf branch or
+fails outright with a method mismatch inside the OneOf; error thrown on parse):
+Lists.bulkAdd — parse error (method mismatch against earlier GET branch)
+Lists.update — parse error (method mismatch against earlier GET branch)
+Routes.update — parse error (method mismatch against earlier GET branch)
+Routes.match — parsed value differs from printed route
+Suppressions.Allowlist.importList — parsed value differs (multipart body not value-recoverable)
+Suppressions.Bounces.importList — parsed value differs (multipart body not value-recoverable)
+Suppressions.Complaints.importList — parse error (method mismatch against earlier DELETE branch)
+Suppressions.Unsubscribe.importList — parsed value differs (multipart body not value-recoverable)
