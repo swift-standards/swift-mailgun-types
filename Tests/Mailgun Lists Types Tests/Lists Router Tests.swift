@@ -135,6 +135,61 @@ struct ListsRouterTests {
         #expect(Mailgun.Lists.API.cases.addMember.extract(match)?.request.upsert == true)
     }
 
+    // RT-030: Mailgun's list-members API expects `subscribed`/`upsert` as the literal
+    // strings "yes"/"no", not Swift's default Bool encoding ("true"/"false"). These tests
+    // render the actual encoded request body bytes to assert the wire values directly,
+    // rather than only the round-tripped Swift values (which a `true`/`false` <-> `Bool`
+    // mapping would satisfy just as well as `yes`/`no` <-> `Bool` would).
+    @Test("Encodes add-member subscribed/upsert as yes/no on the wire (true)")
+    func testAddMemberBodyEncodesTrueAsYesNo() throws {
+        let router: Mailgun.Lists.API.Router = .init()
+
+        let addRequest = Mailgun.Lists.Member.Add.Request(
+            address: try .init("new@example.com"),
+            subscribed: true,
+            upsert: true
+        )
+
+        let api: Mailgun.Lists.API = .addMember(
+            listAddress: try .init("developers@test.com"),
+            request: addRequest
+        )
+
+        let request = try router.request(for: api)
+        let body = try #require(request.httpBody)
+        let bodyString = try #require(String(data: body, encoding: .utf8))
+
+        #expect(bodyString.contains("subscribed=yes"))
+        #expect(bodyString.contains("upsert=yes"))
+        #expect(!bodyString.contains("subscribed=true"))
+        #expect(!bodyString.contains("upsert=true"))
+    }
+
+    @Test("Encodes add-member subscribed/upsert as yes/no on the wire (false)")
+    func testAddMemberBodyEncodesFalseAsYesNo() throws {
+        let router: Mailgun.Lists.API.Router = .init()
+
+        let addRequest = Mailgun.Lists.Member.Add.Request(
+            address: try .init("new@example.com"),
+            subscribed: false,
+            upsert: false
+        )
+
+        let api: Mailgun.Lists.API = .addMember(
+            listAddress: try .init("developers@test.com"),
+            request: addRequest
+        )
+
+        let request = try router.request(for: api)
+        let body = try #require(request.httpBody)
+        let bodyString = try #require(String(data: body, encoding: .utf8))
+
+        #expect(bodyString.contains("subscribed=no"))
+        #expect(bodyString.contains("upsert=no"))
+        #expect(!bodyString.contains("subscribed=false"))
+        #expect(!bodyString.contains("upsert=false"))
+    }
+
     @Test("Creates correct URL for bulk member addition")
     func testBulkAddURL() throws {
         let router: Mailgun.Lists.API.Router = .init()
@@ -203,6 +258,56 @@ struct ListsRouterTests {
         // Note: Round-trip testing for multipart form routes is complex due to dynamic boundary generation
         // The router generates a unique boundary for each multipart request which makes exact matching difficult
         // We verify URL generation works correctly above
+    }
+
+    // RT-030: Mailgun's list-members API expects `subscribed` as the literal strings
+    // "yes"/"no", not Swift's default Bool encoding ("true"/"false"). This route is
+    // encoded via `RFC_2046.Multipart.Conversion`; these tests render the actual
+    // multipart body bytes to assert the wire value directly.
+    @Test("Encodes update-member subscribed as yes/no on the wire (true)")
+    func testUpdateMemberBodyEncodesTrueAsYesNo() throws {
+        let router: Mailgun.Lists.API.Router = .init()
+        let updateRequest = Mailgun.Lists.Member.Update.Request(subscribed: true)
+        let api: Mailgun.Lists.API = .updateMember(
+            listAddress: try .init("developers@test.com"),
+            memberAddress: try .init("member@example.com"),
+            request: updateRequest
+        )
+
+        let request = try router.request(for: api)
+        let body = try #require(request.httpBody)
+        let bodyString = try #require(String(data: body, encoding: .utf8))
+
+        #expect(
+            bodyString.contains(
+                "Content-Disposition: form-data; name=\"subscribed\"\r\n\r\nyes\r\n"
+            )
+        )
+        #expect(!bodyString.contains("\r\n\r\ntrue\r\n"))
+        #expect(!bodyString.contains("\r\n\r\nfalse\r\n"))
+    }
+
+    @Test("Encodes update-member subscribed as yes/no on the wire (false)")
+    func testUpdateMemberBodyEncodesFalseAsYesNo() throws {
+        let router: Mailgun.Lists.API.Router = .init()
+        let updateRequest = Mailgun.Lists.Member.Update.Request(subscribed: false)
+        let api: Mailgun.Lists.API = .updateMember(
+            listAddress: try .init("developers@test.com"),
+            memberAddress: try .init("member@example.com"),
+            request: updateRequest
+        )
+
+        let request = try router.request(for: api)
+        let body = try #require(request.httpBody)
+        let bodyString = try #require(String(data: body, encoding: .utf8))
+
+        #expect(
+            bodyString.contains(
+                "Content-Disposition: form-data; name=\"subscribed\"\r\n\r\nno\r\n"
+            )
+        )
+        #expect(!bodyString.contains("\r\n\r\ntrue\r\n"))
+        #expect(!bodyString.contains("\r\n\r\nfalse\r\n"))
     }
 
     @Test("Creates correct URL for deleting member")

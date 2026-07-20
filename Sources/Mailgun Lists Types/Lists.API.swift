@@ -240,7 +240,17 @@ extension Mailgun.Lists.API {
                     URLRouting.Body(
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Lists.Member.Update.Request.self,
-                            arrayEncodingStrategy: .brackets,
+                            encoder: {
+                                // Mailgun's list-members API expects `subscribed` as the
+                                // literal strings "yes"/"no", not Swift's default Bool
+                                // encoding ("true"/"false"). RT-030: this route was silently
+                                // sending "true"/"false", which Mailgun ignores in favor of
+                                // its own default.
+                                let encoder = RFC_2046.Multipart.Encoder()
+                                encoder.boolEncoder = .yesNo
+                                encoder.arrayEncodingStrategy = .brackets
+                                return encoder
+                            }(),
                             boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
                         )
                     )
