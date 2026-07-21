@@ -315,7 +315,7 @@ let package = Package(
             dependencies: [.webhooks, .shared, .dependenciesTestSupport]
         ),
         .testTarget(
-            name: "Router Parity Tests",
+            name: "Mailgun Router Parity Tests",
             dependencies: [
                 .mailgun,
                 .shared,
@@ -338,7 +338,7 @@ let package = Package(
                 .webhooks,
                 .product(name: "URL Routing Test Support", package: "swift-url-routing")
             ],
-            path: "Tests/Router Parity Tests",
+            path: "Tests/Mailgun Router Parity Tests",
             exclude: ["__Corpus__"]
         )
     ]
