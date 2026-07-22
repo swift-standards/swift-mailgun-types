@@ -52,8 +52,16 @@ extension Target.Dependency {
     static var emailType: Self { .product(name: "Email Standard", package: "swift-email-standard") }
     static var domain: Self { .product(name: "Domain Standard", package: "swift-domain-standard") }
     static var emailAddress: Self { .product(name: "EmailAddress", package: "swift-emailaddress") }
-    static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
+    static var htmlFormCoder: Self {
+        .product(name: "HTML Form Coder Codable", package: "swift-html-form-coder")
+    }
+    static var htmlStandard: Self {
+        .product(name: "HTML Standard", package: "swift-html-standard")
+    }
     static var rfc2822: Self { .product(name: "RFC 2822", package: "swift-rfc-2822") }
+    static var rfc2045: Self { .product(name: "RFC 2045", package: "swift-rfc-2045") }
+    static var rfc2046: Self { .product(name: "RFC 2046", package: "swift-rfc-2046") }
+    static var rfc2183: Self { .product(name: "RFC 2183", package: "swift-rfc-2183") }
     static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
     static var dual: Self { .product(name: "Dual", package: "swift-dual") }
 }
@@ -93,7 +101,11 @@ let package = Package(
         .package(url: "https://github.com/swift-standards/swift-email-standard.git", branch: "main"),
         .package(url: "https://github.com/swift-standards/swift-domain-standard.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-emailaddress.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-html-form-coder.git", branch: "main"),
+        .package(url: "https://github.com/swift-standards/swift-html-standard.git", branch: "main"),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-2045.git", branch: "main"),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-2046.git", branch: "main"),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-2183.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2822.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-dual.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
@@ -105,7 +117,8 @@ let package = Package(
                 .domain,
                 .emailAddress,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
+                .htmlStandard,
                 .dual,
                 .dependencies
             ]
@@ -137,6 +150,7 @@ let package = Package(
             name: .mailgun.tests,
             dependencies: [
                 .mailgun,
+                .htmlFormCoder,
                 .dependenciesTestSupport
             ]
         ),
@@ -224,7 +238,9 @@ let package = Package(
             name: .lists,
             dependencies: [
                 .shared,
-                .urlFormCoding
+                .htmlFormCoder,
+                .htmlStandard,
+                .rfc2046
             ]
         ),
         .testTarget(
@@ -235,7 +251,10 @@ let package = Package(
             name: .messages,
             dependencies: [
                 .shared,
-                .emailType
+                .emailType,
+                .rfc2045,
+                .rfc2046,
+                .rfc2183
             ]
         ),
         .testTarget(
@@ -256,7 +275,10 @@ let package = Package(
         .target(
             name: .routes,
             dependencies: [
-                .shared
+                .shared,
+                .htmlFormCoder,
+                .htmlStandard,
+                .rfc2046
             ]
         ),
         .testTarget(
@@ -277,7 +299,9 @@ let package = Package(
             name: .suppressions,
             dependencies: [
                 .shared,
-                .urlFormCoding
+                .htmlFormCoder,
+                .htmlStandard,
+                .rfc2046
             ]
         ),
         .testTarget(
@@ -287,7 +311,10 @@ let package = Package(
         .target(
             name: .templates,
             dependencies: [
-                .shared
+                .shared,
+                .htmlFormCoder,
+                .htmlStandard,
+                .rfc2046
             ]
         ),
         .testTarget(

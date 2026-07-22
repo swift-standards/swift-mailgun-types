@@ -2,7 +2,7 @@ import Dependencies
 import Domain_Standard
 import Foundation
 import Testing
-import URLFormCoding
+import HTML_Form_Coder_Codable
 
 @testable import Mailgun_Domains_Types
 @testable import Mailgun_Messages_Types

@@ -5,7 +5,10 @@
 //  Created by Coen ten Thije Boonkkamp on 24/12/2024.
 //
 
+import HTML_Form_Coder_Codable
+import HTML_Standard
 import Mailgun_Types_Shared
+import RFC_2046
 
 extension Mailgun.Routes {
     @Cases
@@ -50,7 +53,7 @@ extension Mailgun.Routes.API {
                     Path.routes
                     Path { Parse(.string) }
                     URLRouting.Body(coding:
-                        RFC_2046.Multipart.Conversion(
+                        HTML.Form.Coder.Multipart.Value(
                             Mailgun.Routes.Update.Request.self,
                             boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
                         )

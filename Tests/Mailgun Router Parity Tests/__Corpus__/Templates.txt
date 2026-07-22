@@ -17,30 +17,37 @@ path: /v3/parity.example.com/templates
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="name"
+Content-Type: text/plain; charset=UTF-8
 
 welcome-template
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="description"
+Content-Type: text/plain; charset=UTF-8
 
 Welcome email template
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="createdBy"
+Content-Type: text/plain; charset=UTF-8
 
 parity@example.com
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="template"
+Content-Type: text/plain; charset=UTF-8
 
 <html>Hello {{name}}</html>
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="tag"
+Content-Type: text/plain; charset=UTF-8
 
 v1
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="comment"
+Content-Type: text/plain; charset=UTF-8
 
 initial version
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="headers"
+Content-Type: text/plain; charset=UTF-8
 
 {"X-Test": "parity"}
 ------MailgunFormBoundary--
@@ -70,22 +77,27 @@ path: /v3/parity.example.com/templates/welcome-template/versions
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="template"
+Content-Type: text/plain; charset=UTF-8
 
 <html>Hello v2 {{name}}</html>
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="tag"
+Content-Type: text/plain; charset=UTF-8
 
 v2
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="comment"
+Content-Type: text/plain; charset=UTF-8
 
 second version
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="active"
+Content-Type: text/plain; charset=UTF-8
 
 yes
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="headers"
+Content-Type: text/plain; charset=UTF-8
 
 {"X-Test": "parity"}
 ------MailgunFormBoundary--
@@ -108,6 +120,7 @@ path: /v3/parity.example.com/templates/welcome-template
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="description"
+Content-Type: text/plain; charset=UTF-8
 
 Updated description
 ------MailgunFormBoundary--
@@ -129,18 +142,22 @@ path: /v3/parity.example.com/templates/welcome-template/versions/v2
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="template"
+Content-Type: text/plain; charset=UTF-8
 
 <html>Hello v2.1 {{name}}</html>
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="comment"
+Content-Type: text/plain; charset=UTF-8
 
 tweak copy
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="active"
+Content-Type: text/plain; charset=UTF-8
 
 yes
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="headers"
+Content-Type: text/plain; charset=UTF-8
 
 {"X-Test": "parity"}
 ------MailgunFormBoundary--

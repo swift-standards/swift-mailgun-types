@@ -27,26 +27,32 @@ path: /v3/routes/route-id-123
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="id"
+Content-Type: text/plain; charset=UTF-8
 
 route-id-123
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="priority"
+Content-Type: text/plain; charset=UTF-8
 
 2
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="description"
+Content-Type: text/plain; charset=UTF-8
 
 Updated parity route
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="expression"
+Content-Type: text/plain; charset=UTF-8
 
 match_header("subject", ".*parity.*")
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="action"
+Content-Type: text/plain; charset=UTF-8
 
 store()
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="action"
+Content-Type: text/plain; charset=UTF-8
 
 stop()
 ------MailgunFormBoundary--

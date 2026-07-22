@@ -4,6 +4,7 @@ path: /v3/parity.example.com/complaints/import
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="file"
+Content-Type: text/plain; charset=UTF-8
 
 "YWRkcmVzcwpjb21wbGFpbmVkQHBhcml0eS5leGFtcGxlLmNvbQo="
 ------MailgunFormBoundary--

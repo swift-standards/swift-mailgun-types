@@ -5,7 +5,10 @@
 //  Created by Coen ten Thije Boonkkamp on 24/12/2024.
 //
 
+import HTML_Form_Coder_Codable
+import HTML_Standard
 import Mailgun_Types_Shared
+import RFC_2046
 
 extension Mailgun.Templates {
     @Cases
@@ -122,10 +125,10 @@ extension Mailgun.Templates.API {
                     Path.versions
                     Path { Parse(.string) }
                     URLRouting.Body(coding:
-                        RFC_2046.Multipart.Conversion(
+                        HTML.Form.Coder.Multipart.Value(
                             Mailgun.Templates.Version.Update.Request.self,
-                            arrayEncodingStrategy: .brackets,
-                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary"),
+                            encoder: .init(array: .brackets)
                         )
                     )
                 }
@@ -179,10 +182,10 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string) }
                     Path.versions
                     URLRouting.Body(coding:
-                        RFC_2046.Multipart.Conversion(
+                        HTML.Form.Coder.Multipart.Value(
                             Mailgun.Templates.Version.Create.Request.self,
-                            arrayEncodingStrategy: .brackets,
-                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary"),
+                            encoder: .init(array: .brackets)
                         )
                     )
                 }
@@ -245,10 +248,10 @@ extension Mailgun.Templates.API {
                     Path.templates
                     Path { Parse(.string) }
                     URLRouting.Body(coding:
-                        RFC_2046.Multipart.Conversion(
+                        HTML.Form.Coder.Multipart.Value(
                             Mailgun.Templates.Update.Request.self,
-                            arrayEncodingStrategy: .brackets,
-                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary"),
+                            encoder: .init(array: .brackets)
                         )
                     )
                 }
@@ -310,10 +313,10 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     URLRouting.Body(coding:
-                        RFC_2046.Multipart.Conversion(
+                        HTML.Form.Coder.Multipart.Value(
                             Mailgun.Templates.Create.Request.self,
-                            arrayEncodingStrategy: .brackets,
-                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary"),
+                            encoder: .init(array: .brackets)
                         )
                     )
                 }

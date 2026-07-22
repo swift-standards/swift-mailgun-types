@@ -70,26 +70,32 @@ path: /v3/lists/developers@parity.example.com
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="address"
+Content-Type: text/plain; charset=UTF-8
 
 "renamed-list@parity.example.com"
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="description"
+Content-Type: text/plain; charset=UTF-8
 
 Updated parity list
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="name"
+Content-Type: text/plain; charset=UTF-8
 
 Renamed List
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="access_level"
+Content-Type: text/plain; charset=UTF-8
 
 "readonly"
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="reply_reference"
+Content-Type: text/plain; charset=UTF-8
 
 "sender"
 ------MailgunFormBoundary
 Content-Disposition: form-data; name="list-id"
+Content-Type: text/plain; charset=UTF-8
 
 parity-list-id
 ------MailgunFormBoundary--

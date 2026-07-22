@@ -6,7 +6,9 @@
 //
 
 import Mailgun_Types_Shared
-import URLFormCoding
+import HTML_Form_Coder_Codable
+import HTML_Standard
+import RFC_2046
 
 extension Mailgun.Lists {
     @Cases
@@ -306,10 +308,10 @@ extension Mailgun.Lists.API {
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     URLRouting.Body(coding:
-                        RFC_2046.Multipart.Conversion(
+                        HTML.Form.Coder.Multipart.Value(
                             Mailgun.Lists.List.Update.Request.self,
-                            arrayEncodingStrategy: .brackets,
-                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
+                            boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary"),
+                            encoder: .init(array: .brackets)
                         )
                     )
                 }
@@ -392,8 +394,8 @@ extension Mailgun.Lists.API {
 
 // MARK: - List-members form coders (RT-030b)
 
-extension Form.Encoder {
-    /// `.mailgun` plus `boolEncodingStrategy = .yesNo`.
+extension HTML.Form.Coder.Encoder {
+    /// `.mailgun` plus `boolEncodingStrategy = .yes`.
     ///
     /// Mailgun's list-members API (`.addMember`, `.updateMember`) expects
     /// `subscribed`/`upsert` as the literal strings "yes"/"no", not Swift's
@@ -401,21 +403,21 @@ extension Form.Encoder {
     /// silently ignored by Mailgun in favor of its own default. Route-local on
     /// purpose: the shared `.mailgun` preset serves many routes whose Bool wire
     /// format has not been verified against yes/no.
-    fileprivate static var mailgunListMembers: Form.Encoder {
-        let encoder = Form.Encoder.mailgun
-        encoder.boolEncodingStrategy = .yesNo
+    fileprivate static var mailgunListMembers: HTML.Form.Coder.Encoder {
+        let encoder = HTML.Form.Coder.Encoder.mailgun
+        encoder.boolEncodingStrategy = .yes
         return encoder
     }
 }
 
-extension Form.Decoder {
-    /// `.mailgun` plus `boolDecodingStrategy = .yesNo`.
+extension HTML.Form.Coder.Decoder {
+    /// `.mailgun` plus `boolDecodingStrategy = .yes`.
     ///
-    /// Round-trip counterpart of `Form.Encoder.mailgunListMembers`: additionally
+    /// Round-trip counterpart of `HTML.Form.Coder.Encoder.mailgunListMembers`: additionally
     /// accepts "yes" as true (Mailgun itself accepts both "yes" and "true").
-    fileprivate static var mailgunListMembers: Form.Decoder {
-        let decoder = Form.Decoder.mailgun
-        decoder.boolDecodingStrategy = .yesNo
+    fileprivate static var mailgunListMembers: HTML.Form.Coder.Decoder {
+        let decoder = HTML.Form.Coder.Decoder.mailgun
+        decoder.boolDecodingStrategy = .yes
         return decoder
     }
 }

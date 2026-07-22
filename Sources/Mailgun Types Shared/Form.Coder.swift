@@ -6,11 +6,13 @@
 //
 
 import Foundation
-import URLFormCoding
+import HTML_Form_Coder_Codable
+import HTML_Standard
+import URLRouting
 
-extension Form.Decoder {
-    public static var mailgun: Form.Decoder {
-        return Form.Decoder(
+extension HTML.Form.Coder.Decoder {
+    public static var mailgun: HTML.Form.Coder.Decoder {
+        return HTML.Form.Coder.Decoder(
             dataDecodingStrategy: .base64,
             dateDecodingStrategy: .init { dateString in
                 if let date = rfc2822Formatter.date(from: dateString) {
@@ -31,8 +33,8 @@ extension Form.Decoder {
         )
     }
 
-    public static var mailgunRoutes: Form.Decoder {
-        return Form.Decoder(
+    public static var mailgunRoutes: HTML.Form.Coder.Decoder {
+        return HTML.Form.Coder.Decoder(
             dataDecodingStrategy: .base64,
             dateDecodingStrategy: .init { dateString in
                 if let date = rfc2822Formatter.date(from: dateString) {
@@ -54,25 +56,25 @@ extension Form.Decoder {
     }
 }
 
-extension Form.Encoder {
-    public static var mailgun: Form.Encoder {
-        return Form.Encoder(
+extension HTML.Form.Coder.Encoder {
+    public static var mailgun: HTML.Form.Coder.Encoder {
+        return HTML.Form.Coder.Encoder(
             dataEncodingStrategy: .base64,
             dateEncodingStrategy: .init { rfc2822Formatter.string(from: $0) },
             arrayEncodingStrategy: .brackets
         )
     }
 
-    public static var mailgunRoutes: Form.Encoder {
-        return Form.Encoder(
+    public static var mailgunRoutes: HTML.Form.Coder.Encoder {
+        return HTML.Form.Coder.Encoder(
             dataEncodingStrategy: .base64,
             dateEncodingStrategy: .init { rfc2822Formatter.string(from: $0) },
             arrayEncodingStrategy: .accumulateValues
         )
     }
 
-    public static var mailgunEvents: Form.Encoder {
-        return Form.Encoder(
+    public static var mailgunEvents: HTML.Form.Coder.Encoder {
+        return HTML.Form.Coder.Encoder(
             dataEncodingStrategy: .base64,
             dateEncodingStrategy: .init { date in
                 // Convert to Unix timestamp (epoch time) for Mailgun Events API

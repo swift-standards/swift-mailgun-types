@@ -368,8 +368,8 @@ extension Mailgun.Lists.Member {
 
             // RT-030b: Mailgun's list-members API expects `subscribed`/`upsert` as the
             // literal strings "yes"/"no", not Swift's default Bool encoding. This is a
-            // wire-format concern, handled by the route's `Form.Encoder`/`Form.Decoder`
-            // (`boolEncodingStrategy`/`boolDecodingStrategy = .yesNo`; see `.addMember`
+            // wire-format concern, handled by the route's HTML form encoder/decoder
+            // (`boolEncodingStrategy`/`boolDecodingStrategy = .yes`; see `.addMember`
             // in Lists.API.swift), so Codable is synthesized here.
         }
 
