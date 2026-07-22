@@ -15,11 +15,13 @@ body: <nil>
 == create ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v1/dkim/keys
+header: content-type: application/x-www-form-urlencoded
 body(utf8): bits=2048&pem=-----BEGIN+PRIVATE+KEY-----PARITYFIXTURE-----END+PRIVATE+KEY-----&selector=parity-selector&signing_domain=parity.example.com
 
 == delete ==
 method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v1/dkim/keys
+header: content-type: application/x-www-form-urlencoded
 body(utf8): selector=parity-selector&signing_domain=parity.example.com
 
 == activate ==
@@ -40,9 +42,11 @@ body: <nil>
 == setDkimAuthority ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/domains/parity.example.com/dkim_authority
+header: content-type: application/x-www-form-urlencoded
 body(utf8): dkim_authority=authority.example.com
 
 == setDkimSelector ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/domains/parity.example.com/dkim_selector
+header: content-type: application/x-www-form-urlencoded
 body(utf8): dkim_selector=parity-selector

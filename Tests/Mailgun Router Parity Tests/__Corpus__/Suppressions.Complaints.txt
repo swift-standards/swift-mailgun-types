@@ -1,6 +1,7 @@
 == importList ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/parity.example.com/complaints/import
+header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="file"
 
@@ -35,6 +36,7 @@ body: <nil>
 == create ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/parity.example.com/complaints
+header: content-type: application/x-www-form-urlencoded
 body(utf8): address=user%40parity.example.com&created_at=Thu%2C+01+Jan+2026+00%3A00%3A00+UTC
 
 == deleteAll ==

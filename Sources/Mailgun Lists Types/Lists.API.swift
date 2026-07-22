@@ -50,7 +50,7 @@ extension Mailgun.Lists.API {
                     Method.post
                     Path { "v3" }
                     Path.lists
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Lists.List.Create.Request.self,
                             decoder: .mailgun,
@@ -170,7 +170,7 @@ extension Mailgun.Lists.API {
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
                     Path { "members.json" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             [Mailgun.Lists.Member.Bulk].self,
                             decoder: .mailgun,
@@ -305,7 +305,7 @@ extension Mailgun.Lists.API {
                     Path { "v3" }
                     Path.lists
                     Path { Parse(.string.representing(EmailAddress.self)) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Lists.List.Update.Request.self,
                             arrayEncodingStrategy: .brackets,

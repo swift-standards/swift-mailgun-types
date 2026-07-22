@@ -6,14 +6,17 @@ body: <nil>
 == updateClick ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/domains/parity.example.com/tracking/click
+header: content-type: application/x-www-form-urlencoded
 body(utf8): active=true
 
 == updateOpen ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/domains/parity.example.com/tracking/open
+header: content-type: application/x-www-form-urlencoded
 body(utf8): active=false
 
 == updateUnsubscribe ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/domains/parity.example.com/tracking/unsubscribe
+header: content-type: application/x-www-form-urlencoded
 body(utf8): active=true&html_footer=%3Cp%3EUnsubscribe+%3Ca+href%3D%22%25unsubscribe_url%25%22%3Ehere%3C%2Fa%3E%3C%2Fp%3E&text_footer=Unsubscribe%3A+%25unsubscribe_url%25

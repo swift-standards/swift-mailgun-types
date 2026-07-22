@@ -33,7 +33,7 @@ extension Mailgun.IPAllowlist.API {
                     Method.put
                     Path.v2
                     Path.ipAllowlist
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPAllowlist.UpdateRequest.self,
                             decoder: .mailgun,
@@ -46,7 +46,7 @@ extension Mailgun.IPAllowlist.API {
                     Method.post
                     Path.v2
                     Path.ipAllowlist
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPAllowlist.AddRequest.self,
                             decoder: .mailgun,
@@ -59,7 +59,7 @@ extension Mailgun.IPAllowlist.API {
                     Method.delete
                     Path.v2
                     Path.ipAllowlist
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPAllowlist.DeleteRequest.self,
                             decoder: .mailgun,

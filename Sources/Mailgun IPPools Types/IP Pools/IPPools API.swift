@@ -35,7 +35,7 @@ extension Mailgun.IPPools.API {
                     Method.post
                     Path { "v1" }
                     Path.ipPools
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPPools.Create.Request.self,
                             decoder: .mailgun,
@@ -62,7 +62,7 @@ extension Mailgun.IPPools.API {
                     Path { "v1" }
                     Path.ipPools
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPPools.Update.Request.self,
                             decoder: .mailgun,

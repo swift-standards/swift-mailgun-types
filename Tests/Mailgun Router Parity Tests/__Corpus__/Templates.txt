@@ -14,6 +14,7 @@ body: <nil>
 == create ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/parity.example.com/templates
+header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="name"
 
@@ -66,6 +67,7 @@ body: <nil>
 == createVersion ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/parity.example.com/templates/welcome-template/versions
+header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="template"
 
@@ -103,6 +105,7 @@ body: <nil>
 == update ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/parity.example.com/templates/welcome-template
+header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="description"
 
@@ -123,6 +126,7 @@ body: <nil>
 == updateVersion ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/parity.example.com/templates/welcome-template/versions/v2
+header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="template"
 

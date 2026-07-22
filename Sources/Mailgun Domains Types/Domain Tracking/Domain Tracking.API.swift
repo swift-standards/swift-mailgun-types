@@ -53,7 +53,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "tracking" }
                     Path { "click" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.Domains.Tracking.UpdateClick.Request.self,
                             decoder: .mailgun,
@@ -75,7 +75,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "tracking" }
                     Path { "open" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.Domains.Tracking.UpdateOpen.Request.self,
                             decoder: .mailgun,
@@ -97,7 +97,7 @@ extension Mailgun.Domains.Domains.Tracking.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "tracking" }
                     Path { "unsubscribe" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.Domains.Tracking.UpdateUnsubscribe.Request.self,
                             decoder: .mailgun,

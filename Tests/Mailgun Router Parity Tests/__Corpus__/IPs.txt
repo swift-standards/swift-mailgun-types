@@ -16,6 +16,7 @@ body: <nil>
 == assignDomain ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/ips/192.161.0.1/domains
+header: content-type: application/x-www-form-urlencoded
 body(utf8): domain=parity.example.com
 
 == unassignDomain ==
@@ -26,11 +27,13 @@ body: <nil>
 == assignIPBand ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/ips/192.161.0.1/ip_band
+header: content-type: application/x-www-form-urlencoded
 body(utf8): ip_band=standard
 
 == requestNew ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/ips/request/new
+header: content-type: application/x-www-form-urlencoded
 body(utf8): count=3
 
 == getRequestedIPs ==

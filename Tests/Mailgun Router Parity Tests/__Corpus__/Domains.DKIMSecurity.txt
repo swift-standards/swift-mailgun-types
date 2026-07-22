@@ -1,6 +1,7 @@
 == updateRotation ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v1/dkim_management/domains/parity.example.com/rotation
+header: content-type: application/x-www-form-urlencoded
 body(utf8): rotation_enabled=true&rotation_interval=5d
 
 == rotateManually ==

@@ -6,6 +6,7 @@ body: <nil>
 == create ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v1/ip_pools
+header: content-type: application/x-www-form-urlencoded
 body(utf8): description=Parity+fixture+pool&ips[]=192.161.0.1&ips[]=192.161.0.2&name=parity-pool
 
 == get ==
@@ -16,6 +17,7 @@ body: <nil>
 == update ==
 method: Method(rawValue: "PATCH", isSafe: false, isIdempotent: false, isCacheable: false)
 path: /v1/ip_pools/parity-pool-id
+header: content-type: application/x-www-form-urlencoded
 body(utf8): add_ips[]=192.161.0.3&description=Updated+parity+fixture+pool&name=parity-pool-renamed&remove_ips[]=192.161.0.1
 
 == delete.query ==

@@ -11,11 +11,13 @@ body: <nil>
 == create.full ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/ip_warmups/192.161.0.1
+header: content-type: application/x-www-form-urlencoded
 body(utf8): enabled=true&volume_daily_capacity=1000
 
 == create.empty ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/ip_warmups/192.161.0.1
+header: content-type: application/x-www-form-urlencoded
 body(utf8): 
 
 == delete ==

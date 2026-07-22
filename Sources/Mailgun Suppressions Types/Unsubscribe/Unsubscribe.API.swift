@@ -136,7 +136,7 @@ extension Mailgun.Suppressions.Unsubscribe.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.unsubscribes
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Suppressions.Unsubscribe.Create.Request.self,
                             decoder: .mailgun,

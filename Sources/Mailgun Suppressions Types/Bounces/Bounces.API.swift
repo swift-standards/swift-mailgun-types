@@ -111,7 +111,7 @@ extension Mailgun.Suppressions.Bounces.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.bounces
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Suppressions.Bounces.Create.Request.self,
                             decoder: .mailgun,

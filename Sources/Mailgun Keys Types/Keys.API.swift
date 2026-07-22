@@ -33,7 +33,7 @@ extension Mailgun.Keys.API {
                     Method.post
                     Path { "v1" }
                     Path.keys
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Keys.Create.Request.self,
                             decoder: .mailgun,
@@ -54,7 +54,7 @@ extension Mailgun.Keys.API {
                     Path { "v1" }
                     Path.keys
                     Path.`public`
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Keys.PublicKey.Request.self,
                             decoder: .mailgun,

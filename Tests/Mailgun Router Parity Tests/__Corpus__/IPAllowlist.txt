@@ -6,14 +6,17 @@ body: <nil>
 == update ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v2/ip_allowlist
+header: content-type: application/x-www-form-urlencoded
 body(utf8): address=203.0.113.10%2F32&description=Parity+updated+allowlist+entry
 
 == add ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v2/ip_allowlist
+header: content-type: application/x-www-form-urlencoded
 body(utf8): address=203.0.113.10%2F32&description=Parity+allowlist+entry
 
 == delete ==
 method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v2/ip_allowlist
+header: content-type: application/x-www-form-urlencoded
 body(utf8): address=203.0.113.10%2F32

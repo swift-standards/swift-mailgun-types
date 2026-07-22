@@ -47,7 +47,7 @@ extension Mailgun.IPAddressWarmup.API {
                     Path { "v3" }
                     Path.ipWarmups
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPAddressWarmup.Create.Request.self,
                             decoder: .mailgun,

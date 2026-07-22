@@ -29,7 +29,7 @@ extension Mailgun.Routes.API {
                     Method.post
                     Path { "v3" }
                     Path.routes
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Routes.Create.Request.self,
                             decoder: .mailgunRoutes,
@@ -49,7 +49,7 @@ extension Mailgun.Routes.API {
                     Path { "v3" }
                     Path.routes
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Routes.Update.Request.self,
                             boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")

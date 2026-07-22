@@ -67,4 +67,5 @@ body: <nil>
 == updateFeatures ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v5/accounts/subaccounts/parity-subaccount-id/features
+header: content-type: application/x-www-form-urlencoded
 body(utf8): email_preview[enabled]=true&inbox_placement[enabled]=false&sending[enabled]=true&validations[enabled]=false&validations_bulk[enabled]=true

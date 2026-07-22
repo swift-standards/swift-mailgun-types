@@ -67,7 +67,7 @@ extension Mailgun.Credentials.API {
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Credentials.Create.Request.self,
                             decoder: .mailgun,
@@ -97,7 +97,7 @@ extension Mailgun.Credentials.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.credentials
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Credentials.Update.Request.self,
                             decoder: .mailgun,
@@ -133,7 +133,7 @@ extension Mailgun.Credentials.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.mailboxes
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Credentials.Mailbox.Update.Request.self,
                             decoder: .mailgun,

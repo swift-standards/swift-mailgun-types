@@ -226,7 +226,7 @@ extension Mailgun.Subaccounts.API {
                     Path.subaccounts
                     Path { Parse(.string) }
                     Path.features
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Subaccounts.Features.Update.Request.self,
                             decoder: .mailgun,

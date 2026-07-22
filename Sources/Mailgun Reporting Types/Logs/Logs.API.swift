@@ -28,7 +28,7 @@ extension Mailgun.Reporting.Logs.API {
                     Path { "v1" }
                     Path.analytics
                     Path.logs
-                    URLRouting.Body(.json(Mailgun.Reporting.Logs.Analytics.Request.self))
+                    URLRouting.Body(coding: .json(Mailgun.Reporting.Logs.Analytics.Request.self))
                 }
             }
         }

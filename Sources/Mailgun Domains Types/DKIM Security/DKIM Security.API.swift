@@ -37,7 +37,7 @@ extension Mailgun.Domains.DKIM_Security.API {
                     Path { "domains" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path { "rotation" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.DKIM_Security.Rotation.Update.Request.self,
                             decoder: .mailgun,

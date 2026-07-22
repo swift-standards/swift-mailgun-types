@@ -68,7 +68,7 @@ extension Mailgun.Domains.Domains.API {
                     Method.post
                     Path { "v4" }
                     Path { "domains" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.Domains.Create.Request.self,
                             decoder: .mailgun,
@@ -95,7 +95,7 @@ extension Mailgun.Domains.Domains.API {
                     Path { "v4" }
                     Path { "domains" }
                     Path { Parse(.string.representing(Domain.self)) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.Domains.Update.Request.self,
                             decoder: .mailgun,

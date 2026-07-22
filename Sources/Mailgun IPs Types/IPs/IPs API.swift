@@ -62,7 +62,7 @@ extension Mailgun.IPs.API {
                     Path.ips
                     Path { Parse(.string) }
                     Path { "domains" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPs.AssignDomain.Request.self,
                             decoder: .mailgun,
@@ -98,7 +98,7 @@ extension Mailgun.IPs.API {
                     Path.ips
                     Path { Parse(.string) }
                     Path.ipBand
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(Mailgun.IPs.IPBand.Request.self, decoder: .mailgun, encoder: .mailgun)
                     )
                 }
@@ -109,7 +109,7 @@ extension Mailgun.IPs.API {
                     Path.ips
                     Path { "request" }
                     Path { "new" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.IPs.RequestNew.Request.self,
                             decoder: .mailgun,

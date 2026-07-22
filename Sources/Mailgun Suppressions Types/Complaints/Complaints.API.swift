@@ -32,7 +32,7 @@ extension Mailgun.Suppressions.Complaints.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.complaints
                     Path { "import" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Suppressions.Complaints.Import.Request.self,
                             boundary: RFC_2046.Boundary(__unchecked: (), rawValue: "----MailgunFormBoundary")
@@ -123,7 +123,7 @@ extension Mailgun.Suppressions.Complaints.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.complaints
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Suppressions.Complaints.Create.Request.self,
                             decoder: .mailgun,

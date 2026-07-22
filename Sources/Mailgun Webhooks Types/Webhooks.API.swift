@@ -38,7 +38,7 @@ extension Mailgun.Webhooks.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.webhooks
                     Path { Parse(.string.representing(Mailgun.Webhooks.WebhookType.self)) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Webhooks.Update.Request.self,
                             decoder: .mailgun,
@@ -92,7 +92,7 @@ extension Mailgun.Webhooks.API {
                     Path.domains
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.webhooks
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Webhooks.Create.Request.self,
                             decoder: .mailgun,

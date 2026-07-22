@@ -26,7 +26,7 @@ extension Mailgun.Reporting.Metrics.API {
                     Path { "v1" }
                     Path.analytics
                     Path.metrics
-                    URLRouting.Body(.json(Mailgun.Reporting.Metrics.GetAccountMetrics.Request.self))
+                    URLRouting.Body(coding: .json(Mailgun.Reporting.Metrics.GetAccountMetrics.Request.self))
                 }
 
                 URLRouting.Route(.case(Mailgun.Reporting.Metrics.API.cases.getAccountUsageMetrics)) {
@@ -35,7 +35,7 @@ extension Mailgun.Reporting.Metrics.API {
                     Path.analytics
                     Path.usage
                     Path.metrics
-                    URLRouting.Body(.json(Mailgun.Reporting.Metrics.GetAccountUsageMetrics.Request.self))
+                    URLRouting.Body(coding: .json(Mailgun.Reporting.Metrics.GetAccountUsageMetrics.Request.self))
                 }
             }
         }

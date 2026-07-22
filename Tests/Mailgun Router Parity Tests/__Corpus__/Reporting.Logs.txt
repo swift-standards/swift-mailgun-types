@@ -1,9 +1,11 @@
 == analytics.full ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v1/analytics/logs
+header: content-type: application/json
 body(utf8/sorted-keys): {"action":"delivered","end_date":721779200,"filter":{"and":[{"field":"domain","operator":"=","value":"parity.example.com"}],"or":[{"field":"severity","operator":"!=","value":"temporary"}]},"group_by":"domain","include":["actions","total"],"page":{"number":1,"size":50,"sort":"timestamp:desc"},"start_date":721692800}
 
 == analytics.empty ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v1/analytics/logs
+header: content-type: application/json
 body(utf8/sorted-keys): {}

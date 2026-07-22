@@ -121,7 +121,7 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string) }
                     Path.versions
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Templates.Version.Update.Request.self,
                             arrayEncodingStrategy: .brackets,
@@ -178,7 +178,7 @@ extension Mailgun.Templates.API {
                     Path.templates
                     Path { Parse(.string) }
                     Path.versions
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Templates.Version.Create.Request.self,
                             arrayEncodingStrategy: .brackets,
@@ -244,7 +244,7 @@ extension Mailgun.Templates.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
                     Path { Parse(.string) }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Templates.Update.Request.self,
                             arrayEncodingStrategy: .brackets,
@@ -309,7 +309,7 @@ extension Mailgun.Templates.API {
                     Path { "v3" }
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.templates
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         RFC_2046.Multipart.Conversion(
                             Mailgun.Templates.Create.Request.self,
                             arrayEncodingStrategy: .brackets,

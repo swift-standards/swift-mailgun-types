@@ -1,6 +1,7 @@
 == create ==
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/lists
+header: content-type: application/x-www-form-urlencoded
 body(utf8): access_level=members&address=developers%40parity.example.com&description=Parity+corpus+list&name=Developers&reply_preference=list
 
 == list ==
@@ -35,6 +36,7 @@ body(utf8): address=new%40parity.example.com&name=New+Member&subscribed=yes&upse
 method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
 path: /v3/lists/developers@parity.example.com/members.json
 query: upsert=true
+header: content-type: application/x-www-form-urlencoded
 body(utf8): [][address]=bulk1%40parity.example.com&[][name]=Bulk+One&[][subscribed]=true&[][vars][seat]=1&[][address]=bulk2%40parity.example.com&[][name]=Bulk+Two&[][subscribed]=false
 
 == bulkAddCSV ==
@@ -65,6 +67,7 @@ body: <nil>
 == update ==
 method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
 path: /v3/lists/developers@parity.example.com
+header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
 Content-Disposition: form-data; name="address"
 

@@ -74,7 +74,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "v1" }
                     Path { "dkim" }
                     Path { "keys" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.DomainKeys.Create.Request.self,
                             decoder: .mailgun,
@@ -88,7 +88,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "v1" }
                     Path { "dkim" }
                     Path { "keys" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.DomainKeys.Delete.Request.self,
                             decoder: .mailgun,
@@ -149,7 +149,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "domains" }
                     Path { Parse(.string) }
                     Path { "dkim_authority" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.DomainKeys.SetDkimAuthority.Request.self,
                             decoder: .mailgun,
@@ -170,7 +170,7 @@ extension Mailgun.Domains.DomainKeys.API {
                     Path { "domains" }
                     Path { Parse(.string) }
                     Path { "dkim_selector" }
-                    URLRouting.Body(
+                    URLRouting.Body(coding:
                         .form(
                             Mailgun.Domains.DomainKeys.SetDkimSelector.Request.self,
                             decoder: .mailgun,
