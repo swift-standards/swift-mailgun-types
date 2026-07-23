@@ -1,9 +1,11 @@
 import Mailgun_Types_Shared
+import HTML_Form_Coder_Codable
+import HTML_Standard
 
 extension Mailgun.Suppressions.Bounces {
     @Cases
     public enum API: Equatable, Sendable {
-        case importList(domain: Domain, request: Foundation.Data)
+        case importList(domain: Domain, request: Mailgun.Suppressions.Bounces.Import.Request)
         case get(domain: Domain, address: EmailAddress)
         case delete(domain: Domain, address: EmailAddress)
         case list(domain: Domain, request: Mailgun.Suppressions.Bounces.List.Request?)
@@ -30,7 +32,12 @@ extension Mailgun.Suppressions.Bounces.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.bounces
                     Path { "import" }
-                    try! FileUpload(fieldName: "file", filename: "import.csv", fileType: .csv)
+                    URLRouting.Body(
+                        coding: HTML.Form.Coder.Multipart.Value(
+                            Mailgun.Suppressions.Bounces.Import.Request.self,
+                            encoder: .csv
+                        )
+                    )
                 }
 
                 URLRouting.Route(

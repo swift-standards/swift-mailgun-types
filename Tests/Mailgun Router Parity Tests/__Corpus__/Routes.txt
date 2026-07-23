@@ -1,28 +1,28 @@
 == create ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/routes
 header: content-type: application/x-www-form-urlencoded
 body(utf8): action=forward%28%22https%3A%2F%2Fparity.example.com%2Finbound%22%29&action=stop%28%29&description=Parity+corpus+route&expression=match_recipient%28%22.*%40parity.example.com%22%29&priority=1
 
 == list ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/routes
 query: limit=25
 query: skip=5
 body: <nil>
 
 == list-empty ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/routes
 body: <nil>
 
 == get ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/routes/route-id-123
 body: <nil>
 
 == update ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/routes/route-id-123
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
@@ -59,12 +59,12 @@ stop()
 
 
 == delete ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/routes/route-id-123
 body: <nil>
 
 == match ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/routes/match
 query: address=someone@parity.example.com
 body: <nil>

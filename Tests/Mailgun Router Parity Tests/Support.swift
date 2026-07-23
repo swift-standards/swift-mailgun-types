@@ -33,14 +33,13 @@ enum Support {
         }
     }
 
-    /// Normalizes randomized `----FormBoundary<UUID>` tokens ANYWHERE in the
-    /// corpus — including Content-Type HEADER values, where FileUpload-style
-    /// multipart routes (Suppressions Bounces/Unsubscribe/Allowlist importList)
-    /// leak the random boundary. Parity.canonical only normalizes bodies.
-    /// Batch-2 `Boundary.random()` work item.
+    /// Normalizes randomized multipart boundaries anywhere in the corpus,
+    /// including Content-Type header values. The canonical RFC 2046 generator
+    /// is mapped onto the established parity placeholder so the fixture tests
+    /// the stable wire contract rather than entropy.
     static func normalizeFormBoundary(_ text: String) -> String {
         text.replacingOccurrences(
-            of: #"----FormBoundary[0-9A-Fa-f\-]{36}"#,
+            of: #"----Part_[0-9a-f]{32}"#,
             with: "----FormBoundary<NORMALIZED>",
             options: .regularExpression
         )

@@ -1,5 +1,5 @@
 == list.full ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/events
 query: begin=1700000000
 query: end=1700086400
@@ -20,6 +20,6 @@ query: severity=permanent
 body: <nil>
 
 == list.bare ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/events
 body: <nil>

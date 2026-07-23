@@ -6,11 +6,13 @@
 //
 
 import Mailgun_Types_Shared
+import HTML_Form_Coder_Codable
+import HTML_Standard
 
 extension Mailgun.Suppressions.Unsubscribe {
     @Cases
     public enum API: Equatable, Sendable {
-        case importList(domain: Domain, request: Foundation.Data)
+        case importList(domain: Domain, request: Mailgun.Suppressions.Unsubscribe.Import.Request)
         case get(domain: Domain, address: EmailAddress)
         case delete(domain: Domain, address: EmailAddress)
         case list(domain: Domain, request: Mailgun.Suppressions.Unsubscribe.List.Request?)
@@ -38,7 +40,12 @@ extension Mailgun.Suppressions.Unsubscribe.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.unsubscribes
                     Path { "import" }
-                    try! FileUpload(fieldName: "file", filename: "import.csv", fileType: .csv)
+                    URLRouting.Body(
+                        coding: HTML.Form.Coder.Multipart.Value(
+                            Mailgun.Suppressions.Unsubscribe.Import.Request.self,
+                            encoder: .csv
+                        )
+                    )
                 }
 
                 // DELETE /v3/{domainID}/unsubscribes/{address}

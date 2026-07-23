@@ -1,10 +1,10 @@
 == list-nil ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v4/domains
 body: <nil>
 
 == list-full ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v4/domains
 query: authority=authority.example.com
 query: state=active
@@ -13,28 +13,28 @@ query: skip=5
 body: <nil>
 
 == create ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v4/domains
 header: content-type: application/x-www-form-urlencoded
 body(utf8): dkim_key_size=2048&force_dkim_authority=false&ips=203.0.113.1%2C203.0.113.2&name=parity.example.com&pool_id=pool-parity-1&smtp_password=parity-smtp-password&spam_action=tag&web_scheme=https&wildcard=true
 
 == get ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v4/domains/parity.example.com
 body: <nil>
 
 == update ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v4/domains/parity.example.com
 header: content-type: application/x-www-form-urlencoded
 body(utf8): spam_action=block&web_scheme=https&wildcard=false
 
 == delete ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v4/domains/parity.example.com
 body: <nil>
 
 == verify ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v4/domains/parity.example.com/verify
 body: <nil>

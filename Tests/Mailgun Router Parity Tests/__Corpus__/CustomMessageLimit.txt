@@ -1,20 +1,20 @@
 == getMonthly ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v5/accounts/limit/custom/monthly
 body: <nil>
 
 == setMonthly ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v5/accounts/limit/custom/monthly
 query: limit=50000
 body: <nil>
 
 == deleteMonthly ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v5/accounts/limit/custom/monthly
 body: <nil>
 
 == enableAccount ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v5/accounts/limit/custom/enable
 body: <nil>

@@ -6,6 +6,7 @@
 //
 
 import Dependencies_Test_Support
+import URL_Routing_Foundation_Integration
 import Domain_Standard
 import EmailAddress
 import Testing
@@ -24,7 +25,7 @@ struct BouncesRouterTests {
         let testData = Data("test".utf8)
         let api: Mailgun.Suppressions.Bounces.API = .importList(
             domain: try .init("test.domain.com"),
-            request: testData
+            request: .init(file: testData)
         )
 
         let url = router.url(for: api)

@@ -1,10 +1,10 @@
 == list-nil ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates
 body: <nil>
 
 == list-full ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates
 query: page=next
 query: limit=25
@@ -12,7 +12,7 @@ query: p=cursor-token
 body: <nil>
 
 == create ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/parity.example.com/templates
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
@@ -54,17 +54,17 @@ Content-Type: text/plain; charset=UTF-8
 
 
 == deleteAll ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/parity.example.com/templates
 body: <nil>
 
 == versions-nil ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates/welcome-template/versions
 body: <nil>
 
 == versions-full ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates/welcome-template/versions
 query: page=first
 query: limit=10
@@ -72,7 +72,7 @@ query: p=version-cursor
 body: <nil>
 
 == createVersion ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/parity.example.com/templates/welcome-template/versions
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
@@ -104,18 +104,18 @@ Content-Type: text/plain; charset=UTF-8
 
 
 == get-nil ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates/welcome-template
 body: <nil>
 
 == get-active ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates/welcome-template
 query: active=yes
 body: <nil>
 
 == update ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/parity.example.com/templates/welcome-template
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
@@ -127,17 +127,17 @@ Updated description
 
 
 == delete ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/parity.example.com/templates/welcome-template
 body: <nil>
 
 == getVersion ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/templates/welcome-template/versions/v2
 body: <nil>
 
 == updateVersion ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/parity.example.com/templates/welcome-template/versions/v2
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
@@ -164,17 +164,17 @@ Content-Type: text/plain; charset=UTF-8
 
 
 == deleteVersion ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/parity.example.com/templates/welcome-template/versions/v2
 body: <nil>
 
 == copyVersion-nil ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/parity.example.com/templates/welcome-template/versions/v2/copy/v3
 body: <nil>
 
 == copyVersion-comment ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/parity.example.com/templates/welcome-template/versions/v2/copy/v3
 query: comment=copied from v2
 body: <nil>

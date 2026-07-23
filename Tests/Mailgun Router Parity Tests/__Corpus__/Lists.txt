@@ -1,11 +1,11 @@
 == create ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/lists
 header: content-type: application/x-www-form-urlencoded
 body(utf8): access_level=members&address=developers%40parity.example.com&description=Parity+corpus+list&name=Developers&reply_preference=list
 
 == list ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists
 query: limit=25
 query: skip=5
@@ -13,12 +13,12 @@ query: address=developers@parity.example.com
 body: <nil>
 
 == list-empty ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists
 body: <nil>
 
 == members ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists/developers@parity.example.com/members
 query: address=member@parity.example.com
 query: subscribed=true
@@ -27,20 +27,20 @@ query: skip=2
 body: <nil>
 
 == addMember ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/lists/developers@parity.example.com/members
 header: content-type: application/x-www-form-urlencoded
 body(utf8): address=new%40parity.example.com&name=New+Member&subscribed=yes&upsert=no&vars[role]=developer
 
 == bulkAdd ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/lists/developers@parity.example.com/members.json
 query: upsert=true
 header: content-type: application/x-www-form-urlencoded
 body(utf8): [][address]=bulk1%40parity.example.com&[][name]=Bulk+One&[][subscribed]=true&[][vars][seat]=1&[][address]=bulk2%40parity.example.com&[][name]=Bulk+Two&[][subscribed]=false
 
 == bulkAddCSV ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/lists/developers@parity.example.com/members.csv/address,name
 csv@parity.example.com,CSV Member
 
@@ -49,23 +49,23 @@ query: upsert=false
 body: <nil>
 
 == getMember ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists/developers@parity.example.com/members/member@parity.example.com
 body: <nil>
 
 == updateMember ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/lists/developers@parity.example.com/members/member@parity.example.com
 header: content-type: application/x-www-form-urlencoded
 body(utf8): address=renamed%40parity.example.com&name=Renamed+Member&subscribed=no&vars[role]=maintainer
 
 == deleteMember ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/lists/developers@parity.example.com/members/member@parity.example.com
 body: <nil>
 
 == update ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/lists/developers@parity.example.com
 header: content-type: multipart/form-data; boundary=----MailgunFormBoundary
 body(utf8): ------MailgunFormBoundary
@@ -102,28 +102,28 @@ parity-list-id
 
 
 == delete ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/lists/developers@parity.example.com
 body: <nil>
 
 == get ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists/developers@parity.example.com
 body: <nil>
 
 == pages ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists/pages
 query: limit=50
 body: <nil>
 
 == pages-empty ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists/pages
 body: <nil>
 
 == memberPages ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/lists/developers@parity.example.com/members/pages
 query: subscribed=true
 query: limit=20

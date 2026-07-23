@@ -1,5 +1,5 @@
 == total ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/stats/total
 query: event=delivered
 query: start=Mon, 13 Nov 2023 00:00:00 +0000
@@ -9,13 +9,13 @@ query: duration=1d
 body: <nil>
 
 == total.minimal ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/stats/total
 query: event=accepted
 body: <nil>
 
 == filter ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/stats/filter
 query: event=delivered
 query: start=Mon, 13 Nov 2023 00:00:00 +0000
@@ -27,16 +27,16 @@ query: group=domain
 body: <nil>
 
 == aggregateProviders ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/aggregates/providers
 body: <nil>
 
 == aggregateDevices ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/aggregates/devices
 body: <nil>
 
 == aggregateCountries ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/aggregates/countries
 body: <nil>

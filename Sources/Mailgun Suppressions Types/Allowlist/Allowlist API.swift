@@ -6,6 +6,8 @@
 //
 
 import Mailgun_Types_Shared
+import HTML_Form_Coder_Codable
+import HTML_Standard
 
 extension Mailgun.Suppressions.Allowlist {
     @Cases
@@ -15,7 +17,7 @@ extension Mailgun.Suppressions.Allowlist {
         case list(domain: Domain, request: Mailgun.Suppressions.Allowlist.List.Request?)
         case create(domain: Domain, request: Mailgun.Suppressions.Allowlist.Create.Request)
         case deleteAll(domain: Domain)
-        case importList(domain: Domain, request: Foundation.Data)
+        case importList(domain: Domain, request: Mailgun.Suppressions.Allowlist.Import.Request)
     }
 }
 
@@ -139,7 +141,12 @@ extension Mailgun.Suppressions.Allowlist.API {
                     Path { Parse(.string.representing(Domain.self)) }
                     Path.whitelists
                     Path { "import" }
-                    try! FileUpload(fieldName: "file", filename: "import.csv", fileType: .csv)
+                    URLRouting.Body(
+                        coding: HTML.Form.Coder.Multipart.Value(
+                            Mailgun.Suppressions.Allowlist.Import.Request.self,
+                            encoder: .csv
+                        )
+                    )
                 }
             }
         }

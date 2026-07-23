@@ -62,7 +62,11 @@ extension Target.Dependency {
     static var rfc2045: Self { .product(name: "RFC 2045", package: "swift-rfc-2045") }
     static var rfc2046: Self { .product(name: "RFC 2046", package: "swift-rfc-2046") }
     static var rfc2183: Self { .product(name: "RFC 2183", package: "swift-rfc-2183") }
+    static var rfc7578: Self { .product(name: "RFC 7578", package: "swift-rfc-7578") }
     static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
+    static var urlRoutingFoundation: Self {
+        .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
+    }
     static var dual: Self { .product(name: "Dual", package: "swift-dual") }
 }
 
@@ -106,6 +110,7 @@ let package = Package(
         .package(url: "https://github.com/swift-ietf/swift-rfc-2045.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2046.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2183.git", branch: "main"),
+        .package(url: "https://github.com/swift-ietf/swift-rfc-7578.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2822.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-dual.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
@@ -162,7 +167,9 @@ let package = Package(
         ),
         .testTarget(
             name: .accountManagement.tests,
-            dependencies: [.accountManagement, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .accountManagement, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .credentials,
@@ -172,7 +179,7 @@ let package = Package(
         ),
         .testTarget(
             name: .credentials.tests,
-            dependencies: [.credentials, .shared, .dependenciesTestSupport]
+            dependencies: [.credentials, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .customMessageLimit,
@@ -182,7 +189,9 @@ let package = Package(
         ),
         .testTarget(
             name: .customMessageLimit.tests,
-            dependencies: [.customMessageLimit, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .customMessageLimit, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .domains,
@@ -192,7 +201,7 @@ let package = Package(
         ),
         .testTarget(
             name: .domains.tests,
-            dependencies: [.domains, .shared, .dependenciesTestSupport]
+            dependencies: [.domains, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .ipAllowlist,
@@ -202,7 +211,9 @@ let package = Package(
         ),
         .testTarget(
             name: .ipAllowlist.tests,
-            dependencies: [.ipAllowlist, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .ipAllowlist, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .ipPools,
@@ -212,7 +223,7 @@ let package = Package(
         ),
         .testTarget(
             name: .ipPools.tests,
-            dependencies: [.ipPools, .shared, .dependenciesTestSupport]
+            dependencies: [.ipPools, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .ips,
@@ -222,7 +233,7 @@ let package = Package(
         ),
         .testTarget(
             name: .ips.tests,
-            dependencies: [.ips, .shared, .dependenciesTestSupport]
+            dependencies: [.ips, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .keys,
@@ -232,7 +243,7 @@ let package = Package(
         ),
         .testTarget(
             name: .keys.tests,
-            dependencies: [.keys, .shared, .dependenciesTestSupport]
+            dependencies: [.keys, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .lists,
@@ -245,7 +256,7 @@ let package = Package(
         ),
         .testTarget(
             name: .lists.tests,
-            dependencies: [.lists, .shared, .dependenciesTestSupport]
+            dependencies: [.lists, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .messages,
@@ -259,18 +270,21 @@ let package = Package(
         ),
         .testTarget(
             name: .messages.tests,
-            dependencies: [.messages, .shared, .dependenciesTestSupport]
+            dependencies: [.messages, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .reporting,
             dependencies: [
                 .shared,
-                .rfc2822
+                .rfc2822,
+                .urlRoutingFoundation
             ]
         ),
         .testTarget(
             name: .reporting.tests,
-            dependencies: [.reporting, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .reporting, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .routes,
@@ -283,7 +297,7 @@ let package = Package(
         ),
         .testTarget(
             name: .routes.tests,
-            dependencies: [.routes, .shared, .dependenciesTestSupport]
+            dependencies: [.routes, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .subaccounts,
@@ -293,7 +307,9 @@ let package = Package(
         ),
         .testTarget(
             name: .subaccounts.tests,
-            dependencies: [.subaccounts, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .subaccounts, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .suppressions,
@@ -301,12 +317,17 @@ let package = Package(
                 .shared,
                 .htmlFormCoder,
                 .htmlStandard,
-                .rfc2046
+                .rfc2045,
+                .rfc2046,
+                .rfc2183,
+                .rfc7578
             ]
         ),
         .testTarget(
             name: .suppressions.tests,
-            dependencies: [.suppressions, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .suppressions, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .templates,
@@ -319,7 +340,9 @@ let package = Package(
         ),
         .testTarget(
             name: .templates.tests,
-            dependencies: [.templates, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .templates, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .target(
             name: .users,
@@ -329,7 +352,7 @@ let package = Package(
         ),
         .testTarget(
             name: .users.tests,
-            dependencies: [.users, .shared, .dependenciesTestSupport]
+            dependencies: [.users, .shared, .dependenciesTestSupport, .urlRoutingFoundation]
         ),
         .target(
             name: .webhooks,
@@ -339,7 +362,9 @@ let package = Package(
         ),
         .testTarget(
             name: .webhooks.tests,
-            dependencies: [.webhooks, .shared, .dependenciesTestSupport]
+            dependencies: [
+                .webhooks, .shared, .dependenciesTestSupport, .urlRoutingFoundation
+            ]
         ),
         .testTarget(
             name: "Mailgun Router Parity Tests",

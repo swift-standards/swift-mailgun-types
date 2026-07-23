@@ -30,7 +30,9 @@ struct BouncesParityTests {
                     "importList",
                     .importList(
                         domain: try .init("parity.example.com"),
-                        request: Data("address\nbounced@parity.example.com\n".utf8)
+                        request: .init(
+                            file: Data("address\nbounced@parity.example.com\n".utf8)
+                        )
                     )
                 ),
                 (
@@ -169,7 +171,9 @@ struct UnsubscribeParityTests {
                     "importList",
                     .importList(
                         domain: try .init("parity.example.com"),
-                        request: Data("address\nunsubscribed@parity.example.com\n".utf8)
+                        request: .init(
+                            file: Data("address\nunsubscribed@parity.example.com\n".utf8)
+                        )
                     )
                 ),
                 (
@@ -289,7 +293,9 @@ struct AllowlistParityTests {
                     "importList",
                     .importList(
                         domain: try .init("parity.example.com"),
-                        request: Data("address\nallowed@parity.example.com\n".utf8)
+                        request: .init(
+                            file: Data("address\nallowed@parity.example.com\n".utf8)
+                        )
                     )
                 )
             ]

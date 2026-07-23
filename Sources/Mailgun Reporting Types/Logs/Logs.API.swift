@@ -7,6 +7,7 @@
 
 import Foundation
 import Mailgun_Types_Shared
+import URL_Routing_Foundation_Integration
 import URLRouting
 
 extension Mailgun.Reporting.Logs {

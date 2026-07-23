@@ -6,6 +6,7 @@
 //
 
 import Mailgun_Types_Shared
+import URL_Routing_Foundation_Integration
 
 extension Mailgun.Reporting.Metrics {
     @Cases

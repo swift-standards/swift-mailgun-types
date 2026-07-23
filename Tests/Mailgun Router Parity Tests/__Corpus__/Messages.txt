@@ -1,5 +1,5 @@
 == send ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/parity.example.com/messages
 header: content-type: multipart/form-data; boundary=Part-<NORMALIZED>
 body(utf8): --Part-<NORMALIZED>
@@ -144,7 +144,7 @@ Content-Disposition: form-data; name="recipient-variables"
 
 
 == sendMime ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/parity.example.com/messages.mime
 header: content-type: multipart/form-data; boundary=Part-<NORMALIZED>
 body(utf8): --Part-<NORMALIZED>
@@ -259,16 +259,16 @@ Content-Disposition: form-data; name="recipient-variables"
 
 
 == retrieve ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/domains/parity.example.com/messages/storage-key-123
 body: <nil>
 
 == queueStatus ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/domains/parity.example.com/sending_queues
 body: <nil>
 
 == deleteScheduled ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/parity.example.com/envelopes
 body: <nil>

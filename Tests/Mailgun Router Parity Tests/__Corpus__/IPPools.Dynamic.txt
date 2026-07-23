@@ -1,5 +1,5 @@
 == listHistory.full ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v1/dynamic_pools/history
 query: Limit=25
 query: include_subaccounts=true
@@ -11,11 +11,11 @@ query: moved_from=pool-a
 body: <nil>
 
 == listHistory.empty ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v1/dynamic_pools/history
 body: <nil>
 
 == removeOverride ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v1/dynamic_pools/domains/parity.example.com/override
 body: <nil>

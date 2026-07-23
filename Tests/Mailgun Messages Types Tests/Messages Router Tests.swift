@@ -6,6 +6,7 @@
 //
 
 import Dependencies_Test_Support
+import URL_Routing_Foundation_Integration
 import Testing
 
 @testable import Mailgun_Messages_Types

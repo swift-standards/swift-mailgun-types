@@ -1,52 +1,52 @@
 == list ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/ips
 body: <nil>
 
 == get ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/ips/192.161.0.1
 body: <nil>
 
 == listDomains ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/ips/192.161.0.1/domains
 body: <nil>
 
 == assignDomain ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/ips/192.161.0.1/domains
 header: content-type: application/x-www-form-urlencoded
 body(utf8): domain=parity.example.com
 
 == unassignDomain ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/ips/192.161.0.1/domains/parity.example.com
 body: <nil>
 
 == assignIPBand ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/ips/192.161.0.1/ip_band
 header: content-type: application/x-www-form-urlencoded
 body(utf8): ip_band=standard
 
 == requestNew ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v3/ips/request/new
 header: content-type: application/x-www-form-urlencoded
 body(utf8): count=3
 
 == getRequestedIPs ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/ips/request/new
 body: <nil>
 
 == deleteDomainIP ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/domains/parity.example.com/ips/192.161.0.1
 body: <nil>
 
 == deleteDomainPool ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/domains/parity.example.com/pool/192.161.0.1
 body: <nil>

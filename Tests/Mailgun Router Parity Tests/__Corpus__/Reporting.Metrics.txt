@@ -1,11 +1,11 @@
 == getAccountMetrics ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v1/analytics/metrics
 header: content-type: application/json
 body(utf8/sorted-keys): {"dimensions":["domain"],"duration":"1d","end":"Tue, 14 Nov 2023 00:00:00 +0000","filter":{"AND":[{"attribute":"domain","comparator":"=","values":[{"label":"parity.example.com","value":"parity.example.com"}]}]},"include_aggregates":false,"include_subaccounts":true,"metrics":["accepted_count","delivered_count"],"resolution":"day","start":"Mon, 13 Nov 2023 00:00:00 +0000"}
 
 == getAccountUsageMetrics ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v1/analytics/usage/metrics
 header: content-type: application/json
 body(utf8/sorted-keys): {"dimensions":["subaccount"],"duration":"1d","end":"Tue, 14 Nov 2023 00:00:00 +0000","filter":{"AND":[{"attribute":"domain","comparator":"=","values":[{"label":"parity.example.com","value":"parity.example.com"}]}]},"include_aggregates":true,"include_subaccounts":false,"metrics":["email_validation_count"],"resolution":"day","start":"Mon, 13 Nov 2023 00:00:00 +0000"}

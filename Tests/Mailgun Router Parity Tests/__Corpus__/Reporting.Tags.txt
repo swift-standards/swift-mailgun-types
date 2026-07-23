@@ -1,36 +1,36 @@
 == list.query ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/tags
 query: page=next-page-token
 query: limit=25
 body: <nil>
 
 == list.bare ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/tags
 body: <nil>
 
 == get ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/tag
 query: tag=newsletter
 body: <nil>
 
 == update ==
-method: Method(rawValue: "PUT", isSafe: false, isIdempotent: true, isCacheable: false)
+method: PUT
 path: /v3/parity.example.com/tag
 query: tag=newsletter
 query: description=Parity fixture tag
 body: <nil>
 
 == delete ==
-method: Method(rawValue: "DELETE", isSafe: false, isIdempotent: true, isCacheable: false)
+method: DELETE
 path: /v3/parity.example.com/tag
 query: tag=newsletter
 body: <nil>
 
 == stats ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/tag/stats
 query: tag=newsletter
 query: event=accepted,delivered
@@ -44,13 +44,13 @@ query: country=nl
 body: <nil>
 
 == aggregates ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/parity.example.com/tag/stats/aggregates
 query: tag=newsletter
 query: type=providers
 body: <nil>
 
 == limits ==
-method: Method(rawValue: "GET", isSafe: true, isIdempotent: true, isCacheable: true)
+method: GET
 path: /v3/domains/parity.example.com/limits/tag
 body: <nil>
